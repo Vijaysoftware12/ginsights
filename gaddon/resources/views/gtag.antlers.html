@@ -1,0 +1,17 @@
+
+{{ if gtag_tracking_id }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag_tracking_id }}"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', '{{ gtag_tracking_id }}');
+ debugger; // Add this line to set a breakpoint
+if (gtag) {
+    console.log('Google Analytics tracking code is included.');
+} else {
+    console.log('Google Analytics tracking code is not included.');
+}
+</script>
+{{ end }}

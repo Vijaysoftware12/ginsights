@@ -1,0 +1,36 @@
+<html>
+<head>
+ 
+ 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script> 
+ 
+
+</head>
+<body>
+<script>
+
+$(function(){
+	      $.ajax({
+                    type:"POST",
+                   
+                    url:"http://vijaystatamic.com/testdpview",
+                    data:{ 
+                        "refresh_token" : "1//0gbDLXOeEImUVCgYIARAAGBASNwF-L9IrtsUa2dD8cE5OhSHimvxAmzjukvay_9lLuwu94Rr_sBqxnf60H7mhekQSg-tZ_AUE4ro",
+                        "property_id" : "properties/360664735",
+                         
+                        
+                    },
+                    dataType: 'json',
+                    
+                    success: function(resultData) { 
+                        alert('30');
+                        console.log(resultData)
+                    }
+
+
+                });
+	
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+    "name": "ginsights/gaddon",
+    "autoload": {
+        "psr-4": {
+            "GInsights\\Gaddon\\": "src/"
+        }
+    },
+	 
+    "extra": {
+        "statamic": {
+            "name": "GInsights",
+            "description": "Gaddon addon"
+        },
+        "laravel": {
+            "providers": [
+                "GInsights\\Gaddon\\ServiceProvider"
+            ]
+        }
+    }
+	
+}
