@@ -47,7 +47,7 @@ class DashboardWidget extends Widget
                 $property_id = "";
                 $filePath =
                     $rootPath .
-                    "/addons/GInsights/gaddon/src/content/webproperty.yaml";
+                    "/vendor/ginsights/gaddon/src/content/webproperty.yaml";
     
                 $yamlString = file_get_contents($filePath);
     
@@ -64,7 +64,7 @@ class DashboardWidget extends Widget
                 $property_id = "";
                 $filePath =
                     $rootPath .
-                    "/addons/GInsights/gaddon/src/content/webproperty.yaml";
+                    "/vendor/ginsights/gaddon/src/content/webproperty.yaml";
     
                 $yamlString = file_get_contents($filePath);
     
