@@ -1,5 +1,5 @@
 {
-    "name": "vijaysoftware\ginsights",
+    "name": "vijaysoftware/ginsights",
     "autoload": {
         "psr-4": {
             "Vijaysoftware\\Ginsights\\": "src/"
