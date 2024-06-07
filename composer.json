@@ -1,0 +1,21 @@
+{
+    "name": "vijaysoftware\ginsights",
+    "autoload": {
+        "psr-4": {
+            "Vijaysoftware\\Ginsights\\": "src/"
+        }
+    },
+	 
+    "extra": {
+        "statamic": {
+            "name": "GInsights",
+            "description": "Gaddon addon"
+        },
+        "laravel": {
+            "providers": [
+                "Vijaysoftware\\GInsights\\ServiceProvider"
+            ]
+        }
+    }
+	
+}

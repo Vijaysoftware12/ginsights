@@ -1,0 +1,24 @@
+/*
+
+#datepicker
+{
+    background-color: #b2ebf2;
+}
+#myChart
+{
+    width:100%;
+    max-width:700px;
+}
+/* Style for the custom button */
+
+body {
+    /*background-color: red;*/
+}
+.negative-value {
+    color: red; /* Set color for negative values */
+}
+
+.arrow-down {
+    color: red; /* Set color for the arrow */
+}
+
