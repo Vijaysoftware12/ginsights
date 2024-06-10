@@ -37,7 +37,7 @@ class DashboardWidget extends Widget
         $refresh_token = $datare["refresh_token"];
         $property_id = "";
         $filePath = $rootPath .
-            "/addons/vijaysoftware/ginsights/src/content/webproperty.yaml";
+            "/vendor/ginsights/src/content/webproperty.yaml";
     
         $yamlString = file_get_contents($filePath);        
         $data = Yaml::parse($yamlString);
@@ -47,7 +47,7 @@ class DashboardWidget extends Widget
         $current_time = time();
         $property_id = "";
         $filePath = $rootPath . 
-            "/addons/vijaysoftware/ginsights/src/content/webproperty.yaml";
+            "/vendor/ginsights/src/content/webproperty.yaml";
     
         $yamlString = file_get_contents($filePath);
         // Parse the YAML string to retrieve the data
