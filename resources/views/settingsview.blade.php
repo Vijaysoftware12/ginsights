@@ -10,8 +10,8 @@
 		<?php 
 		$baseUrl = asset('');		
 		?>
-        <script src="<?php echo $baseUrl;?>/vendor/gaddon/js/jquery-3.6.0.min.js"></script> 
-		<script src="<?php echo $baseUrl;?>/vendor/gaddon/js/jquery-3.7.0.slim.js"></script> 
+        <script src="<?php echo $baseUrl;?>/vendor/ginsights/js/jquery-3.6.0.min.js"></script> 
+		<script src="<?php echo $baseUrl;?>/vendor/ginsights/js/jquery-3.7.0.slim.js"></script> 
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="http://statamic.vijaysoftware.com/garesource/css/ga_style.css">

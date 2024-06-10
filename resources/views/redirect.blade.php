@@ -7,7 +7,7 @@
 		$baseUrl = asset('');		
 	?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>      
-		<script src="<?php echo $baseUrl;?>/vendor/gaddon/js/jquery-3.6.0.min.js"></script>
+		<script src="<?php echo $baseUrl;?>/vendor/ginsights/js/jquery-3.6.0.min.js"></script>
 		       
 		<link rel="stylesheet" href="http://statamic.vijaysoftware.com/garesource/css/ga_style.css">
 	</header>
