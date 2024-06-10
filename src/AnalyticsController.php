@@ -282,7 +282,7 @@ class AnalyticsController extends Controller
         $rootPath = base_path();
         $property_id = "";
         $filePath =
-                 $rootPath ."/vendor/ginsights/src/content/webproperty.yaml";
+                 $rootPath ."/vendor/vijaysoftware/ginsights/src/content/webproperty.yaml";
  
         $yamlString = file_get_contents($filePath);            
         $data = Yaml::parse($yamlString);
