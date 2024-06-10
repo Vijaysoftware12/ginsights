@@ -10,7 +10,7 @@
 		<?php 
 		$baseUrl = asset('');		
 		?>
-        <script src="<?php echo $baseUrl;?>/vendor/ginsights/js/jquery-3.6.0.min.js"></script> 
+        <script src="<?php echo $baseUrl;?>/vendor/vijaysoftware/ginsights/js/jquery-3.6.0.min.js"></script> 
 		<!--<script src="<?php echo $baseUrl;?>/vendor/ginsights/js/jquery-3.7.0.slim.js"></script> -->
 	    
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.slim.js" integrity="sha512-docBEeq28CCaXCXN7cINkyQs0pRszdQsVBFWUd+pLNlEk3LDlSDDtN7i1H+nTB8tshJPQHS0yu0GW9YGFd/CRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
