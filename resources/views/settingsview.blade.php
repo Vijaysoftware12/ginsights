@@ -33,7 +33,7 @@
 				<h2 class="pb-1 mt-3 font-bold">Website Profile </h2><br>				
 				<?php 
 				$rootPath = base_path();				
-				$filePath = $rootPath . '/vendor/ginsights/src/content/webproperty.yaml';				
+				$filePath = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/webproperty.yaml';				
 				$yamlString = file_get_contents($filePath);
 				  
 				// Parse the YAML string to retrieve the data
@@ -42,7 +42,7 @@
 						$property_id = $data['property_id'];
 					}
 				//For reading gtag
-				$filePath1 = $rootPath . '/vendor/ginsights/src/content/gtag.yaml';	
+				$filePath1 = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/gtag.yaml';	
 				$yamlString1 = file_get_contents($filePath1);
 				$data1 = Yaml::parse($yamlString1);				
 					if($data1){				   
