@@ -118,6 +118,7 @@
               // Calculate the total
             //$totalsession = array_sum($currentsessions); 
             $totalsession = $data['totalsessions'];
+            dd( $data['sessionPercent']);
             $sessionPercent =(float)  $data['sessionPercent'];
             //echo $data['totalsessions'];
             //echo $sessionPercent;
