@@ -85,16 +85,16 @@ class ServiceProvider extends AddonServiceProvider
     protected function bootVendorAssets()
     {       
 		$this->publishes([
-			__DIR__.'/../resources/css/images' => public_path('vendor/gaddon/css/images'),
-			], 'gaddon');
+			__DIR__.'/../resources/css/images' => public_path('vendor/ginsights/css/images'),
+			], 'ginsights');
 		
 		$this->publishes([
-			__DIR__.'/../resources/images' => public_path('vendor/gaddon/images'),
-			], 'gaddon');
+			__DIR__.'/../resources/images' => public_path('vendor/ginsights/images'),
+			], 'ginsights');
 
 		$this->publishes([
-		  __DIR__.'/../resources/webfonts' => public_path('vendor/gaddon/webfonts'),
-			], 'gaddon');
+		  __DIR__.'/../resources/webfonts' => public_path('vendor/ginsights/webfonts'),
+			], 'ginsights');
 
 		return $this;
     }  
