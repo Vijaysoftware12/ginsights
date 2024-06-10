@@ -16,29 +16,29 @@
 		$user_role = Auth::user()->super;
 		
 		?>
-        <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/ginsights/js/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/js/jquery-3.6.0.min.js"></script>
         
-        <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/ginsights/js/all.min.js" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/ginsights/js/jquery-ui.js"></script>
-        <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/ginsights/js/Chart.js"></script> 
+        <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/js/all.min.js" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/js/Chart.js"></script> 
         
         
-        <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/ginsights/js/jquery.dataTables.min.js"></script>
-        <link rel="stylesheet" href="<?php echo $baseUrl;?>vendor/ginsights/css/jquery.dataTables.min.css">
+        <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/css/jquery.dataTables.min.css">
       <!--  <link rel="stylesheet" href="../../../../resources/css/ga_style.css">-->
         <link rel="stylesheet" href="https://statamic.vijaysoftware.com/garesource/css/ga_style.css">
-        <link rel="stylesheet" href="<?php echo $baseUrl;?>vendor/ginsights/css/font-awesome.min.css">
+        <link rel="stylesheet" href="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	        
     <!-- Include Date Range Picker library -->
-    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl;?>vendor/ginsights/css/daterangepicker.css" />
-    <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/ginsights/js/moment.min.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/ginsights/js/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/css/daterangepicker.css" />
+    <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/js/daterangepicker.min.js"></script>
   
     <!--new-->
 
-    <link rel="stylesheet" href="<?php echo $baseUrl;?>vendor/ginsights/css/jquery-ui.css">
-    <script src="<?php echo $baseUrl;?>vendor/ginsights/js/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/css/jquery-ui.css">
+    <script src="<?php echo $baseUrl;?>vendor/vijaysoftware/ginsights/js/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <?php  
           use Illuminate\Support\Str;
