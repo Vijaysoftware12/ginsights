@@ -9,13 +9,13 @@
 ?>
 
 
-<script src="<?php echo $baseUrl;?>/vendor/vijaysoftware/ginsights/js/jquery-3.6.0.min.js"></script>
-<script src="<?php echo $baseUrl;?>/vendor/vijaysoftware/ginsights/js/jquery-ui.js"></script> 
-<script src="<?php echo $baseUrl;?>/vendor/vijaysoftware/ginsights/js/Chart.js"></script> 
+<script src="<?php echo $baseUrl;?>/vendor/ginsights/js/jquery-3.6.0.min.js"></script>
+<script src="<?php echo $baseUrl;?>/vendor/ginsights/js/jquery-ui.js"></script> 
+<script src="<?php echo $baseUrl;?>/vendor/ginsights/js/Chart.js"></script> 
 
 
-<link rel="stylesheet" href="<?php echo $baseUrl;?>/vendor/vijaysoftware/ginsights/css/jquery-ui.css">
-<link rel="stylesheet" href="<?php echo $baseUrl;?>/vendor/vijaysoftware/ginsights/css/all.min.css">
+<link rel="stylesheet" href="<?php echo $baseUrl;?>/vendor/ginsights/css/jquery-ui.css">
+<link rel="stylesheet" href="<?php echo $baseUrl;?>/vendor/ginsights/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="https://statamic.vijaysoftware.com/garesource/css/ga_style.css">
 
