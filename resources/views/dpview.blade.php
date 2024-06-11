@@ -947,6 +947,17 @@
                    // loadingElement.innerText = 'Generating Pdf.Please wait....';
                     document.body.appendChild(loadingElement);
 
+                    // Check which tab is active and remove the other tab link
+                        var activeTab = $('#tabs .ui-tabs-active a').attr('href');
+                        var inactiveTabLink;
+                        if (activeTab === '#tabs-1') {
+                            inactiveTabLink = $('a[href="#tabs-2"]').parent();
+                        } else {
+                            inactiveTabLink = $('a[href="#tabs-1"]').parent();
+                        }
+                        inactiveTabLink.detach();
+
+
                      // Format the start date
                     var startDate = '{{ $startDate }}';
                     var startDateObj = new Date(startDate);
@@ -1045,15 +1056,46 @@
                         dateRangeElement.style.visibility = 'visible';
                         hrElement.style.visibility = 'visible';
 
+                        function disableClicks(element1) {
+                        const clickableElements = element1.querySelectorAll('a');
+                        clickableElements.forEach(el => {
+                            el.dataset.clickEvent = el.onclick;
+                            el.onclick = null;
+                            el.dataset.href = el.getAttribute('href');
+                            el.setAttribute('href', 'javascript:void(0);');
+                        });
+                        }
+
+                        function enableClicks(element1) {
+                        const clickableElements = element1.querySelectorAll('a');
+                        clickableElements.forEach(el => {
+                            if (el.dataset.clickEvent) {
+                            el.onclick = el.dataset.clickEvent;
+                            delete el.dataset.clickEvent;
+                            }
+                            if (el.dataset.href) {
+                            el.setAttribute('href', el.dataset.href);
+                            delete el.dataset.href;
+                            }
+                        });
+                        }
+                        const element1 = document.getElementById('tabs');
+                        disableClicks(element1);
+
 	
 						// New Promise-based usage:
 						//html2pdf().set(opt).from(element).save();	
 
-                       html2pdf().set(opt).from(element).save().then(() => {
+                        html2pdf().set(opt).from(element).save().then(() => {
+                        enableClicks(element);
                         headerElement.style.visibility = 'hidden';
                         baseUrlElement.style.visibility = 'hidden';
                         dateRangeElement.style.visibility = 'hidden';
                         hrElement.style.visibility = 'hidden';
+
+                           // Re-add the removed tab link
+                           inactiveTabLink.appendTo('#tabs ul');
+
 
                         // Remove the header element after generating the PDF
                             element.removeChild(headerElement);
