@@ -5,6 +5,12 @@
             "Vijaysoftware\\Ginsights\\": "src/"
         }
     },
+	 "scripts": {
+		"post-install-cmd": [
+			"php -r \"chmod( __DIR__ . '/content', 0775);\""
+			
+		]
+	},
 	 
     "extra": {
         "statamic": {
