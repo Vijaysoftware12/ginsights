@@ -109,13 +109,25 @@ class ServiceProvider extends AddonServiceProvider
         $owner = 'www-data'; // Example owner
 
         if (file_exists($directory)) {
-            if (chown($directory, $owner)) {
-                echo "Ownership set to {$owner} for directory: {$directory}\n";
-            } else {
-                echo "Failed to set ownership for directory: {$directory}\n";
-            }
+            $this->changeOwnership($directory, $owner);
+            echo "Ownership set to {$owner} for directory and its contents: {$directory}\n";
         } else {
             echo "Directory does not exist: {$directory}\n";
         }
+    }
+	protected function changeOwnership($path, $owner)
+    {
+        if (is_dir($path)) {
+            $items = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS),
+                \RecursiveIteratorIterator::SELF_FIRST
+            );
+
+            foreach ($items as $item) {
+                chown($item, $owner);
+            }
+        }
+        // Finally, change ownership of the directory itself
+        chown($path, $owner);
     }
 }
