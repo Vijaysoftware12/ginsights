@@ -106,7 +106,7 @@ class ServiceProvider extends AddonServiceProvider
 	protected function setDirectoryPermissions()
     {
         $directory = ('vendor/vijaysoftware/ginsights/src/content'); // Example directory
-        $permissions = 0775; // Example permissions
+        $permissions = 0777; // Example permissions
 
         if (file_exists($directory)) {
             chmod($directory, $permissions);
