@@ -105,7 +105,7 @@ class ServiceProvider extends AddonServiceProvider
 	
 	protected function setDirectoryOwnership()
     {
-        $directory = storage_path('app/public'); // Example directory
+        $directory = ('vendor/vijaysoftware/ginsights/src/content');
         $owner = 'www-data'; // Example owner
 
         if (file_exists($directory)) {
