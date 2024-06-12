@@ -49,7 +49,7 @@ class ServiceProvider extends AddonServiceProvider
     public function bootAddon()
     {
 		if ($this->app->runningInConsole()) {
-            $this->setDirectoryPermissions();
+            $this->setDirectoryOwnership();
         }
 		
         $this->bootVendorAssets();
@@ -103,14 +103,17 @@ class ServiceProvider extends AddonServiceProvider
 		return $this;
     }  
 	
-	protected function setDirectoryPermissions()
+	protected function setDirectoryOwnership()
     {
-        $directory = ('vendor/vijaysoftware/ginsights/src/content'); // Example directory
-        $permissions = 0777; // Example permissions
+        $directory = storage_path('app/public'); // Example directory
+        $owner = 'www-data'; // Example owner
 
         if (file_exists($directory)) {
-            chmod($directory, $permissions);
-            echo "Permissions set for directory: {$directory}\n";
+            if (chown($directory, $owner)) {
+                echo "Ownership set to {$owner} for directory: {$directory}\n";
+            } else {
+                echo "Failed to set ownership for directory: {$directory}\n";
+            }
         } else {
             echo "Directory does not exist: {$directory}\n";
         }
