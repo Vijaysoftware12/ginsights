@@ -48,6 +48,10 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon()
     {
+		if ($this->app->runningInConsole()) {
+            $this->setDirectoryPermissions();
+        }
+		
         $this->bootVendorAssets();
 
         Utility::extend(function () {
@@ -98,4 +102,17 @@ class ServiceProvider extends AddonServiceProvider
 
 		return $this;
     }  
+	
+	protected function setDirectoryPermissions()
+    {
+        $directory = ('vendor/vijaysoftware/ginsights/src/content'); // Example directory
+        $permissions = 0775; // Example permissions
+
+        if (file_exists($directory)) {
+            chmod($directory, $permissions);
+            echo "Permissions set for directory: {$directory}\n";
+        } else {
+            echo "Directory does not exist: {$directory}\n";
+        }
+    }
 }
