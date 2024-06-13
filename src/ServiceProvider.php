@@ -105,7 +105,7 @@ class ServiceProvider extends AddonServiceProvider
 	
 	protected function setDirectoryOwnership()
     {
-        $directory = "../..".__DIR__;
+        $directory = base_path();
 
         // Get existing owner
         $ownerUid = fileowner($directory);
