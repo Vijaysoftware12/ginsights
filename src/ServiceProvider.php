@@ -106,21 +106,22 @@ class ServiceProvider extends AddonServiceProvider
 	protected function setDirectoryOwnership()
     {
         $directory = base_path();
-
+        
         // Get existing owner
         $ownerUid = fileowner($directory);
         $ownerInfo = posix_getpwuid($ownerUid);
         $owner = $ownerInfo['name'];
 
+        $contentdir="vendor/vijaysoftware/ginsights/src/content";
         echo "Existing owner of the directory is: {$owner}\n";
 
        // $owner = 'www-data'; // Example owner
 
-        if (file_exists($directory)) {
-            $this->changeOwnership($directory, $owner);
-            echo "Ownership set to {$owner} for directory and its contents: {$directory}\n";
+        if (file_exists($contentdir)) {
+            $this->changeOwnership($contentdir, $owner);
+            echo "Ownership set to {$owner} for directory and its contents: {$contentdir}\n";
         } else {
-            echo "Directory does not exist: {$directory}\n";
+            echo "Directory does not exist: {$contentdir}\n";
         }
     }
 	protected function changeOwnership($path, $owner)
