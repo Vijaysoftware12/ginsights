@@ -841,7 +841,7 @@ var sessions =resultData['sessionsCurrent']['encodedSessions'];
 		<div  id="unauthorizedView" style="display:none">
         <div class="p-4 font-bold content-center">
           <h2>Please Authorize Your Google Account For Analytics Data</h2>
-          <a href='<?php echo env('APP_URL')?>/cp/utilities/analytics?reauth=true'>Click here</a>
+          <a href='<?php echo env('APP_URL')?>/cp/utilities/analytics?reauth=true' class="btn-primary ml-1 mr-1 mt-2 " title="Connect to Google" id="ConnecttoGoogle">Connect to Google</a>
         </div>
       </div>
 

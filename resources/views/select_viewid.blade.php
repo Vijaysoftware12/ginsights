@@ -28,7 +28,7 @@
 					<h3 class="mb-2">Select a website to view Google Analytics data</h3>
 					<input id ="selid" name="selectedid"  value="" type="hidden"/>
 									
-					<select id="view_id" name="view_id" >  
+					<select id="view_id" name="view_id" style="width: 100%;">  
 						<option value="select">--select--</option>
 					<?php					
 					foreach($newIds as $key => $value)
@@ -45,8 +45,8 @@
 					?>					 
 					</select>				 
          
-					  <label for="textAreaField" class="py-4 "><h3>Google tag id for your profile </h3></label> 
-					  <textarea name="gtag_id" id="gtag_id" rows=""  cols="" class="p-1 bg-gray-300 border-gray-200" style="" text="" >
+					  <label for="textAreaField" class="py-4 "><h3>Google Profile tag id</h3></label> 
+					  <textarea disabled name="gtag_id" id="gtag_id" rows=""  cols="" class="p-1 bg-gray-300 border-gray-200" >
 					  </textarea>				
 					  <?php
 					 if(isset($_POST['gtag_id'])) {
@@ -63,7 +63,7 @@
 		$(document).ready(function(){				
 			var selected_Value;
 			var measurementid;
-			
+			document.getElementById("gtag_id").readOnly = true;
 				$('#view_id').on('change',function()
 				{					
 					$('#selid').val($(this).val());
@@ -73,6 +73,7 @@
 					measurementid = $(this).find(':selected').attr('mid');	
 					localStorage.setItem('mid_Value', measurementid);
 					
+				
 					var	measurementidd= localStorage.getItem('mid_Value');
 					if(selected_Value!="select"){					
 						document.getElementById("gtag_id").value = measurementidd;
