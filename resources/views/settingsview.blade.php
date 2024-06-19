@@ -1,14 +1,11 @@
-@section('title', Statamic::crumb(__('Settings'), __('GInsights Analytics'), __('Utilities')))
+@section('title', Statamic::crumb(__('Analytics'), __('Utilities')))
 @extends('statamic::layout')
 @section('content')
 <header class="mb-3">       
-		   @include('statamic::partials.breadcrumb', [
-        'breadcrumbs' => [
-            ['url' => cp_route('utilities.index'), 'title' => __('Utilities')],
-            ['url' => cp_route('utilities.analytics.show'), 'title' => __('GInsights Analytics')],
-            ['url' => null, 'title' => __('Settings')],
-        ]
-    ])
+		           @include('statamic::partials.breadcrumb', [
+            'url' => cp_route('utilities.index'),
+            'title' => __('Utilities')
+        ])
 		<?php 
 		$baseUrl = asset('');		
 		?>

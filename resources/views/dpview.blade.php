@@ -1,15 +1,12 @@
-@section('title', Statamic::crumb(__('GInsights Analytics'), __('Utilities')))
+@section('title', Statamic::crumb(__('Analytics'), __('Utilities')))
 @extends('statamic::layout')
 @section('content')
 
 	<header class="mb-3">       
-		   @include('statamic::partials.breadcrumb', [
-        'breadcrumbs' => [
-            ['url' => cp_route('utilities.index'), 'title' => __('Utilities')],
-            ['url' => null, 'title' => __('GInsights Analytics')]
-           
-        ]
-    ])
+		  @include('statamic::partials.breadcrumb', [
+            'url' => cp_route('utilities.index'),
+            'title' => __('Utilities')
+        ])
        <!-- <div class="gcard_heading">
             <img src="https://statamic.vijaysoftware.com/garesource/img/vijay-icon-100x100.png" width="30px" alt="analytic icon">
             <span>GInsights - {{ __('Google Analytics Data') }}</span>
