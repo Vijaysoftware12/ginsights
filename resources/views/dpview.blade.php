@@ -1,12 +1,15 @@
-@section('title', Statamic::crumb(__('Analytics'), __('Utilities')))
+@section('title', Statamic::crumb(__('GInsights Analytics'), __('Utilities')))
 @extends('statamic::layout')
 @section('content')
 
-	<header class="mb-3">
-        @include('statamic::partials.breadcrumb', [
-            'url' => cp_route('utilities.index'),
-            'title' => __('Utilities')
-        ])
+	<header class="mb-3">       
+		   @include('statamic::partials.breadcrumb', [
+        'breadcrumbs' => [
+            ['url' => cp_route('utilities.index'), 'title' => __('Utilities')],
+            ['url' => null, 'title' => __('GInsights Analytics')]
+           
+        ]
+    ])
        <!-- <div class="gcard_heading">
             <img src="https://statamic.vijaysoftware.com/garesource/img/vijay-icon-100x100.png" width="30px" alt="analytic icon">
             <span>GInsights - {{ __('Google Analytics Data') }}</span>
@@ -72,8 +75,8 @@
                 <label  id="dateLabel" class="px-2  "for="datepicker"><h2>Select date:</h2></label>  
                 <form  id="dateForm" action="<?php env('APP_URL')?>" method="post" >
                     @csrf                
-                    <input type="hidden" name="period" value="custom"/>
-                                     
+                    <input type="hidden" id="period" name="period" value="custom"/>
+                    
                     <input type="hidden" name="selectedid" value="<?php echo (($_REQUEST['selectedid']="")?$selectedid: $_REQUEST['selectedid'] ) ?>">
                     <input type="hidden" class="datepicker" id="datepicker1" name="dp1" value="{{$startDate}}">
                     <input type="hidden" class="datepicker" id="datepicker2" name="dp2" value="{{$endDate}}">
@@ -807,9 +810,36 @@
             <script>
             $(document).ready(function() {
 
-                $('#reportrange ranges ul li').on('click', function() {
+                $('#reportrange ul li').on('click', function() {
                 // Your click event handler code here
                 alert('Clicked on dynamically generated element with id: ' + $(this).attr('id'));
+            });
+
+            $('#reportrange').on('show.daterangepicker', function(ev, picker) {
+                setTimeout(function() {
+                    picker.container.find('.ranges li').each(function() {
+                        $(this).on('click', function() {
+                            console.log('List item clicked: ' + $(this).text());
+                            if($(this).text()=="Last 30 days"){                         
+                                $('#period').val('30');
+                            }
+                            if($(this).text()=="Last 7 days"){                         
+                                $('#period').val('7');
+                            }
+                            if($(this).text()=="Last 14 days"){                         
+                                $('#period').val('14');
+                            }
+                            if($(this).text()=="yesterday"){                         
+                                $('#period').val('yesterday');
+                            }
+                            if($(this).text()=="Custom Range"){                         
+                                $('#period').val('custom');
+                            }
+                           
+
+                        });
+                    });
+                }, 0);
             });
             
                 $( "#tabs" ).tabs();
@@ -845,6 +875,7 @@
 
                 $('#reportrange').daterangepicker({
                 
+                    
                     maxDate: moment(),
                     ranges: {
                         'Last 7 days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],

@@ -1,12 +1,14 @@
-@section('title', Statamic::crumb(__('Analytics'), __('Utilities')))
+@section('title', Statamic::crumb(__('Settings'), __('GInsights Analytics'), __('Utilities')))
 @extends('statamic::layout')
 @section('content')
-
-	<header class="mb-3">
-        @include('statamic::partials.breadcrumb', [
-            'url' => cp_route('utilities.index'),
-            'title' => __('Utilities')
-        ])
+<header class="mb-3">       
+		   @include('statamic::partials.breadcrumb', [
+        'breadcrumbs' => [
+            ['url' => cp_route('utilities.index'), 'title' => __('Utilities')],
+            ['url' => cp_route('utilities.analytics.show'), 'title' => __('GInsights Analytics')],
+            ['url' => null, 'title' => __('Settings')],
+        ]
+    ])
 		<?php 
 		$baseUrl = asset('');		
 		?>
@@ -20,7 +22,8 @@
         <?php  
           use Illuminate\Support\Str;		 
 		  use Symfony\Component\Yaml\Yaml;
-        ?>        
+        ?>     
+	
 	</header>
     
 	<body>   
@@ -51,14 +54,24 @@
 						$gtag_id = $data1['gtag_id'];
 					}				
 				?>				
-				<h3 class="">Active profile: <?php echo  $gtag_id;?></h3>
-				
+				<h3 class="mb-5">Active profile: <?php echo  $gtag_id;?></h3>
+
+				<div class="flex flex-row justify-center pt-3">
+				<a href='<?php echo env('APP_URL')?>/cp/utilities/analytics?reauth=true'><button class="bg-blue-700 text-white font-bold py-2 px-6 rounded mr-5">Reconnect Ginsights</button></a>
+					<button class="bg-blue-700 text-white font-bold py-2 px-6 rounded">Disconnect Ginsights</button>
+				</div>
 			</div>
-			<div class="card flex flex-col ">	
+			<!--<div class="card flex flex-col ">	
 				<h2 class="pb-4">Setup Wizard </h2>
 				<h3 class="mb-10">Use our configuration wizard to set up Google Analytics </h3>				
 				<a href='<?php echo env('APP_URL')?>/cp/utilities/analytics?reauth=true' class="block w-full h-full"><button class="bg-blue-700 text-white font-bold py-2 px-6 rounded w-1/2">Launch Setup Wizard</button></a>
-			</div>
+										
+			</div>-->
 		
+		
+	
+
+</div>
+			
 	</body>
 @stop

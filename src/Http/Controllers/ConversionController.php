@@ -11,9 +11,10 @@ class ConversionController extends Controller
     public function index(Request $request)
     {
         $data=$request['rData'];
-      
+        $interval=$request['interval'];
+        $interval="case".$interval;
 
-        Cache::put('dpviewdata', $data, $seconds = 20000);
+        Cache::put('dpviewdata'.$interval, $data, $seconds = 20000);
         return response()->json(['message' => $data]);
 
     }

@@ -38,12 +38,18 @@
 $(function(){
 			//checking for super admin. 
 		//alert(user_role);
+    var propertyid="<?php echo $property_id;?>";
+    $('#pid').val(propertyid);
+
+
 	if(user_role=="0")
 	{
 	 $('.ggear ').css('display','none');	
 	}
 
     $('#interval').change(function(){
+      $('#selctedInterval').val($(this).val());
+
         $('#loader').css({
         'display': 'flex',
         'justify-content': 'center',
@@ -108,6 +114,40 @@ $(function(){
                     },
 
                     success: function(resultData) {
+
+                    //for cache storage
+                    
+                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                     // console.log (csrfToken);
+                      $.ajax({
+                        url:"{{ route('cc') }}",
+                        dataType: 'json',
+                        type:"POST",
+                  
+                        headers: {
+                                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                              },
+                        
+                          data:{
+                              "rData" :JSON.stringify(resultData),
+                              "interval" : interval,
+                          },
+
+                          success: function(data) {
+                            console.log(data);
+                          },
+                          error: function(data){
+                              console.log(data);
+                          },
+
+                      }); 
+
+
+
+
+
+
+
                              
                       processData(resultData,interval);
 					   $('#ginsights').css('display','block');
@@ -173,13 +213,14 @@ $(function(){
                         
                           data:{
                               "rData" :JSON.stringify(resultData),
+                              "interval" : interval,
                           },
 
                           success: function(data) {
                            // console.log(data);
                           },
                           error: function(data){
-                             // console.log(data);
+                            // alert(error);
                           },
 
                       });    
@@ -696,19 +737,27 @@ var sessions =resultData['sessionsCurrent']['encodedSessions'];
             <img src="https://statamic.vijaysoftware.com/garesource/img/vijay-icon-100x100.png" width="30px" alt="analytic icon">
             <span>GInsights Analytics</span>
         </div>
+        
+          
         <div class="gcard_date">
+        
           <select name="gcard-date-interval" id="interval">
               <option value="7">Last 7 days</option>
               <option value="1">Yesterday</option>
             <!--  <option value="lastweek">Last Week</option> -->
               <option value="14">Last 14 days</option>
-            <option value="lastmonth">Last Month</option>
+           <!-- <option value="lastmonth">Last Month</option>-->
               <option value="30">Last 30 Days</option>
   
           </select>
-          <a href='utilities/analytics?selectedid=<?php echo $property_id ?>&initial=true' class="btn-primary ml-2 mr-1" title="click to open Full Report" id="fullreport">See Full Report </a>
+          <form action='utilities/analytics'>
+          <input type="hidden" value="123" id="pid" name="selectedid"/>
+          <input type="hidden" id="selctedInterval" value="7" name="period"/>
+          <input type="submit" value="See Full Report" class="btn-primary ml-2 mr-1" title="click to open Full Report" id="fullreport" />
+          </form>
+          
         </div>
-       
+             
 		
         <div class="ggear pl-2 pr-3">
 		
