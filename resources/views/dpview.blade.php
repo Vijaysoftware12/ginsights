@@ -827,10 +827,13 @@
                                 $('#period').val('14');
                             }
                             if($(this).text()=="yesterday"){                         
-                                $('#period').val('yesterday');
+                                $('#period').val('1');
                             }
                             if($(this).text()=="Custom Range"){                         
                                 $('#period').val('custom');
+                            }
+                            if($(this).text()=="1"){                         
+                                $('#period').val('1');
                             }
                            
 

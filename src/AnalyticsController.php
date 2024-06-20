@@ -155,13 +155,14 @@ class AnalyticsController extends Controller
         {            
 			return view('ginsights::settingsview');      
         }   
-        $property_id=$request['selectedid'];      
+        $property_id=$request['selectedid'];  
+       
         switch ($request['period']) {           
            
             case "custom":                 
                 $startDate = date('Y-m-d',strtotime($request["dp1"]));
                 $endDate = date('Y-m-d',strtotime($request["dp2"]));
-     
+               
                   // Store the values in the session
                 if(isset($startDate) && isset($endDate)){
                     Session::put('startDate', $startDate);
@@ -176,7 +177,7 @@ class AnalyticsController extends Controller
                     // Access the days from the DateInterval object
                     $interval= $difference->days;
                    
-                    $data= $this->getGAData($interval,$startDate,$endDate);
+                    $data= $this->getGAData($interval,$startDate,$endDate,true);
                     
                     return view('ginsights::dpview')
                     ->with('data',$data)
@@ -190,8 +191,10 @@ class AnalyticsController extends Controller
                     
                     $startDate=date('Y-m-d', strtotime('-14 days'));
                     $endDate=date('Y-m-d', strtotime('-1 days'));   
+
+
                     return view('ginsights::dpview')
-                    ->with('data',$this->getData($startDate,$endDate,'case14'))
+                    ->with('data',$this->getData($startDate,$endDate,'14','false'))
                     ->with('startDate', $startDate)
                     ->with('endDate', $endDate)
                     ->with('interval',$interval)
@@ -201,7 +204,7 @@ class AnalyticsController extends Controller
                 $startDate=date('Y-m-d', strtotime('-30 days'));
                 $endDate=date('Y-m-d', strtotime('-1 days')); 
                 return view('ginsights::dpview')
-                ->with('data',$this->getData($startDate,$endDate,'case30'))
+                ->with('data',$this->getData($startDate,$endDate,'30','false'))
                 ->with('startDate', $startDate)
                 ->with('endDate', $endDate)
                 ->with('interval',$interval)
@@ -212,18 +215,18 @@ class AnalyticsController extends Controller
                 $startDate=date('Y-m-d', strtotime('-7 days'));
                 $endDate=date('Y-m-d', strtotime('-1 days'));  
                 return view('ginsights::dpview')
-                ->with('data',$this->getData($startDate,$endDate,'case7'))
+                ->with('data',$this->getData($startDate,$endDate,'7','false'))
                 ->with('startDate', $startDate)
                 ->with('endDate', $endDate)
                 ->with('interval',$interval)
                 ->with('selectedid',$property_id); 
                                
             break;
-            case "yesterday":
+            case "1":
                 $startDate=date('Y-m-d', strtotime('-1 days'));
                 $endDate=date('Y-m-d', strtotime('-1 days'));  
                 return view('ginsights::dpview')
-                ->with('data',$this->getData($startDate,$endDate,'caseyesterday'))
+                ->with('data',$this->getData($startDate,$endDate,'1','false'))
                 ->with('startDate', $startDate)
                 ->with('endDate', $endDate)
                 ->with('interval',$interval)
@@ -249,7 +252,7 @@ class AnalyticsController extends Controller
                     $dprvsStartDate= $prvsStart->format('Y-m-d');
                     $dprvsEndDate= $prvsEnd->format('Y-m-d');
                 return view('ginsights::dpview')
-                ->with('data',$this->getData($startDate,$endDate,'caselastmonth'))
+                ->with('data',$this->getData($startDate,$endDate,'caselastmonth','false'))
                 ->with('startDate', $startDate)
                 ->with('endDate', $endDate)
                 ->with('interval',$interval)
@@ -371,9 +374,9 @@ class AnalyticsController extends Controller
      * @return \Illuminate\Http\Response
      */
   
-    public function getGAData($interval,$startDate,$endDate)
+    public function getGAData($interval,$startDate,$endDate,$custom)
     {
-      
+       
         $refresh_token=$this->getStoredRefreshToken();
         $rootPath = base_path();
         $property_id = "";
@@ -395,8 +398,9 @@ class AnalyticsController extends Controller
         
         return $response->body();
         */
-
-
+ 
+        if($custom=='true'){ 
+                  ;
         $curl_post_data = [
             'refresh_token' =>  $refresh_token,
            'property_id' => $property_id,
@@ -404,6 +408,17 @@ class AnalyticsController extends Controller
            'startDate'=> $startDate,
          'endDate'=>$endDate  
         ];
+    }
+    else
+    {
+        
+        $curl_post_data = [
+            'refresh_token' =>  $refresh_token,
+           'property_id' => $property_id,
+           'interval'=>$interval             
+           
+        ];
+    }
 
     $url ="https://statamic.vijaysoftware.com/public/api/dpviewnew";
     $data = json_encode($curl_post_data);
@@ -417,13 +432,14 @@ class AnalyticsController extends Controller
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
     $curl_response = curl_exec($ch);
     $data=$curl_response; 
-     
+       
      return $data;
     }
-    public function getData ($startDate,$endDate,$interval)
+    public function getData ($startDate,$endDate,$interval,$custom)
     //function to check startDate in the cache and
     //the incoming startDate
     {
+       
       
          if (Cache::has('dpviewdata'.$interval.session()->getId())) {
              
@@ -432,14 +448,15 @@ class AnalyticsController extends Controller
 
             if($startDate!=$phpArray['startDate'])
             {
-                 $data= $this->getGAData($interval,$startDate,$endDate); 
+                 $data= $this->getGAData($interval,$startDate,$endDate,$custom); 
                  Cache::put('dpviewdata'.$interval.session()->getId(), $data, $seconds = 20000);
             }
             return $data;
          }
          else
          {
-            $data= $this->getGAData($interval,$startDate,$endDate); 
+            
+            $data= $this->getGAData($interval,$startDate,$endDate,$custom); 
             Cache::put('dpviewdata'.$interval.session()->getId(), $data, $seconds = 20000);
             return $data;
          }

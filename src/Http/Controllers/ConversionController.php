@@ -14,7 +14,7 @@ class ConversionController extends Controller
         $interval=$request['interval'];
         $interval="case".$interval;
 
-        Cache::put('dpviewdata'.$interval, $data, $seconds = 20000);
+        Cache::put('dpviewdata'.$interval.session()->getId(), $data, $seconds = 20000);
         return response()->json(['message' => $data]);
 
     }
