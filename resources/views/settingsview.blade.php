@@ -1,8 +1,9 @@
 @section('title', Statamic::crumb(__('Analytics'), __('Utilities')))
 @extends('statamic::layout')
 @section('content')
-<header class="mb-3">       
-		           @include('statamic::partials.breadcrumb', [
+
+	<header class="mb-3">
+        @include('statamic::partials.breadcrumb', [
             'url' => cp_route('utilities.index'),
             'title' => __('Utilities')
         ])
@@ -15,7 +16,7 @@
 	<!--	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.slim.js" integrity="sha512-docBEeq28CCaXCXN7cINkyQs0pRszdQsVBFWUd+pLNlEk3LDlSDDtN7i1H+nTB8tshJPQHS0yu0GW9YGFd/CRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="http://statamic.vijaysoftware.com/garesource/css/ga_style.css">
+        <link rel="stylesheet" href="/garesource/css/ga_style.css">
         <?php  
           use Illuminate\Support\Str;		 
 		  use Symfony\Component\Yaml\Yaml;
@@ -24,6 +25,16 @@
 	</header>
     
 	<body>   
+		<div class="ginsight-set-con pl-3 py-2" >
+			<div class="gcard_heading gcard-set-title">
+				<img src="https://statamic.vijaysoftware.com/garesource/img/vijay-icon-100x100.png" width="30px" alt="analytic icon">
+				<span>GInsights Analytics</span>
+			</div>
+			<div class="ginsigts-con-title gcard_heading" id=""> SETTINGS</div>
+		</div> 
+
+	
+
 		<div class="row  mt-2 mb-2  ">    
 			<div class="card flex ">
 				<form  action="cp/utilities/analytics" method="post" id="idForm">

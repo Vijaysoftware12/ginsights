@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
 use DateTime;
-use DateInterval;
+use DateInterval; 
 class AnalyticsController extends Controller
 {
       
