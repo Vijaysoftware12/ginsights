@@ -219,11 +219,11 @@ class AnalyticsController extends Controller
                 ->with('selectedid',$property_id); 
                                
             break;
-            case "1":
+            case "yesterday":
                 $startDate=date('Y-m-d', strtotime('-1 days'));
                 $endDate=date('Y-m-d', strtotime('-1 days'));  
                 return view('ginsights::dpview')
-                ->with('data',$this->getData($startDate,$endDate,'case1'))
+                ->with('data',$this->getData($startDate,$endDate,'caseyesterday'))
                 ->with('startDate', $startDate)
                 ->with('endDate', $endDate)
                 ->with('interval',$interval)
@@ -286,7 +286,7 @@ class AnalyticsController extends Controller
              
     	     $data = Cache::get('dpviewdata');
              $phpArray = json_decode($data, true);
-             echo $startDate."-".$phpArray['startDate']."-".$endDate."-".$phpArray['endDate'];
+           //  echo $startDate."-".$phpArray['startDate']."-".$endDate."-".$phpArray['endDate'];
              if(($startDate!=$phpArray['startDate'])) {
                 
                 Cache::forget('dpviewdata');
@@ -424,22 +424,23 @@ class AnalyticsController extends Controller
     //function to check startDate in the cache and
     //the incoming startDate
     {
-         if (Cache::has('dpviewdata'.$interval)) {
+      
+         if (Cache::has('dpviewdata'.$interval.session()->getId())) {
              
-            $data = Cache::get('dpviewdata'.$interval);
+            $data = Cache::get('dpviewdata'.$interval.session()->getId());
             $phpArray = json_decode($data, true);
 
             if($startDate!=$phpArray['startDate'])
             {
                  $data= $this->getGAData($interval,$startDate,$endDate); 
-                 Cache::put('dpviewdata'.$interval, $data, $seconds = 20000);
+                 Cache::put('dpviewdata'.$interval.session()->getId(), $data, $seconds = 20000);
             }
             return $data;
          }
          else
          {
             $data= $this->getGAData($interval,$startDate,$endDate); 
-            Cache::put('dpviewdata'.$interval, $data, $seconds = 20000);
+            Cache::put('dpviewdata'.$interval.session()->getId(), $data, $seconds = 20000);
             return $data;
          }
          
