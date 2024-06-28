@@ -12,9 +12,11 @@ class ConversionController extends Controller
     {
         $data=$request['rData'];
         $interval=$request['interval'];
-        $interval="case".$interval;
+        $interval=$interval;
+        $propertyid = $request['property_id'];
 
-        Cache::put('dpviewdata'.$interval.session()->getId(), $data, $seconds = 20000);
+        Cache::put('dpviewdata'.$interval.$propertyid, $data, $seconds = 20000);
+       
         return response()->json(['message' => $data]);
 
     }

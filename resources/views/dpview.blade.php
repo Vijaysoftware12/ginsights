@@ -49,10 +49,12 @@
     <!-- Data retreived from controller -->
     <?php 
      $data = json_decode($data, true); 
-    //dd($data); 
+    
+    
    // dd($data['topcountries'][0]);  
      if($data != null)
      {
+    
        // sleep(500); 
     ?>
     
@@ -113,25 +115,46 @@
            // dd($prvsdates);
             $currentdates = json_decode($data['sessionsCurrent']['encodedDates']);           
 
-            $prvssessions = json_decode($data['sessionsPrvs']['encodedSessions']);
+           
+           
             $currentsessions = json_decode($data['sessionsCurrent']['encodedSessions']);
+           $prvssessions = json_decode($data['sessionsPrvs']['encodedSessions']);
+           
+           //updated on 27/6/2024
+          
+          /* $totalusersCurrentOriginal =$data['totalusersCurrent'];
+           // Convert to desired format
+                $totalusersCurrent = [
+                    "dates" => array_values($totalusersCurrentOriginal["dates"]),
+                    "totalusers" => array_values($totalusersCurrentOriginal["totalusers"])
+                ];
+            // $currentsessions =$data['totalusersCurrent']['totalusers'];
+
+
+             $totalusersPrvsOriginal =$data['totalusersPrvs'];
+           // Convert to desired format
+                $totalusersPrvs = [
+                    "dates" => array_values($totalusersPrvsOriginal["dates"]),
+                    "totalusers" => array_values($totalusersPrvsOriginal["totalusers"])
+                ];
+            // $prvssessions =$data['totalusersPrvs']['totalusers'];*/
               // Calculate the total
             //$totalsession = array_sum($currentsessions); 
             $totalsession = $data['totalsessions'];
             
-            $sessionPercent =(float)  $data['sessionPercent'];
+            $sessionPercent =(float)  round($data['sessionPercent'],1);
             //echo $data['totalsessions'];
             //echo $sessionPercent;
             
             if ($totalsession > 0) {
-                $formattedTotal = $totalsession > 1000 ? number_format($totalsession / 1000, 1) . 'K' : $totalsession;
+                $formattedTotal = $totalsession > 1000 ? number_format($totalsession / 1000, 0) . 'K' : $totalsession;
                 echo '<div id="divtoSession" class="scard-score">' . $formattedTotal .  ' </div>';
             } else {
                 echo '0';
             }
             
             //calculate session variation of total session
-            $session_variation = ((array_sum($currentsessions)-array_sum($prvssessions))/array_sum($prvssessions))*100 ; 
+            $session_variation = round((((array_sum($currentsessions)-array_sum($prvssessions))/array_sum($prvssessions))*100),1) ; 
            ?>
            
             <div id="divsessionPerc" class="ml-auto flex justify-end negative-value">
@@ -149,7 +172,8 @@
                 echo "↑";
               }
               //dd(round(abs($sessionPercent)));
-              echo round(abs($sessionPercent)).'%';
+             
+              echo round(abs($sessionPercent),1).'%';
                 ?>
             </span>
                   
@@ -187,7 +211,7 @@
        // $totalpgviews = array_sum($currentpgviews); 
         $totalpgviews = $data['totalpgviews'];
         if ( $totalpgviews > 0) {
-            $formattedpg =  $totalpgviews > 1000 ? number_format( $totalpgviews / 1000, 1) . 'K' : $totalpgviews;
+            $formattedpg =  $totalpgviews > 1000 ? number_format( $totalpgviews / 1000, 0) . 'K' : $totalpgviews;
             echo '<div  class="scard-score">' . $formattedpg . '</div>';
         } else {
             echo '0';
@@ -195,8 +219,8 @@
        // print $totalpgviews > 0 ? '<div class="scard-score">' . number_format($totalpgviews/1000,1).'K</div>': 0 ;
         
         //calculate session variation of total pgviews
-        $pgviews_variation = ((array_sum($currentpgviews)-array_sum($prvspgviews))/array_sum($prvspgviews))*100 ; 
-        $pgviewsPercent =(float) $data['pgviewsPercent'];
+        $pgviews_variation =round((((array_sum($currentpgviews)-array_sum($prvspgviews))/array_sum($prvspgviews))*100),2); 
+        $pgviewsPercent =(float) round($data['pgviewsPercent'],1);
         ?>
         <div id="divsessionPerc" class="ml-auto flex justify-end negative-value">
         <span class="arrow-<?php echo $pgviewsPercent < 0 ? 'down' : 'up'; ?>">
@@ -209,7 +233,8 @@
               else{
                 echo "↑";
               }
-              echo round(abs($pgviewsPercent)).'%';
+              echo round(abs($pgviewsPercent),1).'%';
+             
                 ?>
          </span>
        <?php
@@ -245,7 +270,7 @@
       $totalusers = $data['totalusers'];
       
       if ( $totalusers> 0) {
-        $formattedusers = $totalusers > 1000 ? number_format( $totalusers / 1000, 1) . 'K' : $totalusers;
+        $formattedusers = $totalusers > 1000 ? number_format( $totalusers / 1000, 0) . 'K' : $totalusers;
         echo '<div  class="scard-score">' . $formattedusers . '</div>';
     } else {
         echo '0';
@@ -253,9 +278,9 @@
      // print $totalusers > 0 ? '<div class="scard-score">' . number_format($totalusers/1000,1).'K</div>' : 0;
       
       //calculate session variation of total pgviews
-      $totalusers_variation = ((array_sum($currenttotalusers)-array_sum( $prvstotalusers))/array_sum($prvstotalusers))*100 ; 
+      $totalusers_variation = round((((array_sum($currenttotalusers)-array_sum( $prvstotalusers))/array_sum($prvstotalusers))*100),1) ; 
       //echo $totalusers_variation < 0 ? 'negative-value' : 'positive-value';
-      $totalusersPercent =(float) $data['totalusersPercent'] 
+      $totalusersPercent =(float) round($data['totalusersPercent'],1);
       ?>
         <div id="divsessionPerc" class="ml-auto flex justify-end negative-value">
     
@@ -269,7 +294,8 @@
               else{
                 echo "↑";
               }
-              echo round(abs($totalusersPercent)).'%';
+              echo round(abs($totalusersPercent),1).'%';
+             
                 ?>
                 </span>
             </div>
@@ -289,7 +315,7 @@
          $newusers = array_sum($currentnewusers);    
          $newusers =$data['newusers'];              
          if ( $newusers> 0) {
-            $formattedusers = $newusers > 1000 ? number_format( $newusers/ 1000, 1) . 'K' : $newusers;
+            $formattedusers = $newusers > 1000 ? number_format( $newusers/ 1000, 0) . 'K' : $newusers;
             echo '<div class="scard-score">' . $formattedusers . '</div>';
         } else {
             echo '0';
@@ -297,7 +323,7 @@
          //  print $newusers > 0 ? '<div class="scard-score">' . number_format($newusers/1000,1).'K</div>': 0;
          
          //calculate session variation of total pgviews
-         $newusers_variation = ((array_sum($currentnewusers)-array_sum( $prvsnewusers))/array_sum($prvsnewusers))*100 ; 
+         $newusers_variation = round((((array_sum($currentnewusers)-array_sum( $prvsnewusers))/array_sum($prvsnewusers))*100),1) ; 
          $newusersPercent =(float) $data['newusersPercent']
          ?>
         <div id="divsessionPerc" class="ml-auto flex justify-end negative-value">
@@ -311,7 +337,7 @@
               else{
                 echo "↑";
               }
-              echo round(abs($newusersPercent)).'%';
+              echo round(abs($newusersPercent),1).'%';
                 ?>
                 </span>
             </div>
@@ -336,6 +362,11 @@
                     $values = array_values($array);
                     $encodedString1 = json_encode($values); 
                     
+                   /* $encodedSessions = json_encode($currentsessions); 
+                    $array = json_decode($encodedSessions, true);
+                    $values = array_values($array);
+                    $encodedString2 = json_encode($values);*/
+
                     $encodedSessions = json_encode($currentsessions); 
                     $array = json_decode($encodedSessions, true);
                     $values = array_values($array);
@@ -358,6 +389,9 @@
                         var sessions = <?php echo $encodedString2; ?>;
                         var variations = <?php echo $encodedvariations; ?>;
                         var user_role="<?php echo $user_role;?>";
+                        console.log(dates);
+                        console.log(sessions);
+                      //  console.log(variations);
                         if(user_role=="0")
                     	{
                     	 $('.ggear ').css('display','none');	
@@ -584,7 +618,8 @@
     <div class="row card-deck flex mt-2" id="top_referrals">             
         <div class="card sm:w-full md:w-full lg:w-1/2 m-2" id="card7">
         <?php                                   
-				// Display the results								
+				// Display the results		
+                if(isset($data['deviceCategory'])){						
 				$encodeddevices = json_encode($data['deviceCategory']['deviceCategories']);
 				$encodedsessions = json_encode($data['deviceCategory']['percentages']);
                 echo '<h1><b>Top Devices </b></h1><br>';    
@@ -595,7 +630,8 @@
                 var ctx = document.getElementById("myChart").getContext("2d");
                                
                 var deviceCategories = <?php echo $encodeddevices; ?>;
-                var sessions = <?php echo $encodedsessions;  ?>;      
+                var sessions = <?php echo $encodedsessions;  ?>;  
+               
                 console.log(deviceCategories);            
                     new Chart(ctx, {
                         type: "doughnut",
@@ -655,6 +691,7 @@
                     });
                 });			
             </script>
+            <?php } ?>
           </div> 
      <!-- </div> 
 	  
@@ -670,6 +707,7 @@
                 $newvsreturnkey=array();
                 $newvsreturnvalue=array();
                 $newvsreturnpercentage=array();
+                if(isset($data['visitors'])){
                 foreach ($data['visitors']['visitors'] as $visitor) {
                   if(!empty($visitor['visitorsvalue']) && $visitor['visitorsvalue'] !== '(not set)'){
                     $visitorinfo =[
@@ -757,6 +795,7 @@
                     });
                 });			
             </script>
+            <?php } ?>
           </div> 
       </div>  
     
@@ -858,11 +897,12 @@
                     order: [
                         [1, 'desc']
                     ],
-                });				
-            
+                });	
+                
                 var start='{{ $startDate }}';
                 var end ='{{ $endDate }}';
 
+                console.log(start+"- "+end);
                 cb(moment(start, 'YYYY - MM - DD '), moment(end, 'YYYY - MM - DD'));               
                 function cb(start, end, ranges) {          
                 

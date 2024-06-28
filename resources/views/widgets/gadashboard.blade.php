@@ -48,8 +48,12 @@ $(function(){
 	}
 
     $('#interval').change(function(){
+		
       $('#selctedInterval').val($(this).val());
-
+		// Remove any local storage data
+    
+    localStorage.removeItem("data_interval");
+		localStorage.removeItem("resultData");				   
         $('#loader').css({
         'display': 'flex',
         'justify-content': 'center',
@@ -57,6 +61,8 @@ $(function(){
          });
         //$('#loader').css('display','block');
         interval = $(this).val();
+		
+		
   /*      if (localStorage.getItem("resultData") !== null ) {
      var resultdata = JSON.parse(localStorage.getItem("resultData"));
                      console.log(resultdata + '80' + interval);
@@ -100,11 +106,11 @@ $(function(){
             $('#enddate').val(moment().subtract(1, 'days').format('YYYY-MM-DD'));
             break;
         }   */    
-
+        dataExpire();
         $.ajax({
                     type:"POST",
                    dataType: 'json',
-                    url:"https://statamic.vijaysoftware.com/public/api/dpviewnew",
+                    url:"https://statamic.vijaysoftware.com/public/api/dpviewnewpartial",
                     data:{
                         "refresh_token" : refreshtoken,
                         "property_id" : propertyid,
@@ -113,49 +119,20 @@ $(function(){
                        // "endDate" : $('#enddate').val(),
                     },
 
-                    success: function(resultData) {
-
+                    success: function(resultData_partial) {
                     //for cache storage
-                    
+                   console.log('Success2: ' + resultData_partial);
                     var csrfToken = $('meta[name="csrf-token"]').attr('content');
                      // console.log (csrfToken);
-                      $.ajax({
-                        url:"{{ route('cc') }}",
-                        dataType: 'json',
-                        type:"POST",
-                  
-                        headers: {
-                                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                              },
-                        
-                          data:{
-                              "rData" :JSON.stringify(resultData),
-                              "interval" : interval,
-                          },
-
-                          success: function(data) {
-                            console.log(data);
-                          },
-                          error: function(data){
-                              console.log(data);
-                          },
-
-                      }); 
-
-
-
-
-
-
-
+                      
                              
-                      processData(resultData,interval);
+                      processData_partial(resultData_partial,interval);
 					   $('#ginsights').css('display','block');
 					  $('#reportsection').css('display','block');
                     },
                     error: function(data){
                       //alert('36');
-					            $('#authorizedView').css('display','none');
+					  $('#authorizedView').css('display','none');
                       $('#unauthorizedView').css('display','block');
 					  //$('#reportsection').css('display','none');
                       $('#loader').css('display','none');
@@ -166,25 +143,10 @@ $(function(){
                       
                     }
                    });
-                  
-    });
-
-    dataExpire();
-
-    //localStorage.removeItem('resultData');
-    if (localStorage.getItem("resultData") !== null ) {
-  //...
-
-   var resultdata = JSON.parse(localStorage.getItem("resultData"));
-                     console.log(resultdata + '80' + interval);
-                     processData(resultdata,interval);
-       
-         
-        }
-    else{
-    
-
-                $.ajax({
+				   
+				   //Get Complete data
+				  
+				    $.ajax({
                     type:"POST",
                    dataType: 'json',
                   //  url:"https://statamic.vijaysoftware.com/public/api/apipost",
@@ -192,14 +154,13 @@ $(function(){
                     data:{
                         "refresh_token" : refreshtoken,
                         "property_id" : propertyid,
-                        "interval" : "7",
+                        "interval" : interval,
                       //  "startDate" : $('#startdate').val(),
                        // "endDate" : $('#enddate').val(),
 
                     },
 
-                    success: function(resultData) {
-
+                    success: function(resultData) {                     
                       var csrfToken = $('meta[name="csrf-token"]').attr('content');
                      // console.log (csrfToken);
                       $.ajax({
@@ -214,32 +175,37 @@ $(function(){
                           data:{
                               "rData" :JSON.stringify(resultData),
                               "interval" : interval,
+                              "property_id" : propertyid,
                           },
+                          
 
                           success: function(data) {
-                           // console.log(data);
+                            console.log(data);
+                        
                           },
                           error: function(data){
                             // alert(error);
                           },
 
-                      });    
-
-
-
+                      }); 
     var createdtime = new Date().valueOf();
+	// Remove any local storage data
+  localStorage.removeItem("data_interval");
+	localStorage.removeItem("resultData");
     localStorage.setItem("createdtime",createdtime);
-    //console.log(createdtime);
-   
-
+	localStorage.setItem("data_interval",interval);
+    //console.log(createdtime);  
    
     // Store resultData in localStorage
     localStorage.setItem("resultData", JSON.stringify(resultData));
-    
+    var storedData='';
     // Retrieve and parse resultData from localStorage
-    var storedData = JSON.parse(localStorage.getItem("resultData"));
- 
-                      processData(storedData,interval);
+     storedData = JSON.parse(localStorage.getItem("resultData"));
+	interval= JSON.parse(localStorage.getItem("data_interval"));
+	$('#interval').val(interval);
+	$('#selctedInterval').val(interval);
+    processData(JSON.parse(JSON.stringify(resultData)),interval);
+					  
                       $('#ginsights').css('display','block');
                       $('#reportsection').css('display','block');
                     },
@@ -257,10 +223,154 @@ $(function(){
 
                     }
                    });
+				   
+				   //Get Complete data end
+                  
+    });
+	//Interval change end
+
+    dataExpire();
+
+    //localStorage.removeItem('resultData');
+    if (localStorage.getItem("resultData") !== null ) {
+  //...
+
+   var resultdata = JSON.parse(localStorage.getItem("resultData"));
+                     console.log(resultdata + '80' + interval);
+					 interval=localStorage.getItem("data_interval");
+					$('#selctedInterval').val(interval);
+					  $('#interval').val(interval);
+                     processData(resultdata,interval);
+					
+	
+       
+         
+        }
+    else{
+                $.ajax({
+                    type:"POST",
+                   dataType: 'json',
+                  //  url:"https://statamic.vijaysoftware.com/public/api/apipost",
+                   url:"https://statamic.vijaysoftware.com/public/api/dpviewnewpartial",
+                    data:{
+                        "refresh_token" : refreshtoken,
+                        "property_id" : propertyid,
+                        "interval" : interval,
+                      //  "startDate" : $('#startdate').val(),
+                       // "endDate" : $('#enddate').val(),
+
+                    },
+
+                    success: function(resultData_partial) {
+                     
+                      processData_partial(resultData_partial,interval);
+                      $('#ginsights').css('display','block');
+                      $('#reportsection').css('display','block');
+                    },
+
+                    error: function(data){
+
+                      $('#authorizedView').css('display','none');
+                      $('#unauthorizedView').css('display','block');
+					 // $('#reportsection').css('display','none');
+                      $('#loader').css('display','none');
+                      $('#interval').css('display','none');
+                      $('.ggear ').css('display','none');
+                      $('#fullreport').css('display','none');
+                      $('#accordion').css('display','none');					  
+
+                    }
+                   });
+				   
+				   //Get Complete data
+				   
+				    $.ajax({
+                    type:"POST",
+                   dataType: 'json',
+                  //  url:"https://statamic.vijaysoftware.com/public/api/apipost",
+                   url:"https://statamic.vijaysoftware.com/public/api/dpviewnew",
+                    data:{
+                        "refresh_token" : refreshtoken,
+                        "property_id" : propertyid,
+                        "interval" : interval,
+                      //  "startDate" : $('#startdate').val(),
+                       // "endDate" : $('#enddate').val(),
+
+                    },
+
+                    success: function(resultData) {
+                      
+                      var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                     // console.log (csrfToken);
+                      $.ajax({
+                        url:"{{ route('cc') }}",
+                        dataType: 'json',
+                        type:"POST",
+                  
+                        headers: {
+                                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                              },
+                        
+                          data:{
+                              "rData" :JSON.stringify(resultData),
+                              "interval" : interval,
+                          },
+                          
+
+                          success: function(data) {
+							  console.log("data");
+                            console.log(data);
+                        
+                          },
+                          error: function(data){
+                            // alert(error);
+                          },
+
+                      }); 
+  localStorage.removeItem("resultData");
+	localStorage.removeItem("resultData");
+    var createdtime = new Date().valueOf();
+    localStorage.setItem("createdtime",createdtime);
+	localStorage.setItem("data_interval",interval);
+    //console.log(createdtime);
+   
+    // Store resultData in localStorage
+    localStorage.setItem("resultData", JSON.stringify(resultData));
+    var storedData='';
+    // Retrieve and parse resultData from localStorage
+     storedData = JSON.parse(localStorage.getItem("resultData"));
+	 interval=JSON.parse(localStorage.getItem("data_interval"));
+		$('#interval').val(interval);
+		$('#selctedInterval').val(interval);
+                      processData(JSON.parse(JSON.stringify(resultData)),interval);
+                      $('#ginsights').css('display','block');
+                      $('#reportsection').css('display','block');
+                    },
+
+                    error: function(data){
+
+                      $('#authorizedView').css('display','none');
+                      $('#unauthorizedView').css('display','block');
+					 // $('#reportsection').css('display','none');
+                      $('#loader').css('display','none');
+                      $('#interval').css('display','none');
+                      $('.ggear ').css('display','none');
+                      $('#fullreport').css('display','none');
+                      $('#accordion').css('display','none');					  
+
+                    }
+                   });
+				   
+				   //Get Complete data end
+				   
                   }
+				  
+				  
                 });
 
                 function dataExpire(){
+                  // localStorage.removeItem("data_interval");
+                  //localStorage.removeItem("resultData");
                   createdtime = localStorage.getItem("createdtime");
                     //console.log(createdtime);
                     var currenttime = new Date().valueOf();
@@ -268,33 +378,35 @@ $(function(){
                     console.log(elapsedtime);
                     if(elapsedtime > 240){
                     localStorage.removeItem("resultData");
+                    localStorage.removeItem("data_interval");
                     }
                 }
-
-                function processData(resultData,interval)
+				
+				 function processData_partial(resultData_partial,interval)
                 {
                     var dates =0;
                     var sessions=0;
-						        $('#authorizedView').css('display', 'block');
+					$('#authorizedView').css('display', 'block');
                     $('#loader').css('display','none');
 
                       //  console.log(resultData[0]);
 					    //var pg_view_dates = resultData[0]['graphpageviews']['encodedDates'];
 						//pg_view_dates = pg_view_dates.split(",");
              //           var pageviews = resultData[0]['graphpageviews']['encodedpageviews'];
-                     console.log(resultData);
+			 console.log("resultData_partial");
+                     console.log(resultData_partial);
                       //var totalsessions=resultData['sessions'];
 
                       
                       //const totalsessions = arraySum(resultData['sessionsCurrent']['encodedSessions']);
                     //  console.log('asdf'+resultData['sessionsCurrent']['encodedSessions']);
-                      var totalsessions=(resultData['totalsessions']);
+                      var totalsessions=(resultData_partial['totalsessions']);
                     
                       if (totalsessions >= 1000) {
-                        totalsessions = (totalsessions / 1000).toFixed(1) + 'K'; // Format as "K" if above 1000
+                        totalsessions = (totalsessions / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
                       }
                       //totalsessions = Math.abs(totalsessions / 1000,1).toFixed(1);
-                      var sessionPercent=resultData['sessionPercent'];
+                      var sessionPercent=resultData_partial['sessionPercent'];
                       var sessionpercClass=(sessionPercent < 0 )? 'negative-value' : 'positive-value';
                       var sessionpercspanClass=(sessionPercent < 0 )? 'arrow-down' : 'arrow-up';
                       var sessionpercspanColor=(sessionPercent < 0 )? 'red' : 'green';
@@ -305,17 +417,17 @@ $(function(){
                       $("#divsessionPerc").addClass(sessionpercClass);
                       $("#divsessionPerc span").addClass(sessionpercspanClass);
                       $('#divsessionPerc span').css('color', sessionpercspanColor);
-                      $('#divsessionPerc span').html(sessionpercspanSymbol + Math.abs(sessionPercent)+"%");
+                      $('#divsessionPerc span').html(sessionpercspanSymbol + Math.abs(sessionPercent).toFixed(1)+"%");
                       //$("#divsessionPerc").html("");
                       //$("#divsessionPerc").prepend(Math.abs(sessionPercent)+"%");
 
-					  var totalpgviews=resultData['totalpgviews'];
+					  var totalpgviews=resultData_partial['totalpgviews'];
             console.log(totalpgviews);
                      // totalpgviews = Math.abs(totalpgviews / 1000,1).toFixed(1) ;
                       if (totalpgviews >= 1000) {
-                          totalpgviews = (totalpgviews / 1000).toFixed(1) + 'K'; // Format as "K" if above 1000
+                          totalpgviews = (totalpgviews / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
                       }
-                      var pgviewsPercent=resultData['pgviewsPercent'];
+                      var pgviewsPercent=resultData_partial['pgviewsPercent'];
                       var pgviewsPercentClass=(pgviewsPercent < 0) ? 'negative-value' : 'positive-value';
                       var pgviewsPercentspanClass=(pgviewsPercent < 0 )? 'arrow-down' : 'arrow-up';
                       var pgviewsPercentColor=(pgviewsPercent < 0 )? 'red' : 'green';
@@ -326,18 +438,18 @@ $(function(){
                       $("#divpgviewPerc").addClass(pgviewsPercentClass);
                       $("#divpgviewPerc span").addClass(pgviewsPercentspanClass);
                       $('#divpgviewPerc span').css('color', pgviewsPercentColor);
-                      $('#divpgviewPerc span').html(pgviewsPercentSymbol + Math.abs(pgviewsPercent)+"%");
+                      $('#divpgviewPerc span').html(pgviewsPercentSymbol + Math.abs(pgviewsPercent).toFixed(1)+"%");
                       //$('#divpgviewPerc').html("");
                      // $("#divpgviewPerc").prepend(Math.abs(pgviewsPercent)+"%");
 
-                     var totalusers=resultData['totalusers'];
+                     var totalusers=resultData_partial['totalusers'];
                      if (totalusers >= 1000) {
-                      totalusers = (totalusers / 1000).toFixed(1) + 'K'; // Format as "K" if above 1000
+                      totalusers = (totalusers / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
                       }
                      //console.log(totalusers);
                      //totalusers = Math.abs(totalusers/ 1000,1).toFixed(1);
 
-                     var totalusersPercent=resultData['totalusersPercent'];
+                     var totalusersPercent=resultData_partial['totalusersPercent'];
                      console.log(totalusersPercent);
                      //totalusersPercent = 20.4;
                      var totalusersPercentClass=(totalusersPercent < 0) ? 'negative-value' : 'positive-value';
@@ -352,16 +464,16 @@ $(function(){
                      $("#divtotalUsersPerc span").addClass(totalusersPercentspanClass);
                      $('#divtotalUsersPerc span').css('color', totalusersPercentColor);
                     //  $("#divtotalUsersPerc").html("");
-                      $('#divtotalUsersPerc span').html(totalusersPercentSymbol + Math.abs(totalusersPercent)+"%");
+                      $('#divtotalUsersPerc span').html(totalusersPercentSymbol + Math.abs(totalusersPercent).toFixed(1)+"%");
                      // $("#divtotalUsersPerc").prepend(Math.abs(totalusersPercent)+"%");
 
 
-                      var newUsers=resultData['newusers'];
+                      var newUsers=resultData_partial['newusers'];
                       if (newUsers >= 1000) {
-                        newUsers = (newUsers / 1000).toFixed(1) + 'K'; // Format as "K" if above 1000
+                        newUsers = (newUsers / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
                       }
                       //newUsers = Math.abs(newUsers/ 1000,1).toFixed(1);
-                      var newusersPercent=resultData['newusersPercent'];
+                      var newusersPercent=resultData_partial['newusersPercent'];
                       var newusersPercentClass=(newusersPercent < 0) ? 'negative-value' : 'positive-value';
                       var newusersPercentspanClass=(newusersPercent < 0 )? 'arrow-down' : 'arrow-up';
                       var newusersPercentColor=(newusersPercent < 0 )? 'red' : 'green';
@@ -371,7 +483,7 @@ $(function(){
                       $("#divnewUsersPerc").addClass(newusersPercentClass);
                       $("#divnewUsersPerc span").addClass(newusersPercentspanClass);
                       $('#divnewUsersPerc span').css('color', newusersPercentColor);
-                      $('#divnewUsersPerc span').html(newusersPercentSymbol + Math.abs(newusersPercent)+"%");
+                      $('#divnewUsersPerc span').html(newusersPercentSymbol + Math.abs(newusersPercent).toFixed(1)+"%");
                      // $("#divnewUsersPerc").prepend();
 //$("#divnewUsersPerc").html("");
 
@@ -396,11 +508,311 @@ $(function(){
 
                         var ctx = document.getElementById("myChartsp").getContext("2d");
                       //   dates = resultData['graphsessions']['encodedDates'];
-dates=resultData['sessionsCurrent']['encodedDates'];
+						dates=resultData_partial['sessionsCurrent']['encodedDates'];
                         dates = dates.split(",");
                       //  var sessions = resultData['graphsessions']['encodedSessions'];
-var sessions =resultData['sessionsCurrent']['encodedSessions'];
-//console.log('309' + sessions);
+						var sessions =resultData_partial['sessionsCurrent']['encodedSessions'];
+						//console.log('309' + sessions);
+                        sessions = sessions.replaceAll(/\"/g,'')
+                        var sessions = sessions.substring(1, sessions.length-1);
+                        sessions = sessions.split(",");
+
+                        // Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
+                        var formattedDates = dates.map(function(date) {
+                        const momentDate = moment(date, 'YYYY/MM/DD');
+                        const day = momentDate.format('D'); // Day of the month without leading zero
+                        const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
+
+                        return day + ' ' + month;
+                        });
+
+
+                        window.bar1= new Chart(ctx, {
+                        type: "line",
+                        data: {
+                            labels: formattedDates,
+                            datasets: [
+                            {
+                                label: "Sessions ",
+                                data: sessions,
+                                borderColor: "blue",
+                                fill: false,
+                            }
+                            ]
+                        },
+                        options: {
+                          plugins: {
+                            legend: {
+                              labels: {
+                                onClick(e, legendItem, legend) {
+                                  // Prevent the default behavior of the legend item click
+                                  e.stopPropagation();
+                                }
+                              }
+                            }
+                          },
+                            scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                parser: 'DD/MM/YYYY',
+                                tooltipFormat: 'DD/MM/YYYY',
+                                unit: 'day',
+                                displayFormats: {
+                                    day: 'DD/MM/YYYY'
+                                }
+                                },
+                                ticks: {
+                                maxTicksLimit: 10
+                                }
+                            },
+                            y: {
+                                display: true,
+                                title: {
+                                display: true,
+                                text: "Count"
+                                },
+                                ticks: {
+                                beginAtZero: true,
+                                precision: 0
+                                }
+                            }
+                            },
+                            legend: {
+                                onClick(e, legendItem, legend) {
+                                  // Prevent the default behavior of the legend item click
+                                  e.stopPropagation();
+                                }
+                            }
+
+                        }
+
+                        });
+
+
+						                    //chart for pageviews
+                       if(window.bar != undefined) {
+                        window.bar.destroy();
+                        var canvas = document.getElementById('myChartpv');
+                        canvas.width = Math.min(1200, 600); // Set width to a maximum of 1200px
+                        canvas.height = Math.min(200, 200); // Set height to a maximum of 200px
+
+                         // Set height to a maximum of 200px
+                      }
+
+                    var p_ctx = document.getElementById("myChartpv").getContext("2d");
+                      //  var pg_view_dates = resultData[0]['graphpageviews']['encodedDates'];
+ //console.log(resultData['pageviewsCurrent']['encodedDates']);                     
+ pg_view_dates = resultData_partial['pageviewsCurrent']['encodedDates'];                       
+                        pg_view_dates = pg_view_dates.split(",");
+                      // var pageviews = resultData[0]['graphpageviews']['encodedpageviews'];
+ var pageviews = resultData_partial['pageviewsCurrent']['encodedpageviews'];
+					   //	console.log(resultData[0]['graphpageviews']);
+                        pageviews = pageviews.replaceAll(/\"/g,'')
+                        pageviews = pageviews.substring(1, pageviews.length-1);
+                        pageviews = pageviews.split(",");
+                       // console.log(pg_view_dates);
+                       // console.log(pageviews);
+
+                        // Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
+                        var formattedDates = pg_view_dates.map(function(date) {
+                        const momentDate = moment(date, 'YYYY/MM/DD');
+                        const day = momentDate.format('D'); // Day of the month without leading zero
+                        const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
+
+                        return day + ' ' + month;
+                        });
+
+                        // Sort the dates in chronological order
+                       /* formattedDates.sort(function(a, b) {
+                            return moment(a, 'DD/MM/YYYY').toDate() - moment(b, 'DD/MM/YYYY').toDate();
+                        });*/
+                        //console.log(formattedDates);
+
+                    window.bar = new Chart(p_ctx, {
+                        type: "line",
+                        data: {
+                            labels: formattedDates,
+                            datasets: [
+                            {
+                                label: "Pageviews ",
+                                data: pageviews,
+                                borderColor: "green",
+                                fill: false,
+                            }
+                            ]
+                        },
+                        options: {
+                          scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                parser: 'DD/MM/YYYY',
+                                tooltipFormat: 'DD/MM/YYYY',
+                                unit: 'day',
+                                displayFormats: {
+                                    day: 'DD/MM/YYYY'
+                                }
+                                },
+                                ticks: {
+                                maxTicksLimit: 10
+                                }
+                            },
+                            y: {
+                                display: true,
+                                title: {
+                                display: true,
+                                text: "Count"
+                                },
+                                ticks: {
+                                beginAtZero: true,
+                                precision: 0
+                                }
+                            }
+                          },
+                          legend: {
+                                onClick(e, legendItem, legend) {
+                                  // Prevent the default behavior of the legend item click
+                                  e.stopPropagation();
+                                }
+                            }
+                        }
+                        });
+                }
+
+                function processData(resultData,interval)
+                {				
+					//alert(interval);
+                    var dates =0;
+                    var sessions=0;
+					 $('#authorizedView').css('display', 'block');
+                    $('#loader').css('display','none');
+
+                      //  console.log(resultData[0]);
+					    //var pg_view_dates = resultData[0]['graphpageviews']['encodedDates'];
+						//pg_view_dates = pg_view_dates.split(",");
+             //           var pageviews = resultData[0]['graphpageviews']['encodedpageviews'];
+			  console.log("resultData");
+                     console.log(resultData);
+                      //var totalsessions=resultData['sessions'];
+
+                      
+                      //const totalsessions = arraySum(resultData['sessionsCurrent']['encodedSessions']);
+                    //  console.log('asdf'+resultData['sessionsCurrent']['encodedSessions']);
+                      var totalsessions=(resultData['totalsessions']);
+                    
+                      if (totalsessions >= 1000) {
+                        totalsessions = (totalsessions / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
+                      }
+                      //totalsessions = Math.abs(totalsessions / 1000,1).toFixed(1);
+                      var sessionPercent=resultData['sessionPercent'];
+                      var sessionpercClass=(sessionPercent < 0 )? 'negative-value' : 'positive-value';
+                      var sessionpercspanClass=(sessionPercent < 0 )? 'arrow-down' : 'arrow-up';
+                      var sessionpercspanColor=(sessionPercent < 0 )? 'red' : 'green';
+                      var sessionpercspanSymbol=(sessionPercent < 0 )?  '↓' :  '↑';
+                     //console.log(sessionPercent);
+
+					  $("#divtotSession").html(totalsessions);
+                      $("#divsessionPerc").addClass(sessionpercClass);
+                      $("#divsessionPerc span").addClass(sessionpercspanClass);
+                      $('#divsessionPerc span').css('color', sessionpercspanColor);
+                      $('#divsessionPerc span').html(sessionpercspanSymbol + Math.abs(sessionPercent).toFixed(1)+"%");
+                      //$("#divsessionPerc").html("");
+                      //$("#divsessionPerc").prepend(Math.abs(sessionPercent)+"%");
+
+					  var totalpgviews=resultData['totalpgviews'];
+            console.log(totalpgviews);
+                     // totalpgviews = Math.abs(totalpgviews / 1000,1).toFixed(1) ;
+                      if (totalpgviews >= 1000) {
+                          totalpgviews = (totalpgviews / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
+                      }
+                      var pgviewsPercent=resultData['pgviewsPercent'];
+                      var pgviewsPercentClass=(pgviewsPercent < 0) ? 'negative-value' : 'positive-value';
+                      var pgviewsPercentspanClass=(pgviewsPercent < 0 )? 'arrow-down' : 'arrow-up';
+                      var pgviewsPercentColor=(pgviewsPercent < 0 )? 'red' : 'green';
+                      var pgviewsPercentSymbol=(pgviewsPercent < 0 )?  '↓' :  '↑';
+
+
+                      $("#divpgViews").html(totalpgviews);
+                      $("#divpgviewPerc").addClass(pgviewsPercentClass);
+                      $("#divpgviewPerc span").addClass(pgviewsPercentspanClass);
+                      $('#divpgviewPerc span').css('color', pgviewsPercentColor);
+                      $('#divpgviewPerc span').html(pgviewsPercentSymbol + Math.abs(pgviewsPercent).toFixed(1)+"%");
+                      //$('#divpgviewPerc').html("");
+                     // $("#divpgviewPerc").prepend(Math.abs(pgviewsPercent)+"%");
+
+                     var totalusers=resultData['totalusers'];
+                     if (totalusers >= 1000) {
+                      totalusers = (totalusers / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
+                      }
+                     //console.log(totalusers);
+                     //totalusers = Math.abs(totalusers/ 1000,1).toFixed(1);
+
+                     var totalusersPercent=resultData['totalusersPercent'];
+                     console.log(totalusersPercent);
+                     //totalusersPercent = 20.4;
+                     var totalusersPercentClass=(totalusersPercent < 0) ? 'negative-value' : 'positive-value';
+                     var totalusersPercentspanClass=(totalusersPercent < 0 )? 'arrow-down' : 'arrow-up';
+                     var totalusersPercentColor=(totalusersPercent < 0 )? 'red' : 'green';
+                     var totalusersPercentSymbol=(totalusersPercent < 0 )?  '↓' :  '↑';
+                     // alert(totalusersPercentColor);
+
+
+                     $("#divtotalUsers").html(totalusers);
+                     $("#divtotalUsersPerc").addClass(totalusersPercentClass);
+                     $("#divtotalUsersPerc span").addClass(totalusersPercentspanClass);
+                     $('#divtotalUsersPerc span').css('color', totalusersPercentColor);
+                    //  $("#divtotalUsersPerc").html("");
+                      $('#divtotalUsersPerc span').html(totalusersPercentSymbol + Math.abs(totalusersPercent).toFixed(1)+"%");
+                     // $("#divtotalUsersPerc").prepend(Math.abs(totalusersPercent)+"%");
+
+
+                      var newUsers=resultData['newusers'];
+                      if (newUsers >= 1000) {
+                        newUsers = (newUsers / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
+                      }
+                      //newUsers = Math.abs(newUsers/ 1000,1).toFixed(1);
+                      var newusersPercent=resultData['newusersPercent'];
+                      var newusersPercentClass=(newusersPercent < 0) ? 'negative-value' : 'positive-value';
+                      var newusersPercentspanClass=(newusersPercent < 0 )? 'arrow-down' : 'arrow-up';
+                      var newusersPercentColor=(newusersPercent < 0 )? 'red' : 'green';
+                      var newusersPercentSymbol=(newusersPercent < 0 )?  '↓' :  '↑';
+
+                      $("#divnewUsers").html(newUsers);
+                      $("#divnewUsersPerc").addClass(newusersPercentClass);
+                      $("#divnewUsersPerc span").addClass(newusersPercentspanClass);
+                      $('#divnewUsersPerc span').css('color', newusersPercentColor);
+                      $('#divnewUsersPerc span').html(newusersPercentSymbol + Math.abs(newusersPercent).toFixed(1)+"%");
+                     // $("#divnewUsersPerc").prepend();
+//$("#divnewUsersPerc").html("");
+
+                      if(interval == 'lastmonth'){
+                         $(".scard-compare").html("vs. Previous Month");
+                      }else if(interval == 'lastweek'){
+                         $(".scard-compare").html("vs. Previous Week");
+                      }
+                      else{
+                        $(".scard-compare").html("vs. Previous " + interval + " Days");
+                      }
+
+                   //   $(".gcard-widget-head span").html("Last" + interval + "days";)
+
+                      //Sessions graph
+                      if(window.bar1 != undefined) {
+                          window.bar1.destroy();
+                          var s_canvas = document.getElementById('myChartsp');
+						            s_canvas.width = Math.min(1200, 600); // Set width to a maximum of 1200px
+						            s_canvas.height = Math.min(200, 200);
+                        }
+
+                        var ctx = document.getElementById("myChartsp").getContext("2d");
+                      //   dates = resultData['graphsessions']['encodedDates'];
+					dates=resultData['sessionsCurrent']['encodedDates'];
+					console.log(dates);
+                        dates = dates.split(",");
+                      //  var sessions = resultData['graphsessions']['encodedSessions'];
+					var sessions =resultData['sessionsCurrent']['encodedSessions'];
+					//console.log('309' + sessions);
                         sessions = sessions.replaceAll(/\"/g,'')
                         var sessions = sessions.substring(1, sessions.length-1);
                         sessions = sessions.split(",");
@@ -748,6 +1160,8 @@ var sessions =resultData['sessionsCurrent']['encodedSessions'];
               <option value="14">Last 14 days</option>
            <!-- <option value="lastmonth">Last Month</option>-->
               <option value="30">Last 30 Days</option>
+			  
+			 
   
           </select>
           <form action='utilities/analytics'>
