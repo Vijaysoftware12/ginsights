@@ -93,6 +93,11 @@ class AnalyticsController extends Controller
 
     public function index(Request $request )
     {   
+
+
+        if($request['gtag_id1']){
+            $this->store($request);
+        }
         if($request['reauth']=='true'){       
         $this->reauth();
      }
@@ -310,7 +315,7 @@ class AnalyticsController extends Controller
              
         
 			else{
-                
+              
        try{
          
             $data=$this->getGAData($selectid,$interval,$startDate,$endDate,'false');
@@ -321,8 +326,13 @@ class AnalyticsController extends Controller
             return response()->json(['error' => 'Failed to fetch data'], 500);
         }  	   
 		    //Cache::put('dpviewdata', $data, $seconds = 20000);
-			$data = Cache::get('dpviewdata');
-				  // dd($value);
+            if (Cache::has('dpviewdata')) {
+                // Cache has data
+                $data = Cache::get('dpviewdata');
+                // Do something with the data
+            } 
+            
+		
                   		
             return view('ginsights::dpview')
              ->with('data',$data)
@@ -375,7 +385,7 @@ class AnalyticsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  
+    
     public function getGAData($selectid,$interval,$startDate,$endDate,$custom)
     {
        

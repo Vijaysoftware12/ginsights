@@ -5,6 +5,8 @@ namespace Vijaysoftware\Ginsights\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Symfony\Component\Yaml\Yaml;
+use Statamic\Facades\File;
 
 class ConversionController extends Controller
 {
@@ -20,4 +22,16 @@ class ConversionController extends Controller
         return response()->json(['message' => $data]);
 
     }
+    public function disconnect(){
+        $rootPath = base_path();
+        $filePath = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/refresh_token.yaml';
+        
+        $datare = [
+                'refresh_token' => 'disconnected',
+        ];
+        $yamlString = Yaml::dump($datare);            
+        File::put($filePath, $yamlString);
+        return view('ginsights::redirect');
+        
+        }
 }

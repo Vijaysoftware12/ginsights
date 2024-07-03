@@ -55,9 +55,12 @@
 						$property_id = $data['property_id'];
 					}
 				//For reading gtag
-				$filePath1 = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/gtag.yaml';	
+				$filePath1 = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/gtag.yaml';
 				$yamlString1 = file_get_contents($filePath1);
-				$data1 = Yaml::parse($yamlString1);				
+				$data1 = Yaml::parse($yamlString1);	
+				
+				
+					
 					if($data1){				   
 						$gtag_id = $data1['gtag_id'];
 					}				
@@ -65,8 +68,11 @@
 				<h3 class="mb-5">Active profile: <?php echo  $gtag_id;?></h3>
 
 				<div class="flex flex-row justify-center pt-3">
+					<form action="/ginsights/disconnect" method="post">
+						@csrf
 				<a href='<?php echo env('APP_URL')?>/cp/utilities/analytics?reauth=true'><button class="bg-blue-700 text-white font-bold py-2 px-6 rounded mr-5">Reconnect Ginsights</button></a>
-					<button class="bg-blue-700 text-white font-bold py-2 px-6 rounded">Disconnect Ginsights</button>
+					<button type="submit" class="bg-blue-700 text-white font-bold py-2 px-6 rounded">Disconnect Ginsights</button>
+				</form>
 				</div>
 			</div>
 			<!--<div class="card flex flex-col ">	

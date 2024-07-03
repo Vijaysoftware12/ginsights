@@ -2,6 +2,7 @@
 use Vijaysoftware\Ginsights\Http\Controllers\ConversionController;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,4 +19,5 @@ use Illuminate\Support\Facades\Route;
 // ]);
 
 //Route::post('/cacheconversion', 'ConversionController@index')->name('cc');
-Route::post('/cacheconversion',[ConversionController::class, 'index'])->name('cc');
+Route::post('/ginsights/cacheconversion',[ConversionController::class, 'index'])->name('cc');
+Route::post('/ginsights/disconnect',[ConversionController::class, 'disconnect'])->name('disconnect');

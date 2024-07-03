@@ -393,8 +393,8 @@ $(function(){
 					    //var pg_view_dates = resultData[0]['graphpageviews']['encodedDates'];
 						//pg_view_dates = pg_view_dates.split(",");
              //           var pageviews = resultData[0]['graphpageviews']['encodedpageviews'];
-			 console.log("resultData_partial");
-                     console.log(resultData_partial);
+						//console.log("resultData_partial");
+                     //console.log(resultData_partial);
                       //var totalsessions=resultData['sessions'];
 
                       
@@ -406,7 +406,9 @@ $(function(){
                         totalsessions = (totalsessions / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
                       }
                       //totalsessions = Math.abs(totalsessions / 1000,1).toFixed(1);
-                      var sessionPercent=resultData_partial['sessionPercent'];
+                      var sessionPercent=parseFloat(resultData_partial['sessionPercent']);
+					 //var roundedsessionPercent= Math.sign(sessionPercent) * Math.ceil(Math.abs(sessionPercent) * 10) / 10;
+					 var roundedsessionPercent=Math.round(sessionPercent * 10) / 10 ;
                       var sessionpercClass=(sessionPercent < 0 )? 'negative-value' : 'positive-value';
                       var sessionpercspanClass=(sessionPercent < 0 )? 'arrow-down' : 'arrow-up';
                       var sessionpercspanColor=(sessionPercent < 0 )? 'red' : 'green';
@@ -417,17 +419,20 @@ $(function(){
                       $("#divsessionPerc").addClass(sessionpercClass);
                       $("#divsessionPerc span").addClass(sessionpercspanClass);
                       $('#divsessionPerc span').css('color', sessionpercspanColor);
-                      $('#divsessionPerc span').html(sessionpercspanSymbol + Math.abs(sessionPercent).toFixed(1)+"%");
+                      $('#divsessionPerc span').html(sessionpercspanSymbol + Math.abs(roundedsessionPercent)+"%");
                       //$("#divsessionPerc").html("");
                       //$("#divsessionPerc").prepend(Math.abs(sessionPercent)+"%");
 
 					  var totalpgviews=resultData_partial['totalpgviews'];
-            console.log(totalpgviews);
+						//console.log(totalpgviews);
                      // totalpgviews = Math.abs(totalpgviews / 1000,1).toFixed(1) ;
                       if (totalpgviews >= 1000) {
                           totalpgviews = (totalpgviews / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
                       }
-                      var pgviewsPercent=resultData_partial['pgviewsPercent'];
+                      var pgviewsPercent=parseFloat(resultData_partial['pgviewsPercent']);
+					 
+					 // var roundedpgviewsPercent= Math.sign(pgviewsPercent) * Math.ceil(Math.abs(pgviewsPercent) * 10) / 10;
+					  var roundedpgviewsPercent=Math.round(pgviewsPercent * 10) / 10 ;					 
                       var pgviewsPercentClass=(pgviewsPercent < 0) ? 'negative-value' : 'positive-value';
                       var pgviewsPercentspanClass=(pgviewsPercent < 0 )? 'arrow-down' : 'arrow-up';
                       var pgviewsPercentColor=(pgviewsPercent < 0 )? 'red' : 'green';
@@ -438,7 +443,7 @@ $(function(){
                       $("#divpgviewPerc").addClass(pgviewsPercentClass);
                       $("#divpgviewPerc span").addClass(pgviewsPercentspanClass);
                       $('#divpgviewPerc span').css('color', pgviewsPercentColor);
-                      $('#divpgviewPerc span').html(pgviewsPercentSymbol + Math.abs(pgviewsPercent).toFixed(1)+"%");
+                      $('#divpgviewPerc span').html(pgviewsPercentSymbol + Math.abs(roundedpgviewsPercent)+"%");
                       //$('#divpgviewPerc').html("");
                      // $("#divpgviewPerc").prepend(Math.abs(pgviewsPercent)+"%");
 
@@ -449,9 +454,9 @@ $(function(){
                      //console.log(totalusers);
                      //totalusers = Math.abs(totalusers/ 1000,1).toFixed(1);
 
-                     var totalusersPercent=resultData_partial['totalusersPercent'];
-                     console.log(totalusersPercent);
-                     //totalusersPercent = 20.4;
+                     var totalusersPercent=parseFloat(resultData_partial['totalusersPercent']);
+                    // var roundedtotalusersPercent= Math.sign(totalusersPercent) * Math.ceil(Math.abs(totalusersPercent) * 10) / 10;
+					  var roundedtotalusersPercent=Math.round(totalusersPercent * 10) / 10 ;
                      var totalusersPercentClass=(totalusersPercent < 0) ? 'negative-value' : 'positive-value';
                      var totalusersPercentspanClass=(totalusersPercent < 0 )? 'arrow-down' : 'arrow-up';
                      var totalusersPercentColor=(totalusersPercent < 0 )? 'red' : 'green';
@@ -464,7 +469,7 @@ $(function(){
                      $("#divtotalUsersPerc span").addClass(totalusersPercentspanClass);
                      $('#divtotalUsersPerc span').css('color', totalusersPercentColor);
                     //  $("#divtotalUsersPerc").html("");
-                      $('#divtotalUsersPerc span').html(totalusersPercentSymbol + Math.abs(totalusersPercent).toFixed(1)+"%");
+                      $('#divtotalUsersPerc span').html(totalusersPercentSymbol + Math.abs(roundedtotalusersPercent)+"%");
                      // $("#divtotalUsersPerc").prepend(Math.abs(totalusersPercent)+"%");
 
 
@@ -473,7 +478,9 @@ $(function(){
                         newUsers = (newUsers / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
                       }
                       //newUsers = Math.abs(newUsers/ 1000,1).toFixed(1);
-                      var newusersPercent=resultData_partial['newusersPercent'];
+                      var newusersPercent=parseFloat(resultData_partial['newusersPercent']);
+					// var roundednewusersPercent= Math.sign(newusersPercent) * Math.ceil(Math.abs(newusersPercent) * 10) / 10;
+					  var roundednewusersPercent=Math.round(newusersPercent * 10) / 10 ;
                       var newusersPercentClass=(newusersPercent < 0) ? 'negative-value' : 'positive-value';
                       var newusersPercentspanClass=(newusersPercent < 0 )? 'arrow-down' : 'arrow-up';
                       var newusersPercentColor=(newusersPercent < 0 )? 'red' : 'green';
@@ -483,7 +490,7 @@ $(function(){
                       $("#divnewUsersPerc").addClass(newusersPercentClass);
                       $("#divnewUsersPerc span").addClass(newusersPercentspanClass);
                       $('#divnewUsersPerc span').css('color', newusersPercentColor);
-                      $('#divnewUsersPerc span').html(newusersPercentSymbol + Math.abs(newusersPercent).toFixed(1)+"%");
+                      $('#divnewUsersPerc span').html(newusersPercentSymbol + Math.abs(roundednewusersPercent)+"%");
                      // $("#divnewUsersPerc").prepend();
 //$("#divnewUsersPerc").html("");
 
@@ -692,8 +699,8 @@ $(function(){
 					    //var pg_view_dates = resultData[0]['graphpageviews']['encodedDates'];
 						//pg_view_dates = pg_view_dates.split(",");
              //           var pageviews = resultData[0]['graphpageviews']['encodedpageviews'];
-			  console.log("resultData");
-                     console.log(resultData);
+			  //console.log("resultData");
+                     //console.log(resultData);
                       //var totalsessions=resultData['sessions'];
 
                       
@@ -706,6 +713,10 @@ $(function(){
                       }
                       //totalsessions = Math.abs(totalsessions / 1000,1).toFixed(1);
                       var sessionPercent=resultData['sessionPercent'];
+					  //var roundedsessionPercent= Math.sign(sessionPercent) * Math.ceil(Math.abs(sessionPercent) * 10) / 10;
+					  var roundedsessionPercent= Math.round(parseFloat(sessionPercent * 10)) / 10 ;
+					 
+					console.log('sessionPercent-'+"- "+sessionPercent+" - "+resultData['sessionPercent']+" - "+roundedsessionPercent);
                       var sessionpercClass=(sessionPercent < 0 )? 'negative-value' : 'positive-value';
                       var sessionpercspanClass=(sessionPercent < 0 )? 'arrow-down' : 'arrow-up';
                       var sessionpercspanColor=(sessionPercent < 0 )? 'red' : 'green';
@@ -716,12 +727,12 @@ $(function(){
                       $("#divsessionPerc").addClass(sessionpercClass);
                       $("#divsessionPerc span").addClass(sessionpercspanClass);
                       $('#divsessionPerc span').css('color', sessionpercspanColor);
-                      $('#divsessionPerc span').html(sessionpercspanSymbol + Math.abs(sessionPercent).toFixed(1)+"%");
+                      $('#divsessionPerc span').html(sessionpercspanSymbol + Math.abs(roundedsessionPercent)+"%");
                       //$("#divsessionPerc").html("");
                       //$("#divsessionPerc").prepend(Math.abs(sessionPercent)+"%");
 
 					  var totalpgviews=resultData['totalpgviews'];
-            console.log(totalpgviews);
+            //console.log(totalpgviews);
                      // totalpgviews = Math.abs(totalpgviews / 1000,1).toFixed(1) ;
                       if (totalpgviews >= 1000) {
                           totalpgviews = (totalpgviews / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
@@ -731,13 +742,15 @@ $(function(){
                       var pgviewsPercentspanClass=(pgviewsPercent < 0 )? 'arrow-down' : 'arrow-up';
                       var pgviewsPercentColor=(pgviewsPercent < 0 )? 'red' : 'green';
                       var pgviewsPercentSymbol=(pgviewsPercent < 0 )?  '↓' :  '↑';
-
-
+					//var roundedPgviewsPercent= Math.sign(pgviewsPercent) * Math.ceil(Math.abs(pgviewsPercent) * 10) / 10;
+					 var roundedPgviewsPercent= Math.round(parseFloat(pgviewsPercent * 10)) / 10 ;
+					
+						console.log('pgviewsPercent-'+"- "+pgviewsPercent+" - "+parseFloat(resultData['pgviewsPercent'])+" - "+roundedPgviewsPercent);
                       $("#divpgViews").html(totalpgviews);
                       $("#divpgviewPerc").addClass(pgviewsPercentClass);
                       $("#divpgviewPerc span").addClass(pgviewsPercentspanClass);
                       $('#divpgviewPerc span').css('color', pgviewsPercentColor);
-                      $('#divpgviewPerc span').html(pgviewsPercentSymbol + Math.abs(pgviewsPercent).toFixed(1)+"%");
+                      $('#divpgviewPerc span').html(pgviewsPercentSymbol + Math.abs(roundedPgviewsPercent)+"%");
                       //$('#divpgviewPerc').html("");
                      // $("#divpgviewPerc").prepend(Math.abs(pgviewsPercent)+"%");
 
@@ -748,8 +761,10 @@ $(function(){
                      //console.log(totalusers);
                      //totalusers = Math.abs(totalusers/ 1000,1).toFixed(1);
 
-                     var totalusersPercent=resultData['totalusersPercent'];
-                     console.log(totalusersPercent);
+                     var totalusersPercent=parseFloat(resultData['totalusersPercent']);
+					 //var roundedtotalusersPercent= Math.sign(totalusersPercent) * Math.ceil(Math.abs(totalusersPercent) * 10) / 10;
+					  var roundedtotalusersPercent=Math.round(totalusersPercent * 10) / 10 ;
+                     
                      //totalusersPercent = 20.4;
                      var totalusersPercentClass=(totalusersPercent < 0) ? 'negative-value' : 'positive-value';
                      var totalusersPercentspanClass=(totalusersPercent < 0 )? 'arrow-down' : 'arrow-up';
@@ -763,16 +778,18 @@ $(function(){
                      $("#divtotalUsersPerc span").addClass(totalusersPercentspanClass);
                      $('#divtotalUsersPerc span').css('color', totalusersPercentColor);
                     //  $("#divtotalUsersPerc").html("");
-                      $('#divtotalUsersPerc span').html(totalusersPercentSymbol + Math.abs(totalusersPercent).toFixed(1)+"%");
+                      $('#divtotalUsersPerc span').html(totalusersPercentSymbol + Math.abs(roundedtotalusersPercent)+"%");
                      // $("#divtotalUsersPerc").prepend(Math.abs(totalusersPercent)+"%");
-
+					console.log('totalusersPercent-'+"- "+totalusersPercent+" - "+roundedtotalusersPercent);
 
                       var newUsers=resultData['newusers'];
                       if (newUsers >= 1000) {
                         newUsers = (newUsers / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
                       }
                       //newUsers = Math.abs(newUsers/ 1000,1).toFixed(1);
-                      var newusersPercent=resultData['newusersPercent'];
+                      var newusersPercent=parseFloat(resultData['newusersPercent']);
+					  //var roundednewusersPercent= Math.sign(newusersPercent) * Math.ceil(Math.abs(newusersPercent) * 10) / 10;
+					   var roundednewusersPercent=Math.round(newusersPercent * 10) / 10;
                       var newusersPercentClass=(newusersPercent < 0) ? 'negative-value' : 'positive-value';
                       var newusersPercentspanClass=(newusersPercent < 0 )? 'arrow-down' : 'arrow-up';
                       var newusersPercentColor=(newusersPercent < 0 )? 'red' : 'green';
@@ -782,7 +799,8 @@ $(function(){
                       $("#divnewUsersPerc").addClass(newusersPercentClass);
                       $("#divnewUsersPerc span").addClass(newusersPercentspanClass);
                       $('#divnewUsersPerc span').css('color', newusersPercentColor);
-                      $('#divnewUsersPerc span').html(newusersPercentSymbol + Math.abs(newusersPercent).toFixed(1)+"%");
+                      $('#divnewUsersPerc span').html(newusersPercentSymbol + Math.abs(roundednewusersPercent)+"%");
+					  console.log('newusersPercent-'+"- "+newusersPercent+" - "+roundednewusersPercent);
                      // $("#divnewUsersPerc").prepend();
 //$("#divnewUsersPerc").html("");
 

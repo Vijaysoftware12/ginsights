@@ -46,7 +46,7 @@
 					</select>				 
          
 					  <label for="textAreaField" class="py-4 "><h3>Google Profile tag id</h3></label> 
-					  <textarea disabled name="gtag_id" id="gtag_id" rows=""  cols="" class="p-1 bg-gray-300 border-gray-200" >
+					  <textarea readonly name="gtag_id" id="gtag_id" rows=""  cols="" class="p-1 bg-gray-300 border-gray-200" >
 					  </textarea>				
 					  <?php
 					 if(isset($_POST['gtag_id'])) {

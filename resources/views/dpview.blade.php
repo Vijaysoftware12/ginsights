@@ -49,12 +49,11 @@
     <!-- Data retreived from controller -->
     <?php 
      $data = json_decode($data, true); 
-    
-    
+   
    // dd($data['topcountries'][0]);  
      if($data != null)
      {
-    
+   
        // sleep(500); 
     ?>
     
@@ -144,7 +143,7 @@
             
             $sessionPercent =(float)  round($data['sessionPercent'],1);
             //echo $data['totalsessions'];
-            //echo $sessionPercent;
+            //echo $data['sessionPercent'];
             
             if ($totalsession > 0) {
                 $formattedTotal = $totalsession > 1000 ? number_format($totalsession / 1000, 0) . 'K' : $totalsession;
@@ -324,7 +323,8 @@
          
          //calculate session variation of total pgviews
          $newusers_variation = round((((array_sum($currentnewusers)-array_sum( $prvsnewusers))/array_sum($prvsnewusers))*100),1) ; 
-         $newusersPercent =(float) $data['newusersPercent']
+         $newusersPercent =(float) $data['newusersPercent'];
+		
          ?>
         <div id="divsessionPerc" class="ml-auto flex justify-end negative-value">
         <span class="arrow-<?php echo $newusersPercent < 0 ? 'down' : 'up'; ?>">
@@ -902,7 +902,7 @@
                 var start='{{ $startDate }}';
                 var end ='{{ $endDate }}';
 
-                console.log(start+"- "+end);
+               // console.log(start+"- "+end);
                 cb(moment(start, 'YYYY - MM - DD '), moment(end, 'YYYY - MM - DD'));               
                 function cb(start, end, ranges) {          
                 
