@@ -48,7 +48,9 @@ $(function(){
 	}
 
     $('#interval').change(function(){
-		
+		  
+    
+      
       $('#selctedInterval').val($(this).val());
 		// Remove any local storage data
     
@@ -74,38 +76,7 @@ $(function(){
        // ddate=moment().subtract(14, 'days').format("YYYY-MM-DD");
         
       
-      /*
-        switch($('#interval').val()) {
-          case '7':
-            $('#startdate').val(moment().subtract(7, 'days').format('YYYY-MM-DD'));
-            $('#enddate').val(moment().subtract(1, 'days').format('YYYY-MM-DD'));
-            break;
-          case '14':            
-            $('#startdate').val(moment().subtract(14, 'days').format('YYYY-MM-DD'));        
-            $('#enddate').val(moment().subtract(1, 'days').format('YYYY-MM-DD'));
-            break;
-          case '1':
-            $('#startdate').val(moment().subtract(1, 'days').format('YYYY-MM-DD'));
-            $('#enddate').val(moment().subtract(1, 'days').format('YYYY-MM-DD'));
-            break;
-          case '30':
-            $('#startdate').val(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-            $('#enddate').val(moment().subtract(1, 'days').format('YYYY-MM-DD'));
-            break;
-          case 'lastmonth':
-            var lastMonth = moment().subtract(1, 'month'); // Go back one month
-           
-            var startDate = lastMonth.startOf('month').format('YYYY-MM-DD'); // Set start date to 1st of last month
-            var endDate = lastMonth.endOf('month').format('YYYY-MM-DD'); // Set end date to last day of last month
-         
-            $('#startdate').val(startDate);
-            $('#enddate').val(endDate);
-            break;
-          default:
-            $('#startdate').val(moment().subtract(7, 'days').format('YYYY-MM-DD'));
-            $('#enddate').val(moment().subtract(1, 'days').format('YYYY-MM-DD'));
-            break;
-        }   */    
+      
         dataExpire();
         $.ajax({
                     type:"POST",
@@ -121,7 +92,7 @@ $(function(){
 
                     success: function(resultData_partial) {
                     //for cache storage
-                   console.log('Success2: ' + resultData_partial);
+                  // console.log('Success2: ' + resultData_partial);
                     var csrfToken = $('meta[name="csrf-token"]').attr('content');
                      // console.log (csrfToken);
                       
@@ -180,7 +151,7 @@ $(function(){
                           
 
                           success: function(data) {
-                            console.log(data);
+                          //  console.log(data);
                         
                           },
                           error: function(data){
@@ -192,7 +163,7 @@ $(function(){
 	// Remove any local storage data
   localStorage.removeItem("data_interval");
 	localStorage.removeItem("resultData");
-    localStorage.setItem("createdtime",createdtime);
+  localStorage.setItem("createdtime",createdtime);
 	localStorage.setItem("data_interval",interval);
     //console.log(createdtime);  
    
@@ -236,7 +207,7 @@ $(function(){
   //...
 
    var resultdata = JSON.parse(localStorage.getItem("resultData"));
-                     console.log(resultdata + '80' + interval);
+                   //  console.log(resultdata + '80' + interval);
 					 interval=localStorage.getItem("data_interval");
 					$('#selctedInterval').val(interval);
 					  $('#interval').val(interval);
@@ -318,8 +289,7 @@ $(function(){
                           
 
                           success: function(data) {
-							  console.log("data");
-                            console.log(data);
+							 
                         
                           },
                           error: function(data){
@@ -352,7 +322,7 @@ $(function(){
                       $('#authorizedView').css('display','none');
                       $('#unauthorizedView').css('display','block');
 					 // $('#reportsection').css('display','none');
-                      $('#loader').css('display','none');
+                      //$('#loader').css('display','none');
                       $('#interval').css('display','none');
                       $('.ggear ').css('display','none');
                       $('#fullreport').css('display','none');
@@ -375,7 +345,7 @@ $(function(){
                     //console.log(createdtime);
                     var currenttime = new Date().valueOf();
                     var elapsedtime =(currenttime - createdtime)/1000;
-                    console.log(elapsedtime);
+                  //  console.log(elapsedtime);
                     if(elapsedtime > 240){
                     localStorage.removeItem("resultData");
                     localStorage.removeItem("data_interval");
@@ -693,19 +663,8 @@ $(function(){
                     var dates =0;
                     var sessions=0;
 					 $('#authorizedView').css('display', 'block');
-                    $('#loader').css('display','none');
-
+                  //  
                       //  console.log(resultData[0]);
-					    //var pg_view_dates = resultData[0]['graphpageviews']['encodedDates'];
-						//pg_view_dates = pg_view_dates.split(",");
-             //           var pageviews = resultData[0]['graphpageviews']['encodedpageviews'];
-			  //console.log("resultData");
-                     //console.log(resultData);
-                      //var totalsessions=resultData['sessions'];
-
-                      
-                      //const totalsessions = arraySum(resultData['sessionsCurrent']['encodedSessions']);
-                    //  console.log('asdf'+resultData['sessionsCurrent']['encodedSessions']);
                       var totalsessions=(resultData['totalsessions']);
                     
                       if (totalsessions >= 1000) {
@@ -714,9 +673,9 @@ $(function(){
                       //totalsessions = Math.abs(totalsessions / 1000,1).toFixed(1);
                       var sessionPercent=resultData['sessionPercent'];
 					  //var roundedsessionPercent= Math.sign(sessionPercent) * Math.ceil(Math.abs(sessionPercent) * 10) / 10;
-					  var roundedsessionPercent= Math.round(parseFloat(sessionPercent * 10)) / 10 ;
+					 // var roundedsessionPercent= Math.round(parseFloat(sessionPercent * 10)) / 10 ;
 					 
-					console.log('sessionPercent-'+"- "+sessionPercent+" - "+resultData['sessionPercent']+" - "+roundedsessionPercent);
+				//	console.log('sessionPercent-'+"- "+sessionPercent+" - "+resultData['sessionPercent']+" - "+roundedsessionPercent);
                       var sessionpercClass=(sessionPercent < 0 )? 'negative-value' : 'positive-value';
                       var sessionpercspanClass=(sessionPercent < 0 )? 'arrow-down' : 'arrow-up';
                       var sessionpercspanColor=(sessionPercent < 0 )? 'red' : 'green';
@@ -727,7 +686,7 @@ $(function(){
                       $("#divsessionPerc").addClass(sessionpercClass);
                       $("#divsessionPerc span").addClass(sessionpercspanClass);
                       $('#divsessionPerc span').css('color', sessionpercspanColor);
-                      $('#divsessionPerc span').html(sessionpercspanSymbol + Math.abs(roundedsessionPercent)+"%");
+                      $('#divsessionPerc span').html(sessionpercspanSymbol + Math.abs(sessionPercent).toFixed(1)+"%");
                       //$("#divsessionPerc").html("");
                       //$("#divsessionPerc").prepend(Math.abs(sessionPercent)+"%");
 
@@ -743,14 +702,14 @@ $(function(){
                       var pgviewsPercentColor=(pgviewsPercent < 0 )? 'red' : 'green';
                       var pgviewsPercentSymbol=(pgviewsPercent < 0 )?  '↓' :  '↑';
 					//var roundedPgviewsPercent= Math.sign(pgviewsPercent) * Math.ceil(Math.abs(pgviewsPercent) * 10) / 10;
-					 var roundedPgviewsPercent= Math.round(parseFloat(pgviewsPercent * 10)) / 10 ;
+					// var roundedPgviewsPercent= Math.round(parseFloat(pgviewsPercent * 10)) / 10 ;
 					
-						console.log('pgviewsPercent-'+"- "+pgviewsPercent+" - "+parseFloat(resultData['pgviewsPercent'])+" - "+roundedPgviewsPercent);
+						//console.log('pgviewsPercent-'+"- "+pgviewsPercent+" - "+parseFloat(resultData['pgviewsPercent'])+" - "+roundedPgviewsPercent);
                       $("#divpgViews").html(totalpgviews);
                       $("#divpgviewPerc").addClass(pgviewsPercentClass);
                       $("#divpgviewPerc span").addClass(pgviewsPercentspanClass);
                       $('#divpgviewPerc span').css('color', pgviewsPercentColor);
-                      $('#divpgviewPerc span').html(pgviewsPercentSymbol + Math.abs(roundedPgviewsPercent)+"%");
+                      $('#divpgviewPerc span').html(pgviewsPercentSymbol + Math.abs(pgviewsPercent).toFixed(1)+"%");
                       //$('#divpgviewPerc').html("");
                      // $("#divpgviewPerc").prepend(Math.abs(pgviewsPercent)+"%");
 
@@ -763,7 +722,7 @@ $(function(){
 
                      var totalusersPercent=parseFloat(resultData['totalusersPercent']);
 					 //var roundedtotalusersPercent= Math.sign(totalusersPercent) * Math.ceil(Math.abs(totalusersPercent) * 10) / 10;
-					  var roundedtotalusersPercent=Math.round(totalusersPercent * 10) / 10 ;
+					 // var roundedtotalusersPercent=Math.round(totalusersPercent * 10) / 10 ;
                      
                      //totalusersPercent = 20.4;
                      var totalusersPercentClass=(totalusersPercent < 0) ? 'negative-value' : 'positive-value';
@@ -778,9 +737,9 @@ $(function(){
                      $("#divtotalUsersPerc span").addClass(totalusersPercentspanClass);
                      $('#divtotalUsersPerc span').css('color', totalusersPercentColor);
                     //  $("#divtotalUsersPerc").html("");
-                      $('#divtotalUsersPerc span').html(totalusersPercentSymbol + Math.abs(roundedtotalusersPercent)+"%");
+                      $('#divtotalUsersPerc span').html(totalusersPercentSymbol + Math.abs(totalusersPercent).toFixed(1)+"%");
                      // $("#divtotalUsersPerc").prepend(Math.abs(totalusersPercent)+"%");
-					console.log('totalusersPercent-'+"- "+totalusersPercent+" - "+roundedtotalusersPercent);
+					//console.log('totalusersPercent-'+"- "+totalusersPercent+" - "+roundedtotalusersPercent);
 
                       var newUsers=resultData['newusers'];
                       if (newUsers >= 1000) {
@@ -789,7 +748,7 @@ $(function(){
                       //newUsers = Math.abs(newUsers/ 1000,1).toFixed(1);
                       var newusersPercent=parseFloat(resultData['newusersPercent']);
 					  //var roundednewusersPercent= Math.sign(newusersPercent) * Math.ceil(Math.abs(newusersPercent) * 10) / 10;
-					   var roundednewusersPercent=Math.round(newusersPercent * 10) / 10;
+					  // var roundednewusersPercent=Math.round(newusersPercent * 10) / 10;
                       var newusersPercentClass=(newusersPercent < 0) ? 'negative-value' : 'positive-value';
                       var newusersPercentspanClass=(newusersPercent < 0 )? 'arrow-down' : 'arrow-up';
                       var newusersPercentColor=(newusersPercent < 0 )? 'red' : 'green';
@@ -799,8 +758,8 @@ $(function(){
                       $("#divnewUsersPerc").addClass(newusersPercentClass);
                       $("#divnewUsersPerc span").addClass(newusersPercentspanClass);
                       $('#divnewUsersPerc span').css('color', newusersPercentColor);
-                      $('#divnewUsersPerc span').html(newusersPercentSymbol + Math.abs(roundednewusersPercent)+"%");
-					  console.log('newusersPercent-'+"- "+newusersPercent+" - "+roundednewusersPercent);
+                      $('#divnewUsersPerc span').html(newusersPercentSymbol + Math.abs(newusersPercent).toFixed(1)+"%");
+					 // console.log('newusersPercent-'+"- "+newusersPercent+" - "+roundednewusersPercent);
                      // $("#divnewUsersPerc").prepend();
 //$("#divnewUsersPerc").html("");
 
@@ -826,7 +785,7 @@ $(function(){
                         var ctx = document.getElementById("myChartsp").getContext("2d");
                       //   dates = resultData['graphsessions']['encodedDates'];
 					dates=resultData['sessionsCurrent']['encodedDates'];
-					console.log(dates);
+					//console.log(dates);
                         dates = dates.split(",");
                       //  var sessions = resultData['graphsessions']['encodedSessions'];
 					var sessions =resultData['sessionsCurrent']['encodedSessions'];
@@ -843,7 +802,7 @@ $(function(){
 
                         return day + ' ' + month;
                         });
-
+                       // $('#loader').css('display','none');
 
                         window.bar1= new Chart(ctx, {
                         type: "line",
@@ -945,7 +904,7 @@ $(function(){
                        /* formattedDates.sort(function(a, b) {
                             return moment(a, 'DD/MM/YYYY').toDate() - moment(b, 'DD/MM/YYYY').toDate();
                         });*/
-                        console.log(formattedDates);
+                     //   console.log(formattedDates);
 
                     window.bar = new Chart(p_ctx, {
                         type: "line",
@@ -1009,7 +968,7 @@ $(function(){
 
                   var ctx1 = document.getElementById("newvsreturnchart").getContext("2d");
                   const visitordata = resultData['visitors']['visitors'];
-                  console.log(visitordata);
+                 // console.log(visitordata);
                   const visitors_val = [];
                   const count = [];
                   const percentages = [];
@@ -1094,7 +1053,7 @@ $(function(){
 
                var deviceCategories = resultData['deviceCategory']['deviceCategories'] ;
                var sessions = resultData['deviceCategory']['percentages'] ;
-               console.log(resultData['deviceCategory']);
+              // console.log(resultData['deviceCategory']);
               
 
 
