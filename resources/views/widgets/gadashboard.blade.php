@@ -211,6 +211,7 @@ $(function(){
 					 interval=localStorage.getItem("data_interval");
 					$('#selctedInterval').val(interval);
 					  $('#interval').val(interval);
+         
                      processData(resultdata,interval);
 					
 	
@@ -1114,7 +1115,7 @@ $(function(){
                         },
 
                     });
-
+                   // $('#loader').css('display','none');
                 }
 
 

@@ -94,6 +94,11 @@ class AnalyticsController extends Controller
     public function index(Request $request )
     {   
 
+       //dd($request['reauth']);
+        if($this->rtokenValidate()=='not valid' && ($request['reauth'])=='null'){
+            return view('ginsights::redirect');   
+
+        }
 
         if($request['gtag_id1']){
             $this->store($request);
@@ -159,8 +164,21 @@ class AnalyticsController extends Controller
         {            
 			return view('ginsights::settingsview');      
         }   
+       // $property_id=$request['selectedid'];  
+        if($request['selectedid']==null){
+        $filePath = __DIR__ . '/content/webproperty.yaml';
+        $yamlString = file_get_contents($filePath);
+        $data = Yaml::parse($yamlString);
+        if ($data) {
+            $property_id = $data["property_id"];
+        }
+         
+        
+    }
+    else{
         $property_id=$request['selectedid'];  
-      
+    }
+
         switch ($request['period']) {           
            
             case "custom":                 
@@ -450,6 +468,7 @@ class AnalyticsController extends Controller
     //the incoming startDate
     {
         $selectid=$property_id;
+
       
          if (Cache::has('dpviewdata'.$interval.$property_id)) {
            // dd($interval);

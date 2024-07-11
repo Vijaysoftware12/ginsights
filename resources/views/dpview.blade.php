@@ -3,11 +3,14 @@
 @section('content')
 
 	<header class="mb-3">       
-		  @include('statamic::partials.breadcrumb', [
-            'url' => cp_route('utilities.index'),
-            'title' => __('Utilities')
-        ])
-      
+    <nav style="display: flex; align-items: center;">
+    @include('statamic::partials.breadcrumb', [
+        'url' => cp_route('utilities.index'),
+        'title' => __('Utilities')
+    ])
+    <span style="color:gray;font-size: 13px;">&nbsp;&lt;&nbsp; </span>
+    <div style="color:gray; font-size: 13px;"> GInsights Analytics</div>
+</nav>
         <?php 
 		$baseUrl = asset('');
 		$user_role = Auth::user()->super;
@@ -199,7 +202,8 @@
             
 		
         </div>
-       	 <div class="card sm:w-full md:w-full lg:w-1/2 m-2" id="topcountries">
+        
+       	 <div class="card sm:w-full md:w-full lg:w-1/2 m-2 p-2" id="topcountries">
 		<h1><b>Top Countries</b> </h1><br>
              <table id="ctdataTable" class="stripe">
                 <thead>
@@ -618,12 +622,19 @@
 	
 	
 	var data = <?php echo json_encode($data); ?>;
+   // console.log(data);
 	var interval=0;
 	if(data!=null){
 	var interval= data.interval;
 	  processData(data,interval);
 	}
-	
+    $('#dataTable1_filter').hide();
+    $('#ctdataTable_filter').hide();
+   /* $('label[for="dataTable1"]').hide();
+    $('input[type="search"][aria-controls="dataTable1"]').hide();
+    $('label[for="ctdataTable"]').hide();
+    $('input[type="search"][aria-controls="ctdataTable"]').hide();*/
+   
 	})
 	
 	function processData(resultData,interval)
@@ -631,13 +642,13 @@
 		var dates =0;
         var sessions=0;
 		//Total Sessions data
-		var totalsessions=resultData.totalsessions;
+		var totalsessions=resultData['totalsessions'];
 		if (totalsessions >= 1000) {
             totalsessions = (totalsessions / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
 			$("#divtoSession").text(totalsessions);			
             }
 			else{
-				$("#divtoSession").text("0");
+				$("#divtoSession").text(totalsessions);
 			}
 			var sessionPercent=parseFloat(resultData.sessionPercent.replace(/,/g, ''));           
             var sessionpercClass=(sessionPercent < 0 )? 'negative-value' : 'positive-value';
@@ -651,10 +662,11 @@
 			$("#id_ses_precent").text(sessionpercspanSymbol + Math.abs(sessionPercent).toFixed(1)+"%") .css("color", sessionpercspanColor);;			
 			
 			//Total Pageviews data
-			var totalpgviews=resultData.totalpgviews;
+			var totalpgviews=resultData['totalpgviews'];
             if (totalpgviews >= 1000) {
                 totalpgviews = (totalpgviews / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
             }
+           
             var pgviewsPercent=parseFloat(resultData.pgviewsPercent.replace(/,/g, ''));
             var pgviewsPercentClass=(pgviewsPercent < 0) ? 'negative-value' : 'positive-value';
 			var pgviewsPercentspanClass=(pgviewsPercent < 0 )? 'arrow-down' : 'arrow-up';
@@ -1037,7 +1049,8 @@
             } else {
                 $tableBody.append('<tr><td colspan="2">The \'rows\' key is not present in the array.</td></tr>');
             }
-							
+         
+            if (resultData.topreferrals && resultData.topreferrals[0]) {				
 			$('#dataTable1').dataTable({
 			  lengthChange: false,
 			  fixedHeader: true,
@@ -1052,7 +1065,8 @@
 			console.log('@@@ init complete @@@');
        
 			}
-			});	
+			});
+        }
 		//Top referels End		
 		
 		//Top countries 
@@ -1077,6 +1091,8 @@
             } else {
                 $tableBody.append('<tr><td colspan="2">The \'rows\' key is not present in the array.</td></tr>');
             }
+            $('input[type="search"][aria-controls="ctdataTable"]').hide();
+            if (resultData.topcountries && resultData.topcountries[0]) {
 			$('#ctdataTable').dataTable({
 			  lengthChange: true,
 			  fixedHeader: true,
@@ -1088,18 +1104,19 @@
 			  
 			  lengthMenu: [10],
 			  initComplete: function() {
-			console.log('@@@ init complete @@@');       
+			//console.log('@@@ init complete @@@');       
 			}
 			});
+        }
 			//Top countries End
 			
 			
 			//Most Visited Pages
 			var $tableBody = $('#dataTable3 tbody');
-            if (resultData.mostvisitedpages) {
-				console.log("Mostvisitedpages");
-				console.log(resultData.mostvisitedpages);
-                $.each(resultData.mostvisitedpages, function(key, visitedpages) {
+            if (resultData['mostvisitedpages']) {
+				//console.log("Mostvisitedpages");
+				//console.log(resultData['mostvisitedpages']);
+                $.each(resultData['mostvisitedpages'], function(key, visitedpages) {
                     var i = 0;
                     while (i < visitedpages.length) {
                             var $row = $('<tr></tr>');
@@ -1113,6 +1130,7 @@
             } else {
                 $tableBody.append('<tr><td colspan="2">No data available.</td></tr>');
             }
+            if (resultData['mostvisitedpages']) {
 			$('#dataTable3').dataTable({
 			  lengthChange: true,
 			  fixedHeader: true,
@@ -1128,6 +1146,7 @@
 			
 			}
 			});
+        }
 			//Most Visited Pages End
 	}
 </script>
