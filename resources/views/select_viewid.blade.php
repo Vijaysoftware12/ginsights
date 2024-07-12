@@ -29,7 +29,8 @@
 					<input id ="selid" name="selectedid"  value="" type="hidden"/>
 									
 					<select id="view_id" name="view_id" style="width: 100%;">  
-						<option value="select">--select--</option>
+						<option value="select"  selected>--select--</option>
+						
 					<?php					
 					foreach($newIds as $key => $value)
 					{						

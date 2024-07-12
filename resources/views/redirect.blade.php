@@ -25,6 +25,13 @@
 			   </div>
 			</div> 
 		</div>
+		<script>
+			$(function(){
+
+				localStorage.removeItem('selectedValue');
+			});
+	    </script>
+
 	</body>
 
 @stop
