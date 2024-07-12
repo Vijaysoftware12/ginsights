@@ -9,7 +9,7 @@
         'title' => __('Utilities')
     ])
     <span style="color:gray;font-size: 13px;">&nbsp;&lt;&nbsp; </span>
-    <a href="/cp/utilities/analytics" style="color:gray; font-size: 13px;"> GInsights Analytics</a>
+    <a href="<?php echo env('APP_URL')?>/cp/utilities/analytics" style="color:gray; font-size: 13px;"> GInsights Analytics</a>
     <span style="color:gray;font-size: 13px;">&nbsp;&lt;&nbsp;</span>
     <div style="color:gray; font-size: 13px;">Settings</div>
 </nav>

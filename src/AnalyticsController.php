@@ -36,13 +36,13 @@ class AnalyticsController extends Controller
         // Access the refresh token from the data array             
 		if(isset($datare["refresh_token"])){
         
-            // Access the refresh token from the data array             
-            $refresh_token = $datare["refresh_token"];
-            return($refresh_token);
-            }
-            else{
-                return 'disconnected';
-            }
+        // Access the refresh token from the data array             
+		$refresh_token = $datare["refresh_token"];
+        return($refresh_token);
+        }
+        else{
+            return 'disconnected';
+        }
     }
    public function rtokenValidate(){
     $refresh_token=$this->getRefreshToken();          
