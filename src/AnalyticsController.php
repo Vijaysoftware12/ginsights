@@ -34,9 +34,15 @@ class AnalyticsController extends Controller
         // Parse the YAML string to retrieve the data
         $datare = Yaml::parse($yamlString);
         // Access the refresh token from the data array             
-		$refresh_token = $datare["refresh_token"];
-        return($refresh_token);
-
+		if(isset($datare["refresh_token"])){
+        
+            // Access the refresh token from the data array             
+            $refresh_token = $datare["refresh_token"];
+            return($refresh_token);
+            }
+            else{
+                return 'disconnected';
+            }
     }
    public function rtokenValidate(){
     $refresh_token=$this->getRefreshToken();          
@@ -107,13 +113,17 @@ class AnalyticsController extends Controller
         $this->reauth();
      }
      if(!isset($_GET['refresh_token_new'])){
-       if($this->rtokenValidate()=='not valid'){?>
+       // dd("test");
+       if($this->rtokenValidate()=='not valid'){
+       
+        ?>
             <script>
                 //alert("Please authorize your account");
             </script>
             <?php    
             return view('ginsights::redirect');   
         }
+       // return view('ginsights::redirect');  
     }
         
     //default value   
