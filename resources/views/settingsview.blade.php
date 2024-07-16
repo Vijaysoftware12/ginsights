@@ -80,7 +80,7 @@
 					Reconnect Ginsights
 				</button>
 			</a>
-				<form action="{{ route('disconnect') }}" method="post">
+				<form action="{{ route('disconnect') }}" method="post" >
 						@csrf
 				<button type="submit" class="bg-blue-700 text-white font-bold py-2 px-6 rounded">Disconnect Ginsights</button>
 				</form>

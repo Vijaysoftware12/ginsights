@@ -49,18 +49,20 @@ $(function(){
 
     $('#interval').change(function(){
 		  
-    
+    // Create and show the loading animation
+                  
+    showLoadingAnimation();
       
       $('#selctedInterval').val($(this).val());
 		// Remove any local storage data
     
     localStorage.removeItem("data_interval");
 		localStorage.removeItem("resultData");				   
-        $('#loader').css({
+        /*$('#loader').css({
         'display': 'flex',
         'justify-content': 'center',
         'align-items': 'center'
-         });
+         });*/
         //$('#loader').css('display','block');
         interval = $(this).val();
 		
@@ -100,18 +102,23 @@ $(function(){
                       processData_partial(resultData_partial,interval);
 					   $('#ginsights').css('display','block');
 					  $('#reportsection').css('display','block');
+            //document.body.removeChild(loadingElement);
+            document.body.removeChild(document.getElementById('loadingAnimation'));
+
                     },
                     error: function(data){
                       //alert('36');
 					  $('#authorizedView').css('display','none');
                       $('#unauthorizedView').css('display','block');
 					  //$('#reportsection').css('display','none');
-                      $('#loader').css('display','none');
+                    //  $('#loader').css('display','none');
 						          $('#interval').css('display','none');
 						          $('.ggear ').css('display','none');
                       $('#fullreport').css('display','none');
                       $('#accordion').css('display','none');
-                      
+                      //document.body.removeChild(loadingElement);
+                      document.body.removeChild(document.getElementById('loadingAnimation'));
+
                     }
                    });
 				   
@@ -159,26 +166,29 @@ $(function(){
                           },
 
                       }); 
-    var createdtime = new Date().valueOf();
-	// Remove any local storage data
-  localStorage.removeItem("data_interval");
-	localStorage.removeItem("resultData");
-  localStorage.setItem("createdtime",createdtime);
-	localStorage.setItem("data_interval",interval);
-    //console.log(createdtime);  
-   
-    // Store resultData in localStorage
-    localStorage.setItem("resultData", JSON.stringify(resultData));
-    var storedData='';
-    // Retrieve and parse resultData from localStorage
-     storedData = JSON.parse(localStorage.getItem("resultData"));
-	interval= JSON.parse(localStorage.getItem("data_interval"));
-	$('#interval').val(interval);
-	$('#selctedInterval').val(interval);
-    processData(JSON.parse(JSON.stringify(resultData)),interval);
+                      var createdtime = new Date().valueOf();
+                    // Remove any local storage data
+                    localStorage.removeItem("data_interval");
+                    localStorage.removeItem("resultData");
+                    localStorage.setItem("createdtime",createdtime);
+                    localStorage.setItem("data_interval",interval);
+                      //console.log(createdtime);  
+                    
+                      // Store resultData in localStorage
+                      localStorage.setItem("resultData", JSON.stringify(resultData));
+                      var storedData='';
+                      // Retrieve and parse resultData from localStorage
+                      storedData = JSON.parse(localStorage.getItem("resultData"));
+                    interval= JSON.parse(localStorage.getItem("data_interval"));
+                    $('#interval').val(interval);
+                    $('#selctedInterval').val(interval);
+                      processData(JSON.parse(JSON.stringify(resultData)),interval);
 					  
                       $('#ginsights').css('display','block');
                       $('#reportsection').css('display','block');
+                      //document.body.removeChild(loadingElement);
+                      document.body.removeChild(document.getElementById('loadingAnimation'));
+
                     },
 
                     error: function(data){
@@ -186,11 +196,13 @@ $(function(){
                       $('#authorizedView').css('display','none');
                       $('#unauthorizedView').css('display','block');
 					 // $('#reportsection').css('display','none');
-                      $('#loader').css('display','none');
+                      //$('#loader').css('display','none');
                       $('#interval').css('display','none');
                       $('.ggear ').css('display','none');
                       $('#fullreport').css('display','none');
-                      $('#accordion').css('display','none');					  
+                      $('#accordion').css('display','none');
+                     // document.body.removeChild(loadingElement);				
+                      document.body.removeChild(document.getElementById('loadingAnimation'));	  
 
                     }
                    });
@@ -238,6 +250,8 @@ $(function(){
                       processData_partial(resultData_partial,interval);
                       $('#ginsights').css('display','block');
                       $('#reportsection').css('display','block');
+                      document.body.removeChild(document.getElementById('loadingAnimation'));
+
                     },
 
                     error: function(data){
@@ -245,11 +259,13 @@ $(function(){
                       $('#authorizedView').css('display','none');
                       $('#unauthorizedView').css('display','block');
 					 // $('#reportsection').css('display','none');
-                      $('#loader').css('display','none');
+                     // $('#loader').css('display','none');
                       $('#interval').css('display','none');
                       $('.ggear ').css('display','none');
                       $('#fullreport').css('display','none');
-                      $('#accordion').css('display','none');					  
+                      $('#accordion').css('display','none');
+                      document.body.removeChild(document.getElementById('loadingAnimation'));
+					  
 
                     }
                    });
@@ -316,6 +332,8 @@ $(function(){
                       processData(JSON.parse(JSON.stringify(resultData)),interval);
                       $('#ginsights').css('display','block');
                       $('#reportsection').css('display','block');
+                      document.body.removeChild(document.getElementById('loadingAnimation'));
+
                     },
 
                     error: function(data){
@@ -327,7 +345,9 @@ $(function(){
                       $('#interval').css('display','none');
                       $('.ggear ').css('display','none');
                       $('#fullreport').css('display','none');
-                      $('#accordion').css('display','none');					  
+                      $('#accordion').css('display','none');	
+                      document.body.removeChild(document.getElementById('loadingAnimation'));
+				  
 
                     }
                    });
@@ -358,7 +378,7 @@ $(function(){
                     var dates =0;
                     var sessions=0;
 					$('#authorizedView').css('display', 'block');
-                    $('#loader').css('display','none');
+                  //  $('#loader').css('display','none');
 
                       //  console.log(resultData[0]);
 					    //var pg_view_dates = resultData[0]['graphpageviews']['encodedDates'];
@@ -1118,6 +1138,118 @@ $(function(){
                    // $('#loader').css('display','none');
                 }
 
+                function showLoadingAnimation() {
+                  // Create and show the loading animation
+                  
+                  var loadingElement = document.createElement('div');
+                    loadingElement.id = 'loadingAnimation';
+                    loadingElement.style.position = 'fixed';
+                    loadingElement.style.top = '0';
+                    loadingElement.style.left = '0';
+                    loadingElement.style.width = '100%';
+                    loadingElement.style.height = '100%';
+                    loadingElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent background
+                    loadingElement.style.display = 'flex';
+                    loadingElement.style.justifyContent = 'center';
+                    loadingElement.style.alignItems = 'center';
+                    loadingElement.style.zIndex = '9999';
+                    // Remove color and font size properties as they're not needed for a modal
+                    loadingElement.style.color = '#000000';
+                    loadingElement.style.fontSize = '40px';
+
+                    // Replace innerHTML with modal HTML
+                    loadingElement.innerHTML = `
+                        <div class="modal">
+                            <div class="modal-content">
+                          
+                           <!--<p style="font-size: 35px;background-color:#ffff;">-->
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" width="200" height="200" style="shape-rendering: auto; display: block; background: transparent;" xmlns:xlink="http://www.w3.org/1999/xlink"><g><g transform="translate(80,50)">
+                            <g transform="rotate(0)">
+                            <circle fill-opacity="1" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.875s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.875s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(71.21320343559643,71.21320343559643)">
+                            <g transform="rotate(45)">
+                            <circle fill-opacity="0.875" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.75s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.75s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(50,80)">
+                            <g transform="rotate(90)">
+                            <circle fill-opacity="0.75" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.625s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.625s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(28.786796564403577,71.21320343559643)">
+                            <g transform="rotate(135)">
+                            <circle fill-opacity="0.625" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.5s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.5s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(20,50.00000000000001)">
+                            <g transform="rotate(180)">
+                            <circle fill-opacity="0.5" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.375s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.375s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(28.78679656440357,28.786796564403577)">
+                            <g transform="rotate(225)">
+                            <circle fill-opacity="0.375" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.25s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.25s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(49.99999999999999,20)">
+                            <g transform="rotate(270)">
+                            <circle fill-opacity="0.25" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.125s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.125s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(71.21320343559643,28.78679656440357)">
+                            <g transform="rotate(315)">
+                            <circle fill-opacity="0.125" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="0s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="0s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g></g></g><!-- [ldio] generated by https://loading.io --></svg>
+
+                           <!--</p> -->  
+
+                            <div class="loading-wheel"></div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Append modal to body
+                    document.body.appendChild(loadingElement);
+
+                  
+                    // Dynamically add CSS for the rotating wheel animation
+                    var style = document.createElement('style');
+                        style.textContent = `
+                            @keyframes rotate {
+                                0% { transform: rotate(0deg); }
+                                100% { transform: rotate(360deg); }
+                            }
+                            .loading-wheel {
+                            
+                    border: none; /* Remove borders */
+                    color: white; /* White text */
+                    padding: 12px 24px; /* Some padding */
+                    font-size: 16px; /* Set a font-size */
+                            }
+                        `;
+                        document.head.appendChild(style);
+                }
+
 
     </script>
 
@@ -1163,15 +1295,72 @@ $(function(){
       
 			<!-- SVG content (e.g., shapes, paths, etc.) goes here -->
 		  <div id="loader" class="" style="display: flex; justify-content: center; align-items: center; ">
-			  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100" height="100">
-			  <linearGradient id="a11">
+			 <!--  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100" height="100">
+			 <linearGradient id="a11">
 				<stop offset="0" stop-color="#FF156D" stop-opacity="0"></stop>
 				<stop offset="1" stop-color="#FF156D"></stop>
 			  </linearGradient>
 			  <circle fill="none" stroke="url(#a11)" stroke-width="8" stroke-linecap="round" stroke-dasharray="0 22 0 22 0 22 0 22 0 360" cx="100" cy="100" r="35" transform-origin="center">
 				<animateTransform type="rotate" attributeName="transform" calcMode="discrete" dur="2" values="360;324;288;252;216;180;144;108;72;36" repeatCount="indefinite"></animateTransform>
 			  </circle>
-			  </svg>
+			  </svg>-->
+      <!--- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" width="200" height="200" style="shape-rendering: auto; display: block; background: transparent;" xmlns:xlink="http://www.w3.org/1999/xlink"><g><g transform="translate(80,50)">
+<g transform="rotate(0)">
+<circle fill-opacity="1" fill="#1065a6" r="6" cy="0" cx="0">
+  <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.875s" type="scale" attributeName="transform"></animateTransform>
+  <animate begin="-0.875s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+</circle>
+</g>
+</g><g transform="translate(71.21320343559643,71.21320343559643)">
+<g transform="rotate(45)">
+<circle fill-opacity="0.875" fill="#1065a6" r="6" cy="0" cx="0">
+  <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.75s" type="scale" attributeName="transform"></animateTransform>
+  <animate begin="-0.75s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+</circle>
+</g>
+</g><g transform="translate(50,80)">
+<g transform="rotate(90)">
+<circle fill-opacity="0.75" fill="#1065a6" r="6" cy="0" cx="0">
+  <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.625s" type="scale" attributeName="transform"></animateTransform>
+  <animate begin="-0.625s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+</circle>
+</g>
+</g><g transform="translate(28.786796564403577,71.21320343559643)">
+<g transform="rotate(135)">
+<circle fill-opacity="0.625" fill="#1065a6" r="6" cy="0" cx="0">
+  <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.5s" type="scale" attributeName="transform"></animateTransform>
+  <animate begin="-0.5s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+</circle>
+</g>
+</g><g transform="translate(20,50.00000000000001)">
+<g transform="rotate(180)">
+<circle fill-opacity="0.5" fill="#1065a6" r="6" cy="0" cx="0">
+  <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.375s" type="scale" attributeName="transform"></animateTransform>
+  <animate begin="-0.375s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+</circle>
+</g>
+</g><g transform="translate(28.78679656440357,28.786796564403577)">
+<g transform="rotate(225)">
+<circle fill-opacity="0.375" fill="#1065a6" r="6" cy="0" cx="0">
+  <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.25s" type="scale" attributeName="transform"></animateTransform>
+  <animate begin="-0.25s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+</circle>
+</g>
+</g><g transform="translate(49.99999999999999,20)">
+<g transform="rotate(270)">
+<circle fill-opacity="0.25" fill="#1065a6" r="6" cy="0" cx="0">
+  <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.125s" type="scale" attributeName="transform"></animateTransform>
+  <animate begin="-0.125s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+</circle>
+</g>
+</g><g transform="translate(71.21320343559643,28.78679656440357)">
+<g transform="rotate(315)">
+<circle fill-opacity="0.125" fill="#1065a6" r="6" cy="0" cx="0">
+  <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="0s" type="scale" attributeName="transform"></animateTransform>
+  <animate begin="0s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+</circle>
+</g>
+</g><g></g></g>  </svg>-->
 		  </div>
 
 		 <div id="authorizedView" style="display:none">
@@ -1217,8 +1406,134 @@ $(function(){
 
 				<script>
 				   $(document).ready(function() {
+            showLoadingAnimation();
+            /*setTimeout(function() {
+        // Example: hide loading animation after some simulated initialization
+        document.body.removeChild(document.getElementById('loadingAnimation'));
+    }, 20000); */// Replace with actual initialization time or logic
+           
 						$( "#tabs" ).tabs();
             $( "#accordion" ).accordion();
+
+
+            $('#fullreport').click(function(){
+               // Create and show the loading animation
+                  
+               var loadingElement = document.createElement('div');
+                    loadingElement.id = 'loadingAnimation';
+                    loadingElement.style.position = 'fixed';
+                    loadingElement.style.top = '0';
+                    loadingElement.style.left = '0';
+                    loadingElement.style.width = '100%';
+                    loadingElement.style.height = '100%';
+                    loadingElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent background
+                    loadingElement.style.display = 'flex';
+                    loadingElement.style.justifyContent = 'center';
+                    loadingElement.style.alignItems = 'center';
+                    loadingElement.style.zIndex = '9999';
+                    // Remove color and font size properties as they're not needed for a modal
+                    loadingElement.style.color = '#000000';
+                    loadingElement.style.fontSize = '40px';
+
+                    // Replace innerHTML with modal HTML
+                    loadingElement.innerHTML = `
+                        <div class="modal">
+                            <div class="modal-content">
+                          
+                           <!--<p style="font-size: 35px;background-color:#ffff;">-->
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" width="200" height="200" style="shape-rendering: auto; display: block; background: transparent;" xmlns:xlink="http://www.w3.org/1999/xlink"><g><g transform="translate(80,50)">
+                            <g transform="rotate(0)">
+                            <circle fill-opacity="1" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.875s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.875s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(71.21320343559643,71.21320343559643)">
+                            <g transform="rotate(45)">
+                            <circle fill-opacity="0.875" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.75s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.75s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(50,80)">
+                            <g transform="rotate(90)">
+                            <circle fill-opacity="0.75" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.625s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.625s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(28.786796564403577,71.21320343559643)">
+                            <g transform="rotate(135)">
+                            <circle fill-opacity="0.625" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.5s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.5s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(20,50.00000000000001)">
+                            <g transform="rotate(180)">
+                            <circle fill-opacity="0.5" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.375s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.375s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(28.78679656440357,28.786796564403577)">
+                            <g transform="rotate(225)">
+                            <circle fill-opacity="0.375" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.25s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.25s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(49.99999999999999,20)">
+                            <g transform="rotate(270)">
+                            <circle fill-opacity="0.25" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="-0.125s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="-0.125s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g transform="translate(71.21320343559643,28.78679656440357)">
+                            <g transform="rotate(315)">
+                            <circle fill-opacity="0.125" fill="#1065a6" r="6" cy="0" cx="0">
+                            <animateTransform repeatCount="indefinite" dur="1s" keyTimes="0;1" values="1.5 1.5;1 1" begin="0s" type="scale" attributeName="transform"></animateTransform>
+                            <animate begin="0s" values="1;0" repeatCount="indefinite" dur="1s" keyTimes="0;1" attributeName="fill-opacity"></animate>
+                            </circle>
+                            </g>
+                            </g><g></g></g><!-- [ldio] generated by https://loading.io --></svg>
+
+                           <!--</p> -->  
+
+                            <div class="loading-wheel"></div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Append modal to body
+                    document.body.appendChild(loadingElement);
+
+                  
+                    // Dynamically add CSS for the rotating wheel animation
+                    var style = document.createElement('style');
+                        style.textContent = `
+                            @keyframes rotate {
+                                0% { transform: rotate(0deg); }
+                                100% { transform: rotate(360deg); }
+                            }
+                            .loading-wheel {
+                            
+                    border: none; /* Remove borders */
+                    color: white; /* White text */
+                    padding: 12px 24px; /* Some padding */
+                    font-size: 16px; /* Set a font-size */
+                            }
+                        `;
+                        document.head.appendChild(style);
+
+            });
+
+
+
+
+
+
 					});
 				</script>
 
