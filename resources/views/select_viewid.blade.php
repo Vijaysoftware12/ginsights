@@ -114,7 +114,12 @@
 						$('#validationMessage').css('color', 'red'); // Example styling
 
 						return false;
-					}
+                        
+                        }
+                        else {
+                        // Hide the validation message if the selection is valid
+                        $('#validationMessage').text('');
+                         }
 
                     // Create and show the loading animation
                   

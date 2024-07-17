@@ -1407,10 +1407,10 @@ $(function(){
 				<script>
 				   $(document).ready(function() {
             showLoadingAnimation();
-            /*setTimeout(function() {
+            setTimeout(function() {
         // Example: hide loading animation after some simulated initialization
         document.body.removeChild(document.getElementById('loadingAnimation'));
-    }, 20000); */// Replace with actual initialization time or logic
+    }, 20000); // Replace with actual initialization time or logic
            
 						$( "#tabs" ).tabs();
             $( "#accordion" ).accordion();
