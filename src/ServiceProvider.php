@@ -151,7 +151,7 @@ class ServiceProvider extends AddonServiceProvider
             );
 
             foreach ($items as $item) {
-                chmod($item, 0777); // ugo+rw equivalent
+                chmod($item, 0775); // ugo+rw equivalent
             }
         }
         chmod($path, 0777); // ugo+rw equivalent
