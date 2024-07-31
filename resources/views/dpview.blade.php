@@ -3,13 +3,15 @@
 @section('content')
 
 	<header class="mb-3">       
-    <nav style="display: flex; align-items: center;">
+    <nav class="nav_style">	
     @include('statamic::partials.breadcrumb', [
         'url' => cp_route('utilities.index'),
         'title' => __('Utilities')
     ])
-    <span style="color:gray;font-size: 13px;">&nbsp;&lt;&nbsp; </span>
-    <div style="color:gray; font-size: 13px;"> GInsights Analytics</div>
+    <span class="breadcrumb" >&nbsp;&lt;&nbsp; </span>
+    <div class="breadcrumb" > GInsights Analytics</div>
+	
+	
 </nav>
         <?php 
 		$baseUrl = asset('');
@@ -42,10 +44,12 @@
     
     <?php  
           use Illuminate\Support\Str;
-    ?>            
+    ?>  
+    
 	</header>    
 	
     <body> 
+	
     <!-- Data retreived from controller -->
     <?php 
      $data = json_decode($data, true);      
@@ -64,7 +68,7 @@
 	    <div class="card ginsigts-con" id=""> 
        
 		  <!-- Newly added -->         
-		     <div class="ginsights-calendar mx-0" id="calendar" style="">
+		     <div class="ginsights-calendar mx-0" id="calendar" >
                 <label  id="dateLabel" class="px-2  "for="datepicker"><h2>Select date:</h2></label>  
                 <form  id="dateForm" action="<?php env('APP_URL')?>" method="post" >
                     @csrf                
@@ -75,7 +79,7 @@
                     <input type="hidden" class="datepicker" id="datepicker2" name="dp2" value="{{$endDate}}">
                     <input type="hidden" class="" id="drange" name="drange" value="">
                   
-                        <div id="reportrange" class="d-flex align-items: center;" name ="rrange" style="background: #fff; cursor: pointer; padding: 7px 10px; border: 1px solid #ccc; width: 100%">
+                        <div id="reportrange" class="daterange d-flex align-items: center;" name ="rrange">
                         <i class="fa fa-calendar"></i>&nbsp;
                         <span></span> <i class="fa fa-caret-down"></i>                        
                         </div>
@@ -143,50 +147,42 @@
         </div>
 		</div>    
    
-      <div id="tabs">
-        <ul>
-            <li> <a href="#tabs-1">Sessions </a></li>
-            <li><a href="#tabs-2">Pageviews</a></li>
-        </ul>
-      <div id="tabs-1">
-      <div class=" row card mt-2 mb-2">     
-      <h2><b><i class='fa fa-user' ></i>&nbsp; Sessions </b></h2><br> 
-      <div class="card flex" id="card2"> 
-       <canvas id="myChartsp" style="width:800px; height:300px;max-width:1200px;"> </canvas>
-              
-                </div>
-
-        </div>    
+    <div id="tabs" class="card"> 
+	
+	<h1><b> Page Views, Sessions, Unique visitors chart</b></h1><br>
+	<canvas id="myChartsp" class="detail_graph" > </canvas>	
     </div>
-    <div id="tabs-2">
-        <div class=" row card mt-2 mb-2">     
-            <h2><b> <i class='fas fa-eye'></i>&nbsp; Pageviews </b></h2><br> 
-        <div class="card flex" id="card4"> 
-		<canvas id="myChartpv" style="width:800px; height:300px;max-width:1200px;"> </canvas>
-         </div>    
-        </div>
-    </div>
-    </div>
-
    
-    <div class="row card-deck flex mt-2" id="top_referrals">             
-        <div class="card sm:w-full md:w-full lg:w-1/2 m-2" id="card7">
+    <div class="row card-deck flex mt-2" id="top_referrals"> 		
+        <div class="card sm:w-full md:w-full lg:w-1/2 m-2 p-2" id="card7">	
+		
         <?php  
 		echo '<h1><b>Top Devices </b></h1><br>'; 
 		?>
           <canvas id="myChart" width="" height=""></canvas>
           </div> 
-           
-          <div class="card sm:w-full md:w-full lg:w-1/2 m-2 " id="new_returning">
+          
+          <div class="card sm:w-full md:w-full lg:w-1/2 m-2 p-2" id="new_returning">
+		 
             <?php 
-				echo '<h1><b>New Vs Returning visitors </b></h1><br>';
+				echo '<h1><b>New vs Returning visitors </b></h1><br>';
             ?>         
-          <canvas id="newvsreturnchart" class= "chart-styles" style=""></canvas>         
+          <canvas id="newvsreturnchart" class= "chart-styles" ></canvas>         
           </div> 
-      </div>  
+      </div> 
+
+<div class="row mt-2">     
+    <div class="card p-2" id="average_duration"> 
+	<h1><b> Average Session Duration </b></h1><br>
+	<div class="row  fullwidth"  id="chartContainer">
+	<canvas id="myChartaverage" class="detail_graph" > </canvas>
+	</div>
+		 
+    </div>
+	</div>	  
     
         <div class="row card-deck flex mt-2">
-        <div class="card sm:w-full md:w-full lg:w-1/2 m-2 p-2" id="card8">
+        <div class="card sm:w-full md:w-full lg:w-1/2 m-2 p-2" id="card8">		
         <h1><b>Top Referrals</b> </h1><br>
             <table id="dataTable1" class="stripe">
                 <thead>
@@ -204,6 +200,7 @@
         </div>
         
        	 <div class="card sm:w-full md:w-full lg:w-1/2 m-2 p-2" id="topcountries">
+		
 		<h1><b>Top Countries</b> </h1><br>
              <table id="ctdataTable" class="stripe">
                 <thead>
@@ -219,8 +216,9 @@
 			</div>	
         </div>
 
-        <div class="row mt-2">     
+        <div class="row mt-2 pdfpagebreak" >     
         <div class="card " id="most_visited_pages"> 
+		<div id="new_page" >
             <h1><b> Most Visited Pages</b></h1><br>
             <table id="dataTable3" class="stripe">
     <thead>
@@ -250,7 +248,7 @@
 	    <div class="card ginsigts-con" id=""> 
        
 		  <!-- Newly added -->         
-		     <div class="ginsights-calendar mx-0" id="calendar" style="">
+		     <div class="ginsights-calendar mx-0" id="calendar" >
                 <label  id="dateLabel" class="px-2  "for="datepicker"><h2>Select date:</h2></label>  
                 <form  id="dateForm" action="<?php env('APP_URL')?>" method="post" >
                     @csrf                
@@ -261,7 +259,7 @@
                     <input type="hidden" class="datepicker" id="datepicker2" name="dp2" value="{{$endDate}}">
                     <input type="hidden" class="" id="drange" name="drange" value="">
                   
-                        <div id="reportrange" class="d-flex align-items: center;" name ="rrange" style="background: #fff; cursor: pointer; padding: 7px 10px; border: 1px solid #ccc; width: 100%">
+                        <div id="reportrange" class="daterange d-flex align-items: center;" name ="rrange" >
                         <i class="fa fa-calendar"></i>&nbsp;
                         <span></span> <i class="fa fa-caret-down"></i>                        
                         </div>
@@ -475,12 +473,19 @@
                
 			}
             $(function(){
-					$('#pdfgen').click(function(){
+					$('#pdfgen').click(function(){					
 					$('#subbtn').addClass('hidediv');
                     $('#reportrange').addClass('hidediv');
                     $('#dateLabel').addClass('hidediv');
-					$(this).addClass('hidediv');	
-                   
+					$(this).addClass('hidediv');
+                    
+                      // Hide DataTable pagination
+                    $('#dataTable3_paginate').hide();
+                    $('#dataTable3_info').hide(); // Hide summary text
+                    $('#dataTable3_filter').hide(); 
+                    $('#dataTable3_length').hide();
+                    
+                    
                      // Create and show the loading animation
                     var loadingElement = document.createElement('div');
                     loadingElement.id = 'loadingAnimation';
@@ -538,6 +543,7 @@
                             headerElement.style.fontWeight = 'bold';  
                             headerElement.style.fontSize = '17px';
                             headerElement.style.visibility = 'hidden';   
+                            
                             // Insert the header element at the top of the content
                             element.style.position = 'relative';         // Ensure the parent element is positioned relatively
                             element.appendChild(headerElement);
@@ -591,7 +597,20 @@
                             hrElement.style.border = '1px solid #ccc'; // Adjust the styling as needed
                             element.appendChild(hrElement);
 
-                            
+                            // Create a vertical line
+                            var verticalLines = [];
+                            [250, 500, 755].forEach(left => {
+                                var verticalLineElement = document.createElement('div');
+                                verticalLineElement.style.position = 'absolute';
+                                verticalLineElement.style.top = '65px';
+                                verticalLineElement.style.left = `${left}px`;
+                                verticalLineElement.style.height = '180px';
+                                verticalLineElement.style.borderLeft = '1px solid #ccc';
+                                verticalLineElement.style.margin = '10px 0';
+                                element.appendChild(verticalLineElement);
+                                verticalLines.push(verticalLineElement);
+                            });
+                                                
 
 
 						var opt = {
@@ -599,14 +618,18 @@
 						  filename:     dateTimeString,
 						  image:        { type: 'jpeg', quality: 0.98 },
                           html2canvas:  { scale: 2 },						 
-						  jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
-        
+						  jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape', putTotalPages: true,compress: true},
+                          //pagebreak: { mode: 'avoid-all', before: '#page2el' } // Ensure there's a new page for certain elements
+                         
 						};
+                        
+						
                         // Show the header element before generating the PDF
                         headerElement.style.visibility = 'visible';
                         baseUrlElement.style.visibility = 'visible';
                         dateRangeElement.style.visibility = 'visible';
                         hrElement.style.visibility = 'visible';
+                        verticalLines.forEach(line => line.style.visibility = 'visible');
 
                         function disableClicks(element1) {
                         const clickableElements = element1.querySelectorAll('a');
@@ -638,15 +661,38 @@
 						// New Promise-based usage:
 						//html2pdf().set(opt).from(element).save();	
 
-                        html2pdf().set(opt).from(element).save().then(() => {
+                      //  html2pdf().set(opt).from(element).save().then(() => {
+                        html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
+                        var totalPages = pdf.internal.getNumberOfPages();
+
+                        for (var i = 1; i <= totalPages; i++) {
+                            pdf.setPage(i);
+                           // var footerText = String(i);
+                            var footerText = 'Page ' + String(i) + ' of ' + String(totalPages);
+                            pdf.setFontSize(10); // Set the font size for the footer
+                            var pageHeight = pdf.internal.pageSize.getHeight();
+                            var pageWidth = pdf.internal.pageSize.getWidth();
+                            pdf.text(footerText, pageWidth - 0.2, pageHeight - 0.1, { align: 'right' });
+                            //pdf.text(footerText, pdf.internal.pageSize.getWidth() - 1, pageHeight - 0.5, { align: 'right' });
+                        }
+                    }).save().then(() => {
+                           
                         enableClicks(element);
                         headerElement.style.visibility = 'hidden';
                         baseUrlElement.style.visibility = 'hidden';
                         dateRangeElement.style.visibility = 'hidden';
                         hrElement.style.visibility = 'hidden';
+                        verticalLines.forEach(line => line.style.visibility = 'hidden');
 
                            // Re-add the removed tab link
                            inactiveTabLink.appendTo('#tabs ul');
+
+                             // Show DataTable pagination
+                            $('#dataTable3_paginate').show();
+                            $('#dataTable3_info').show(); // Show summary text
+                            $('#dataTable3_filter').show(); 
+                            $('#dataTable3_length').show();
+                            
 
 
                         // Remove the header element after generating the PDF
@@ -655,9 +701,11 @@
                             element.removeChild(dateRangeElement);
                             element.removeChild(hrElement);
 
+                            
                              // Hide and remove the loading animation
                             document.body.removeChild(loadingElement);
                         }, 0);	
+					
 						setTimeout(showdiv,1);					
 						
 					});
@@ -699,6 +747,7 @@
 	
 	function processData(resultData,interval)
     {	
+	console.log(resultData);
 		var dates =0;
         var sessions=0;
 		//Total Sessions data
@@ -777,7 +826,7 @@
             window.bar1.destroy();
             var s_canvas = document.getElementById('myChartsp');
 			s_canvas.width = Math.min(1200, 800); // Set width to a maximum of 1200px
-			s_canvas.height = Math.min(200, 300);
+			s_canvas.height = Math.min(200, 400);
             }
 
             var ctx = document.getElementById("myChartsp").getContext("2d");
@@ -797,7 +846,7 @@
 			return day + ' ' + month;
              });
 
-            window.bar1= new Chart(ctx, {
+            /*window.bar1= new Chart(ctx, {
                 type: "line",
                 data: {
                     labels: formattedDates,
@@ -816,7 +865,7 @@
                               labels: {
                                 onClick(e, legendItem, legend) {
                                   // Prevent the default behavior of the legend item click
-                                  e.stopPropagation();
+                                 // e.stopPropagation();
                                 }
                               }
                             }
@@ -851,7 +900,7 @@
                             legend: {
                                 onClick(e, legendItem, legend) {
                                   // Prevent the default behavior of the legend item click
-                                  e.stopPropagation();
+                                 // e.stopPropagation();
                                 }
                             }
 
@@ -859,7 +908,7 @@
 
                         });
 						
-			//Sessions graph End			
+			//Sessions graph End*/			
 			
 			
 			//chart for pageviews
@@ -870,7 +919,9 @@
             canvas.height = Math.min(200, 200); // Set height to a maximum of 200px
             }
 
-            var p_ctx = document.getElementById("myChartpv").getContext("2d");pg_view_dates = resultData['pageviewsCurrent']['encodedDates'];            pg_view_dates = pg_view_dates.split(",");
+            //var p_ctx = document.getElementById("myChartpv").getContext("2d");
+			pg_view_dates = resultData['pageviewsCurrent']['encodedDates'];          
+            pg_view_dates = pg_view_dates.split(",");
 			var pageviews = resultData['pageviewsCurrent']['encodedpageviews'];
 			pageviews = pageviews.replaceAll(/\"/g,'')
             pageviews = pageviews.substring(1, pageviews.length-1);
@@ -885,7 +936,7 @@
             });
 			//console.log(formattedDates);
 
-            window.bar = new Chart(p_ctx, {
+           /* window.bar = new Chart(p_ctx, {
                 type: "line",
                     data: {
                         labels: formattedDates,
@@ -929,12 +980,259 @@
                           legend: {
                                 onClick(e, legendItem, legend) {
                                   // Prevent the default behavior of the legend item click
-                                  e.stopPropagation();
+                                 // e.stopPropagation();
                                 }
                             }
                         }
                         });
-			//chart for pageviews End
+			//chart for pageviews End*/
+			
+			//data for unique users
+					
+						dates=resultData['uniqueusersCurrent']['encodedDates'];
+                        dates = dates.split(",");
+						//  var sessions = resultData['graphsessions']['encodedSessions'];
+						var uniqueusers =resultData['uniqueusersCurrent']['encodedUsers'];
+						//console.log('309' + sessions);
+                        uniqueusers = uniqueusers.replaceAll(/\"/g,'')
+                        var uniqueusers = uniqueusers.substring(1, uniqueusers.length-1);
+                        uniqueusers = uniqueusers.split(",");
+
+                        // Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
+                        var formattedDates = dates.map(function(date) {
+                        const momentDate = moment(date, 'YYYY/MM/DD');
+                        const day = momentDate.format('D'); // Day of the month without leading zero
+                        const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
+
+                        return day + ' ' + month;
+                        });
+
+					//data for unique users end
+					
+	//All in one graph						
+	window.bar1 = new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: formattedDates,
+        datasets: [
+            {
+                label: "Pageviews ",
+                data: pageviews,
+                borderColor: "green",
+                fill: false,
+            },
+			{
+                label: "Sessions",
+                data: sessions,
+                borderColor: "blue",
+                fill: false,
+            },
+            {
+                label: "Unique Visitors",
+                data: uniqueusers, 
+                borderColor: "red",
+                fill: false,
+            }
+        ]
+    },
+    options: {
+        plugins: {
+            legend: {
+                labels: {
+                    onClick(e, legendItem, legend) {
+                        // Prevent the default behavior of the legend item click
+                        //e.stopPropagation();
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                type: 'time',
+                time: {
+                    parser: 'DD/MM/YYYY',
+                    tooltipFormat: 'DD/MM/YYYY',
+                    unit: 'day',
+                    displayFormats: {
+                        day: 'DD/MM/YYYY'
+                    }
+                },
+                ticks: {
+                    maxTicksLimit: 10
+                }
+            },
+            y: {
+                display: true,
+                title: {
+                    display: true,
+                    text: "Count"
+                },
+                ticks: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            }
+        },
+        legend: {
+            onClick(e, legendItem, legend) {
+                // Prevent the default behavior of the legend item click
+                //e.stopPropagation();
+            }
+        }
+    }
+});
+
+						
+						//All in one graph ends
+					
+		//data for Average duration
+		if(window.bar != undefined) {
+            window.bar.destroy();
+            var canvas = document.getElementById('myChartaverage');
+            canvas.width = Math.min(1200, 600); // Set width to a maximum of 1200px
+            canvas.height = Math.min(200, 200); // Set height to a maximum of 200px
+            }
+		var a_ctx = document.getElementById("myChartaverage").getContext("2d");	
+        
+			dates=resultData['averageSessionCurrent']['encodedDates'];
+                        dates = dates.split(",");						
+						//var averagesessions =resultData['averageSessionCurrent']['encodedAverage']
+						
+                       // averagesessions = averagesessions.replaceAll(/\"/g,'')
+                       // var averagesessions = averagesessions.substring(1, averagesessions.length-1);
+                       // averagesessions = averagesessions.split(",");
+						//let averagesessions_formatted = averagesessions.map(session => parseFloat(session).toFixed(2));
+						
+                        // Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
+                        var formattedDates = dates.map(function(date) {
+                        const momentDate = moment(date, 'YYYY/MM/DD');
+                        const day = momentDate.format('D'); // Day of the month without leading zero
+                        const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
+                        return day + ' ' + month;
+                        });
+						
+						 dates = JSON.parse(resultData['averageSessionCurrent']['encodedDates']);
+						 const averageSessions =JSON.parse( resultData['averageSessionCurrent']['encodedAverage']);;
+			var averageMinutes = averageSessions.map(timeToMinutes);			
+					// Parse each element and convert it to the desired format
+					var formattedTimes = averageMinutes.map(formatTime);			
+					//data for Average duration end
+				console.log(formattedTimes);
+				// Function to adjust the canvas height dynamically
+        function adjustChartHeight() {
+            var chartContainer  = document.getElementById('chartContainer');
+            var canvas = document.getElementById('myChartaverage');
+            // Adjust the canvas height based on the container height
+            canvas.height = chartContainer.clientHeight;
+        }
+
+        // Call the function to set the initial height
+        adjustChartHeight();
+        if( (JSON.parse(resultData.averageSessionCurrent.encodedAverage)).length!==0 && (JSON.parse(resultData.averageSessionCurrent.encodedDates)).length!==0) {				
+            
+            $("#myChartaverage").removeClass("hidediv");
+            $("#myChartaverage").addClass("showdiv");
+            window.avg= new Chart(a_ctx, {
+                type: "line",
+                data: {
+                    labels: formattedDates,
+                    datasets: [                                
+					{
+						label: 'Average Session Duration (minutes)',
+						data: formattedTimes, 
+						borderColor: "orange",
+						fill: false,
+					}
+                    ]
+                    },
+					options: {
+                tooltips: {
+                    callbacks: {
+                        // Customize the tooltip label
+                        label: function(tooltipItem, data) {
+                            return 'Average Session Duration (minutes): '+tooltipItem.yLabel.toFixed(2); // Format with 2 decimal places
+                        }
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            // Customize the y-axis label format
+                            callback: function(value, index, values) {
+                                return value.toFixed(2); // Format with 2 decimal places
+                            }
+                        }
+                    }]
+                },
+        legend: {
+            onClick(e, legendItem, legend) {
+                // Prevent the default behavior of the legend item click
+               // e.stopPropagation();
+            }
+        }
+				}
+                   /* options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						 hover: {
+							mode: null  // Disable hover interaction
+						},
+                        plugins: {
+                            legend: {
+                              labels: {
+                                onClick(e, legendItem, legend) {
+                                  // Prevent the default behavior of the legend item click
+                                  //e.stopPropagation();
+                                }
+                              }
+                            }, afterRender: function(chart) {
+                        // Ensure the canvas is properly referenced
+                        if (chart.canvas) {
+                            var chartHeightavg = chart.canvas.clientHeight;
+                            chart.canvas.style.height = chartHeightavg + 'px';
+                        }
+                    }
+                          },
+                            scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                parser: 'DD/MM/YYYY',
+                                tooltipFormat: 'DD/MM/YYYY',
+                                unit: 'day',
+                                displayFormats: {
+                                    day: 'DD/MM/YYYY'
+                                }
+                                }
+                               
+                            },
+							 y: {                    
+						title: {
+                        display: true,
+                        text: 'Average Session Time (Minutes)'
+                    }
+                },
+                            },
+                            
+
+                        }*/
+            
+                        });
+						
+                    }
+                    else{	  					
+                        $("#myChartaverage").removeClass("showdiv");
+                        $("#myChartaverage").addClass("hidediv");
+                        document.getElementById('chartContainer').textContent="No Data Available";
+						 document.getElementById('chartContainer').style.height = '50px'; 
+                        
+                    }
+			//Average Duration graph End
+			
+			// Optional: Adjust height on window resize
+        window.addEventListener('resize', adjustChartHeight);		
+						
+			
 						
 			
 			//Device Category chart
@@ -969,7 +1267,7 @@
                                 position: "right",
                                 onClick(e, legendItem, legend) {
                                   // Prevent the default behavior of the legend item click
-                                  e.stopPropagation();
+                                 // e.stopPropagation();
                                 },
                                 labels: {
                                 generateLabels: (chart) => {
@@ -1025,12 +1323,14 @@
                 const visitors_val = [];
                 const count = [];
                 const percentages = [];
+				if (Array.isArray(visitordata) && visitordata.length > 0) {
                 for (const visitor of visitordata) {
                 if (visitor.visitorsvalue && visitor.visitorsvalue !== '(not set)') {
                 visitors_val.push(visitor.visitorsvalue);
                 percentages.push(visitor.percentages);
                 }
                 }
+				}
                   
                 window.visitor = new Chart(ctx1, {
                     type: "doughnut",
@@ -1049,7 +1349,7 @@
                                 position: "right",
                                 onClick(e, legendItem, legend) {
                                   // Prevent the default behavior of the legend item click
-                                  e.stopPropagation();
+                                  //e.stopPropagation();
                                 },
                                 labels: {
                                 generateLabels: (chart) => {
@@ -1100,7 +1400,7 @@
                 $.each(resultData.topreferrals[0], function(index, entry) {
                     if (count_ref < 10) {
                         var $row = $('<tr></tr>');
-                        $row.append('<td><i>' + $('<div>').text(entry.referrer).html() + '</i></td>');
+                        $row.append('<td>' + $('<div>').text(entry.referrer).html() + '</td>');
                         $row.append('<td align="center">' + $('<div>').text(entry.sessions).html() + '</td>');
                         $tableBody.append($row);
                         count_ref++;
@@ -1140,7 +1440,7 @@
                         if (count_cnt < 10) {
 							if(entry.topcountries!=""){
                             var $row = $('<tr></tr>');
-                            $row.append('<td><i>' + $('<div>').text(entry.topcountries).html() + '</i></td>');
+                            $row.append('<td>' + $('<div>').text(entry.topcountries).html() + '</td>');
                             $row.append('<td align="center">' + $('<div>').text(entry.totalusers).html() + '</td>');
                             $tableBody.append($row);
                             count_cnt++;
@@ -1178,13 +1478,19 @@
 				//console.log(resultData['mostvisitedpages']);
                 $.each(resultData['mostvisitedpages'], function(key, visitedpages) {
                     var i = 0;
+                    var rowCount = 0;
                     while (i < visitedpages.length) {
                             var $row = $('<tr></tr>');
-                            $row.append('<td><i>' + $('<div>').text(visitedpages[i].pageTitle).html() + '&nbsp</i></td>');
+                            $row.append('<td>' + $('<div>').text(visitedpages[i].pageTitle).html() + '&nbsp</td>');
                             $row.append('<td align="center"><i>' + $('<div>').text(visitedpages[i].pageviews).html() + '</i></td>');
                             $tableBody.append($row);
+                              // Add page break class if rowCount exceeds 20
+                            if (rowCount % 15 === 0 && rowCount > 0) {
+                                $row.addClass('pdfpagebreak');
+                            }
                         
                         i++;
+                        rowCount++;
                     }
                 });
             } else {
@@ -1208,6 +1514,38 @@
 			});
         }
 			//Most Visited Pages End
+			// Convert time strings to total minutes
+     function timeToMinutes(timeStr) {
+        var parts = timeStr.split(':').map(Number);
+        if (parts.length === 2) {  // MM:SS format				
+            return parts[0] + parts[1]/60 ;
+			
+        } else if (parts.length === 3) {  // HH:MM:SS format		
+            return parts[0] * 60 + parts[1] + parts[2]/60 ;
+        }
+        return 0;
+    }
+	
+	// Function to convert minutes to a formatted time string
+function formatTime(minutes) {
+    var totalSeconds = minutes * 60;
+    var hours = (Math.floor(totalSeconds / 3600)).toFixed(2);
+    var remainingSeconds = totalSeconds % 3600;
+    var mins = Math.floor(remainingSeconds / 60);
+    var seconds = Math.round(remainingSeconds % 60);
+
+   if (hours > 0) {
+	   return ((hours*60)+mins)+"."+seconds;
+    } else {
+			if((seconds.toString().replace(/\D/g, '').length)==1){				
+				 return mins+".0"+seconds;
+			}
+			else{
+			
+        return mins+"."+seconds;
+			}
+    }
+}
 	}
 </script>
 @stop

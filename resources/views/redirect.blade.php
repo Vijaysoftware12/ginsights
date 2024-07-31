@@ -29,6 +29,7 @@
 			$(function(){
 
 				localStorage.removeItem('selectedValue');
+				localStorage.removeItem("resultData");
 			});
 	    </script>
 

@@ -3,15 +3,15 @@
 @section('content')
 
 	<header class="mb-3">
-	<nav style="display: flex; align-items: center;">
+	<nav class="nav_style">
     @include('statamic::partials.breadcrumb', [
         'url' => cp_route('utilities.index'),
         'title' => __('Utilities')
     ])
-    <span style="color:gray;font-size: 13px;">&nbsp;&lt;&nbsp; </span>
-    <a href="<?php echo env('APP_URL')?>/cp/utilities/analytics" style="color:gray; font-size: 13px;"> GInsights Analytics</a>
-    <span style="color:gray;font-size: 13px;">&nbsp;&lt;&nbsp;</span>
-    <div style="color:gray; font-size: 13px;">Settings</div>
+    <span class="breadcrumb">&nbsp;&lt;&nbsp; </span>
+    <a class="breadcrumbspan" href="<?php echo env('APP_URL')?>/cp/utilities/analytics" > GInsights Analytics</a>
+    <span class="breadcrumb">&nbsp;&lt;&nbsp;</span>
+    <div class="breadcrumb">Settings</div>
 </nav>
 
 		<?php 
@@ -23,7 +23,8 @@
 	<!--	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.slim.js" integrity="sha512-docBEeq28CCaXCXN7cINkyQs0pRszdQsVBFWUd+pLNlEk3LDlSDDtN7i1H+nTB8tshJPQHS0yu0GW9YGFd/CRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/garesource/css/ga_style.css">
+       <!-- <link rel="stylesheet" href="/garesource/css/ga_style.css">-->
+		<link rel="stylesheet" href="https://statamic.vijaysoftware.com/garesource/css/ga_style.css">
         <?php  
           use Illuminate\Support\Str;		 
 		  use Symfony\Component\Yaml\Yaml;
@@ -62,7 +63,8 @@
 						$property_id = $data['property_id'];
 					}
 				//For reading gtag
-				$filePath1 = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/gtag.yaml';
+				//$filePath1 = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/gtag.yaml';
+				$filePath1 = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/activeprofile_gtag.yaml';
 				$yamlString1 = file_get_contents($filePath1);
 				$data1 = Yaml::parse($yamlString1);	
 				
@@ -99,6 +101,8 @@
 </div>
 		<script>
 		function reconnectGinsights() {
+			 localStorage.removeItem("resultData");
+			//localStorage.clear();
 			localStorage.removeItem('selectedValue');
 			window.location.href = '<?php echo env('APP_URL')?>/cp/utilities/analytics?reauth=true';
 		}

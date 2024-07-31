@@ -45,6 +45,13 @@ class ConversionController extends Controller
         ];
         $yamlString = Yaml::dump($datare);            
         File::put($filePath, $yamlString);
+        $filePath = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/activeprofile_gtag.yaml';
+        
+        $datare = [
+                'gtag_id' => ' ',
+        ];
+        $yamlString = Yaml::dump($datare);            
+        File::put($filePath, $yamlString);
          
         return view('ginsights::redirect');
         

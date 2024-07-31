@@ -14,11 +14,13 @@
 		?>
         <script src="<?php echo $baseUrl;?>/vendor/ginsights/js/jquery-3.6.0.min.js"></script> 
 		<script src="<?php echo $baseUrl;?>/vendor/ginsights/js/jquery-3.7.0.slim.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>       
-        <link rel="stylesheet" href="http://statamic.vijaysoftware.com/garesource/css/ga_style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://statamic.vijaysoftware.com/garesource/css/ga_style.css">
         <?php  
           use Illuminate\Support\Str;
-        ?>        
+        ?>   
+        
+        
 	</header>    
 	<body>   
 		<div class="row  mt-2 max-w-sm w-full lg:max-w-full lg:flex  ">    
@@ -28,7 +30,7 @@
 					<h3 class="mb-2">Select a website to view Google Analytics data</h3>
 					<input id ="selid" name="selectedid"  value="" type="hidden"/>
 									
-					<select id="view_id" name="view_id" style="width: 100%;">  
+					<select id="view_id" class="fullwidth" name="view_id" >  
 						<option value="select"  selected>--select--</option>
 						
 					<?php					
@@ -47,9 +49,15 @@
 					</select>				 
          
 					  <label for="textAreaField" class="py-4 "><h3>Google Profile tag id</h3></label> 
-					  <textarea readonly name="gtag_id" id="gtag_id" rows=""  cols="" class="p-1 bg-gray-300 border-gray-200" >
-					  </textarea>	
-					  <div id="validationMessage" style="color: red;"></div>			
+                      <div class="checkbox-container">
+                        <textarea readonly name="gtag_id" id="gtag_id" rows="4" cols="50" class="p-1 bg-gray-300 border-gray-200"></textarea>
+                        <div class="checkbox-label">
+                            <input type="checkbox" id="gtag_checkbox" name="gtag_checkbox">
+                            <label for="gtag_checkbox">Enable TrackingCode</label>
+                        </div>
+                        </div>
+                                            
+					  <div id="validationMessage" class="negative-value"></div>			
 					  <?php
 					 if(isset($_POST['gtag_id'])) {
 					  $Gtag_id = $_POST['gtag_id']; 

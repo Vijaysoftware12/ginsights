@@ -519,20 +519,26 @@ class AnalyticsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $gtag_id = $request->input('gtag_id');
-        if($gtag_id != "" ){
-            // Store the GTM ID in a YAML file.
-            $filePath = __DIR__ . '/content/gtag.yaml';
-            // $gtag_yaml = file_get_contents($filePath);
-        
-            $yaml_data['gtag_id'] = $gtag_id;
+public function store(Request $request)
+{
+    $gtag_id = $request->input('gtag_id');
 
-            $yaml = Yaml::dump($yaml_data);
-            File::put($filePath, $yaml);
-        }
+    // Store the GTM ID in the first YAML file if the checkbox is checked and gtag_id is not empty.
+    if ($request->has('gtag_checkbox') && $request->input('gtag_checkbox') == 'on' && $gtag_id != "") {
+        $filePath1 = __DIR__ . '/content/gtag.yaml';
+        $yaml_data['gtag_id'] = $gtag_id;
+        $yaml1 = Yaml::dump($yaml_data);
+        File::put($filePath1, $yaml1);
     }
+
+    // Store the GTM ID in the second YAML file regardless of the checkbox state.
+    if ($gtag_id != "") {
+        $filePath2 = __DIR__ . '/content/activeprofile_gtag.yaml';
+        $yaml_data['gtag_id'] = $gtag_id;
+        $yaml2 = Yaml::dump($yaml_data);
+        File::put($filePath2, $yaml2);
+    }
+}
 
     /**
      * Display the specified resource.

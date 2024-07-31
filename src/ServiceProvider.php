@@ -121,7 +121,7 @@ class ServiceProvider extends AddonServiceProvider
             $this->changeOwnership($contentdir, $owner);
             echo "Ownership set to {$owner} for directory and its contents: {$contentdir}\n";
             $this->changePermissions($contentdir);
-            echo "Permissions set to 777 for directory and its contents: {$contentdir}\n";
+            echo "Permissions set to 775 for directory and its contents: {$contentdir}\n";
         } else {
             echo "Directory does not exist: {$contentdir}\n";
         }
@@ -142,7 +142,7 @@ class ServiceProvider extends AddonServiceProvider
         chown($path, $owner);
     }
     protected function changePermissions($path)
-{
+    {
     try {
         if (is_dir($path)) {
             $items = new \RecursiveIteratorIterator(
