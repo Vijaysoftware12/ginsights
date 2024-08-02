@@ -151,10 +151,10 @@ class ServiceProvider extends AddonServiceProvider
             );
 
             foreach ($items as $item) {
-                chmod($item, 0777); // ugo+rw equivalent
+                chmod($item, 0775); // ugo+rw equivalent
             }
         }
-        chmod($path, 0777); // ugo+rw equivalent
+        chmod($path, 0775); // ugo+rw equivalent
     } catch (\Exception $e) {
         echo "Failed to set permissions for path {$path}: " . $e->getMessage() . "\n";
     }
