@@ -236,6 +236,7 @@
 
     dataExpire();
 	key = `${propertyid},resultData,${interval}`;
+	//console.log(key);
 	storedValue = localStorage.getItem(key);
     //localStorage.removeItem('resultData');
    // if (localStorage.getItem("resultData") !== null ) {
@@ -389,7 +390,7 @@
             var currenttime = new Date().valueOf();
             var elapsedtime =(currenttime - createdtime)/1000;
             //  console.log(elapsedtime);
-            if(elapsedtime > 240){
+            if(elapsedtime > 900){
 				//localStorage.removeItem("resultData");
 				//localStorage.removeItem("data_interval");
 				key = `${propertyid},resultData,${interval}`;
@@ -499,6 +500,9 @@
             const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
 			return day + ' ' + month;
             });
+			if(formattedDates== "Invalid date Invalid date"){	
+				formattedDates="";
+			}
 
 			
 		pg_view_dates = resultData_partial['pageviewsCurrent']['encodedDates'];pg_view_dates = pg_view_dates.split(",");
@@ -508,12 +512,12 @@
             pageviews = pageviews.split(",");
             
 			// Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
-            var formattedDates = pg_view_dates.map(function(date) {
+          /*  var formattedDates = pg_view_dates.map(function(date) {
             const momentDate = moment(date, 'YYYY/MM/DD');
             const day = momentDate.format('D'); // Day of the month without leading zero
             const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
 			return day + ' ' + month;
-            });
+            });*/
 
                        
 			
@@ -526,12 +530,12 @@
             uniqueusers = uniqueusers.split(",");
 
             // Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
-            var formattedDates = dates.map(function(date) {
+           /* var formattedDates = dates.map(function(date) {
             const momentDate = moment(date, 'YYYY/MM/DD');
             const day = momentDate.format('D'); // Day of the month without leading zero
             const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
 			return day + ' ' + month;
-            });
+            });*/
 
 			//chart for unique users end
 			
@@ -646,6 +650,9 @@
             const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
 			return day + ' ' + month;
             });
+			if(formattedDates== "Invalid date Invalid date"){	
+				formattedDates="";
+			}
             // $('#loader').css('display','none');
 
                      /*   window.bar1= new Chart(ctx, {
@@ -718,12 +725,12 @@
             pageviews = pageviews.substring(1, pageviews.length-1);
             pageviews = pageviews.split(",");
             // Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
-            var formattedDates = pg_view_dates.map(function(date) {
+          /*  var formattedDates = pg_view_dates.map(function(date) {
             const momentDate = moment(date, 'YYYY/MM/DD');
             const day = momentDate.format('D'); // Day of the month without leading zero
             const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
 			return day + ' ' + month;
-            });
+            });*/
 
                    /* window.bar = new Chart(p_ctx, {
                         type: "line",
@@ -784,12 +791,12 @@
             uniqueusers = uniqueusers.split(",");
 
             // Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
-            var formattedDates = dates.map(function(date) {
+          /*  var formattedDates = dates.map(function(date) {
             const momentDate = moment(date, 'YYYY/MM/DD');
             const day = momentDate.format('D'); // Day of the month without leading zero
             const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
 			return day + ' ' + month;
-            });
+            });*/
 			//data for unique users end
 						
 			
@@ -979,6 +986,9 @@
 		var uniqueusers=unique_users;
 		var formattedTimes=formatted_Times;
 		var graph_type=type;
+		if(formattedDates== "Invalid date Invalid date"){						
+			formattedDates="";
+		}
 		if(graph_type=="partial"){
 		//console.log(resultdata);	
 	$("#chartAll").css("height", "500px");
@@ -1063,15 +1073,15 @@ var a_ctx = document.getElementById("myChartaverage").getContext("2d");
 	//$("#myChartaverage").addClass("showdiv");
 	//document.getElementById('chartContainer').textContent="";
 	//document.getElementById('chartContainer').append($("#myChartaverage"));
-		dates=resultdata['averageSessionCurrent']['encodedDates'];
-        dates = dates.split(",");
+		dates_avg=resultdata['averageSessionCurrent']['encodedDates'];
+        dates_avg = dates_avg.split(",");
 		// Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
-        formattedDates = dates.map(function(date) {
+        formattedDates_avg = dates_avg.map(function(date) {
         const momentDate = moment(date, 'YYYY/MM/DD');
         const day = momentDate.format('D'); // Day of the month without leading zero
         const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
         return day + ' ' + month;
-        });		
+        });	
 						
 			// Function to adjust the canvas height dynamically
         
@@ -1084,7 +1094,7 @@ var a_ctx = document.getElementById("myChartaverage").getContext("2d");
 				window.avg= new Chart(a_ctx, {
                 type: "line",
                 data: {
-                    labels: formattedDates,
+                    labels: formattedDates_avg,
                     datasets: [                                
 					{
 						label: 'Average Session Duration (minutes)',
@@ -1171,12 +1181,21 @@ var a_ctx = document.getElementById("myChartaverage").getContext("2d");
 						
 			//Average Duration graph End		
 }
-else{	
+else{
+								
+			formattedDates_avg="";
+		
+		if (window.avg) {
+			window.avg.destroy();
+		}
+        // Call the function to set the initial height
+       $("#chartContainer").css("height", "500px");
+		var a_ctx = document.getElementById("myChartaverage").getContext("2d");
 	$("#chartContainer").css("height", "500px");
 				window.avg= new Chart(a_ctx, {
                 type: "line",
                 data: {
-                    labels: "NoData",
+                    labels: formattedDates_avg,
                     datasets: [                                
 					{
 						label: 'Average Session Duration (minutes)',

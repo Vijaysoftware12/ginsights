@@ -759,7 +759,10 @@
 			else{
 				$("#divtoSession").text(totalsessions);
 			}
-			var sessionPercent=parseFloat(resultData.sessionPercent.replace(/,/g, ''));           
+			if(resultData.sessionPercent!=0){
+			var sessionPercent=parseFloat(resultData.sessionPercent.replace(/,/g, ''));  
+			}
+			else{sessionPercent=0;}			
             var sessionpercClass=(sessionPercent < 0 )? 'negative-value' : 'positive-value';
             var sessionpercspanClass=(sessionPercent < 0 )? 'arrow-down' : 'arrow-up';
             var sessionpercspanColor=(sessionPercent < 0 )? 'red' : 'green';
@@ -775,8 +778,12 @@
             if (totalpgviews >= 1000) {
                 totalpgviews = (totalpgviews / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
             }
-           
+           if(resultData.pgviewsPercent!=0){
             var pgviewsPercent=parseFloat(resultData.pgviewsPercent.replace(/,/g, ''));
+		   }
+		   else{
+			var pgviewsPercent=0;   
+		   }
             var pgviewsPercentClass=(pgviewsPercent < 0) ? 'negative-value' : 'positive-value';
 			var pgviewsPercentspanClass=(pgviewsPercent < 0 )? 'arrow-down' : 'arrow-up';
             var pgviewsPercentColor=(pgviewsPercent < 0 )? 'red' : 'green';
@@ -791,8 +798,10 @@
             if (totalusers >= 1000) {
                 totalusers = (totalusers / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
              }
+			 if(resultData.totalusersPercent!=0){
 			var totalusersPercent=parseFloat(resultData.totalusersPercent.replace(/,/g, ''));
-	
+			 }
+	else{totalusersPercent=0;}
             var totalusersPercentClass=(totalusersPercent < 0) ? 'negative-value' : 'positive-value';
             var totalusersPercentspanClass=(totalusersPercent < 0 )? 'arrow-down' : 'arrow-up';
             var totalusersPercentColor=(totalusersPercent < 0 )? 'red' : 'green';
@@ -808,7 +817,12 @@
             if (newUsers >= 1000) {
                 newUsers = (newUsers / 1000).toFixed(0) + 'K'; // Format as "K" if above 1000
             }
+			if(resultData['newusersPercent']!=0){
             var newusersPercent=parseFloat(resultData['newusersPercent'].replace(/,/g, ''));
+			}
+			else{
+				newusersPercent=0;
+			}
 			
             var newusersPercentClass=(newusersPercent < 0) ? 'negative-value' : 'positive-value';
             var newusersPercentspanClass=(newusersPercent < 0 )? 'arrow-down' : 'arrow-up';
@@ -822,12 +836,7 @@
 			 $('#id_nu_precent').text(newusersPercentSymbol + Math.abs(newusersPercent).toFixed(1)+"%").css('color', newusersPercentColor);
 			
 			//Sessions graph
-            if(window.bar1 != undefined) {
-            window.bar1.destroy();
-            var s_canvas = document.getElementById('myChartsp');
-			s_canvas.width = Math.min(1200, 800); // Set width to a maximum of 1200px
-			s_canvas.height = Math.min(200, 400);
-            }
+           
 
             var ctx = document.getElementById("myChartsp").getContext("2d");
             dates=resultData['sessionsCurrent']['encodedDates'];
@@ -845,81 +854,10 @@
             const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
 			return day + ' ' + month;
              });
-
-            /*window.bar1= new Chart(ctx, {
-                type: "line",
-                data: {
-                    labels: formattedDates,
-                    datasets: [
-                    {
-                        label: "Sessions ",
-                                data: sessions,
-                                borderColor: "blue",
-                                fill: false,
-                    }
-                    ]
-                    },
-                    options: {
-                        plugins: {
-                            legend: {
-                              labels: {
-                                onClick(e, legendItem, legend) {
-                                  // Prevent the default behavior of the legend item click
-                                 // e.stopPropagation();
-                                }
-                              }
-                            }
-                          },
-                            scales: {
-                            x: {
-                                type: 'time',
-                                time: {
-                                parser: 'DD/MM/YYYY',
-                                tooltipFormat: 'DD/MM/YYYY',
-                                unit: 'day',
-                                displayFormats: {
-                                    day: 'DD/MM/YYYY'
-                                }
-                                },
-                                ticks: {
-                                maxTicksLimit: 10
-                                }
-                            },
-                            y: {
-                                display: true,
-                                title: {
-                                display: true,
-                                text: "Count"
-                                },
-                                ticks: {
-                                beginAtZero: true,
-                                precision: 0
-                                }
-                            }
-                            },
-                            legend: {
-                                onClick(e, legendItem, legend) {
-                                  // Prevent the default behavior of the legend item click
-                                 // e.stopPropagation();
-                                }
-                            }
-
-                        }
-
-                        });
-						
-			//Sessions graph End*/			
+			 if(formattedDates== "Invalid date Invalid date"){						
+				formattedDates="";
+			}
 			
-			
-			//chart for pageviews
-            if(window.bar != undefined) {
-            window.bar.destroy();
-            var canvas = document.getElementById('myChartpv');
-            canvas.width = Math.min(1200, 600); // Set width to a maximum of 1200px
-            canvas.height = Math.min(200, 200); // Set height to a maximum of 200px
-            }
-
-            //var p_ctx = document.getElementById("myChartpv").getContext("2d");
 			pg_view_dates = resultData['pageviewsCurrent']['encodedDates'];          
             pg_view_dates = pg_view_dates.split(",");
 			var pageviews = resultData['pageviewsCurrent']['encodedpageviews'];
@@ -927,65 +865,15 @@
             pageviews = pageviews.substring(1, pageviews.length-1);
             pageviews = pageviews.split(",");
             // Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
-            var formattedDates = pg_view_dates.map(function(date) {
+           /* var formattedDates = pg_view_dates.map(function(date) {
             const momentDate = moment(date, 'YYYY/MM/DD');
             const day = momentDate.format('D'); // Day of the month without leading zero
             const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
 
             return day + ' ' + month;
-            });
+            });*/
 			//console.log(formattedDates);
 
-           /* window.bar = new Chart(p_ctx, {
-                type: "line",
-                    data: {
-                        labels: formattedDates,
-                        datasets: [
-                        {
-                            label: "Pageviews ",
-                            data: pageviews,
-                            borderColor: "green",
-                            fill: false,
-                        }
-                        ]
-                        },
-                        options: {
-                          scales: {
-                            x: {
-                                type: 'time',
-                                time: {
-                                parser: 'DD/MM/YYYY',
-                                tooltipFormat: 'DD/MM/YYYY',
-                                unit: 'day',
-                                displayFormats: {
-                                    day: 'DD/MM/YYYY'
-                                }
-                                },
-                                ticks: {
-                                maxTicksLimit: 10
-                                }
-                            },
-                            y: {
-                                display: true,
-                                title: {
-                                display: true,
-                                text: "Count"
-                                },
-                                ticks: {
-                                beginAtZero: true,
-                                precision: 0
-                                }
-                            }
-                          },
-                          legend: {
-                                onClick(e, legendItem, legend) {
-                                  // Prevent the default behavior of the legend item click
-                                 // e.stopPropagation();
-                                }
-                            }
-                        }
-                        });
-			//chart for pageviews End*/
 			
 			//data for unique users
 					
@@ -999,17 +887,21 @@
                         uniqueusers = uniqueusers.split(",");
 
                         // Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
-                        var formattedDates = dates.map(function(date) {
+                      /*  var formattedDates = dates.map(function(date) {
                         const momentDate = moment(date, 'YYYY/MM/DD');
                         const day = momentDate.format('D'); // Day of the month without leading zero
                         const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
 
                         return day + ' ' + month;
-                        });
-
+                        });*/		
 					//data for unique users end
-					
-	//All in one graph						
+	//All in one graph					
+	if(window.bar1) {
+        window.bar1.destroy();
+    }
+	var canvas = document.getElementById("myChartsp");
+	var ctx = canvas.getContext("2d");	
+						
 	window.bar1 = new Chart(ctx, {
     type: "line",
     data: {
@@ -1086,16 +978,9 @@
 						//All in one graph ends
 					
 		//data for Average duration
-		if(window.bar != undefined) {
-            window.bar.destroy();
-            var canvas = document.getElementById('myChartaverage');
-            canvas.width = Math.min(1200, 600); // Set width to a maximum of 1200px
-            canvas.height = Math.min(200, 200); // Set height to a maximum of 200px
-            }
-		var a_ctx = document.getElementById("myChartaverage").getContext("2d");	
-        
-			dates=resultData['averageSessionCurrent']['encodedDates'];
-                        dates = dates.split(",");						
+			
+     
+						
 						//var averagesessions =resultData['averageSessionCurrent']['encodedAverage']
 						
                        // averagesessions = averagesessions.replaceAll(/\"/g,'')
@@ -1103,21 +988,34 @@
                        // averagesessions = averagesessions.split(",");
 						//let averagesessions_formatted = averagesessions.map(session => parseFloat(session).toFixed(2));
 						
-                        // Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
-                        var formattedDates = dates.map(function(date) {
+                       
+                        
+						var averageMinutes=0;
+						var averageSessions="";						
+						var formattedTimes="";
+						var formattedDates_avg="";
+						if (resultData.averageSessionCurrent.encodedDates !== undefined && resultData.averageSessionCurrent.encodedDates !== null) {		  
+						dates_avg=resultData['averageSessionCurrent']['encodedDates'];
+						 // Convert dates to the desired format: yyyy/mm/dd to dd/mm/yyyy
+                        dates_avg = dates_avg.split(",");
+						 dates_avg = JSON.parse(resultData['averageSessionCurrent']['encodedDates']);
+						var formattedDates_avg = dates_avg.map(function(date) {
                         const momentDate = moment(date, 'YYYY/MM/DD');
                         const day = momentDate.format('D'); // Day of the month without leading zero
                         const month = momentDate.format('MMM'); // Abbreviated month name in uppercase
                         return day + ' ' + month;
                         });
+						if(formattedDates_avg== "Invalid date Invalid date"){						
+						formattedDates_avg="";
+						}
 						
-						 dates = JSON.parse(resultData['averageSessionCurrent']['encodedDates']);
-						 const averageSessions =JSON.parse( resultData['averageSessionCurrent']['encodedAverage']);;
-			var averageMinutes = averageSessions.map(timeToMinutes);			
+						  const averageSessions =JSON.parse( resultData['averageSessionCurrent']['encodedAverage']);
+							averageMinutes = averageSessions.map(timeToMinutes);			
 					// Parse each element and convert it to the desired format
-					var formattedTimes = averageMinutes.map(formatTime);			
+					 formattedTimes = averageMinutes.map(formatTime);			
 					//data for Average duration end
-				console.log(formattedTimes);
+				//console.log(formattedTimes);
+	}
 				// Function to adjust the canvas height dynamically
         function adjustChartHeight() {
             var chartContainer  = document.getElementById('chartContainer');
@@ -1128,14 +1026,20 @@
 
         // Call the function to set the initial height
         adjustChartHeight();
-        if( (JSON.parse(resultData.averageSessionCurrent.encodedAverage)).length!==0 && (JSON.parse(resultData.averageSessionCurrent.encodedDates)).length!==0) {				
-            
-            $("#myChartaverage").removeClass("hidediv");
-            $("#myChartaverage").addClass("showdiv");
+		 
+		if (resultData.averageSessionCurrent.encodedAverage !== undefined && resultData.averageSessionCurrent.encodedAverage !== null) 
+		{
+			
+           if (window.avg) {
+			window.avg.destroy();
+		}
+		var canvas = document.getElementById("myChartaverage");
+		var a_ctx = canvas.getContext("2d");
+			
             window.avg= new Chart(a_ctx, {
                 type: "line",
                 data: {
-                    labels: formattedDates,
+                    labels: formattedDates_avg,
                     datasets: [                                
 					{
 						label: 'Average Session Duration (minutes)',
@@ -1221,19 +1125,57 @@
 						
                     }
                     else{	  					
-                        $("#myChartaverage").removeClass("showdiv");
-                        $("#myChartaverage").addClass("hidediv");
-                        document.getElementById('chartContainer').textContent="No Data Available";
-						 document.getElementById('chartContainer').style.height = '50px'; 
-                        
+                      	
+	
+			if (window.avg) {
+					window.avg.destroy();
+				}
+	var canvas = document.getElementById("myChartaverage");
+	var a_ctx = canvas.getContext("2d");
+	
+				window.avg= new Chart(a_ctx, {
+                type: "line",
+                data: {
+                    labels: formattedDates_avg,
+                    datasets: [                                
+					{
+						label: 'Average Session Duration (minutes)',
+						data: [0], 
+						borderColor: "orange",
+						fill: false,
+					}
+                    ]
+                    },
+					options: {
+                tooltips: {
+                    callbacks: {
+                        // Customize the tooltip label
+                        label: function(tooltipItem, data) {
+                            return 'Average Session Duration (minutes): '+tooltipItem.yLabel.toFixed(2); // Format with 2 decimal places
+                        }
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            // Customize the y-axis label format
+                            callback: function(value, index, values) {
+                                return value.toFixed(2); // Format with 2 decimal places
+                            }
+                        }
+                    }]
+                },legend: {
+            onClick(e, legendItem, legend) {
+                // Prevent the default behavior of the legend item click
+                //e.stopPropagation();
+            }
+        }
+				}
+				});
                     }
 			//Average Duration graph End
 			
-			// Optional: Adjust height on window resize
-        window.addEventListener('resize', adjustChartHeight);		
-						
 			
-						
 			
 			//Device Category chart
             if(window.device != undefined) {

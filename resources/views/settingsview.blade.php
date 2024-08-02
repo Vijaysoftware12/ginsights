@@ -15,7 +15,8 @@
 </nav>
 
 		<?php 
-		$baseUrl = asset('');		
+		$baseUrl = asset('');
+		$property_id = '';		
 		?>
         <script src="<?php echo $baseUrl;?>/vendor/ginsights/js/jquery-3.6.0.min.js"></script> 
 		<script src="<?php echo $baseUrl;?>/vendor/ginsights/js/jquery-3.7.0.slim.js"></script> 
@@ -28,6 +29,7 @@
         <?php  
           use Illuminate\Support\Str;		 
 		  use Symfony\Component\Yaml\Yaml;
+		  use Statamic\Facades\File;
         ?>     
 	
 	</header>
@@ -62,8 +64,9 @@
 					if($data){				   
 						$property_id = $data['property_id'];
 					}
+					
 				//For reading gtag
-				//$filePath1 = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/gtag.yaml';
+				
 				$filePath1 = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/activeprofile_gtag.yaml';
 				$yamlString1 = file_get_contents($filePath1);
 				$data1 = Yaml::parse($yamlString1);	
@@ -77,7 +80,10 @@
 				<h3 class="mb-5">Active profile: <?php echo  $gtag_id;?></h3>
 
 				<div class="flex flex-row justify-center pt-3">
-				<a href="javascript:void(0);" onclick="reconnectGinsights()">
+				<?php
+				$property_id = $data['property_id'];
+				?>
+				<a href="javascript:void(0);" onclick="reconnectGinsights('<?= $property_id; ?>')">
 				<button class="bg-blue-700 text-white font-bold py-2 px-6 rounded mr-5">
 					Reconnect Ginsights
 				</button>
@@ -100,9 +106,17 @@
 
 </div>
 		<script>
-		function reconnectGinsights() {
-			 localStorage.removeItem("resultData");
-			//localStorage.clear();
+		function reconnectGinsights(property_id) {
+		
+		const intervals = [7, 1, 14, 30];
+		intervals.forEach(interval => {
+        const key = `${property_id},resultData,${interval}`;
+        console.log(`Removing key: ${key}`);
+        localStorage.removeItem(key);
+		storedValue = localStorage.getItem(key);
+		console.log(storedValue);
+    });
+	
 			localStorage.removeItem('selectedValue');
 			window.location.href = '<?php echo env('APP_URL')?>/cp/utilities/analytics?reauth=true';
 		}

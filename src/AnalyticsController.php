@@ -53,6 +53,14 @@ class AnalyticsController extends Controller
    }
   
     public function reauth(){       
+        $rootPath = base_path();
+        $filePath = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/webproperty.yaml';
+        $datare = [
+                'property_id' => ' ',
+        ];
+        $yamlString = Yaml::dump($datare);            
+        File::put($filePath, $yamlString);
+
         $refresh_token=$this->getRefreshToken();
         if($this->rtokenValidate()=='valid'){           
               $response = Http::post('https://statamic.vijaysoftware.com/public/api/reauth', [
@@ -99,7 +107,7 @@ class AnalyticsController extends Controller
 
     public function index(Request $request )
     {   
-
+		
        //dd($request['reauth']);
         if($this->rtokenValidate()=='not valid' && ($request['reauth'])=='null'){
             return view('ginsights::redirect');   
@@ -109,13 +117,13 @@ class AnalyticsController extends Controller
         if($request['gtag_id1']){
             $this->store($request);
         }
+		
         if($request['reauth']=='true'){       
         $this->reauth();
      }
      if(!isset($_GET['refresh_token_new'])){
        // dd("test");
        if($this->rtokenValidate()=='not valid'){
-       
         ?>
             <script>
                 //alert("Please authorize your account");
@@ -188,7 +196,7 @@ class AnalyticsController extends Controller
     else{
         $property_id=$request['selectedid'];  
     }
-
+		if($property_id!=" "){
         switch ($request['period']) {           
            
             case "custom":                 
@@ -306,7 +314,11 @@ class AnalyticsController extends Controller
 
             default:                          
          
-        }    
+        } 
+	}	
+else{
+	 return view('ginsights::redirect');   
+}	
        
         $selectid = null;
 		//View generating after authorizing and selecting viewids and then displaying detailed report 
@@ -321,10 +333,13 @@ class AnalyticsController extends Controller
             $refresh_token=$this->getStoredRefreshToken();
 			$this->store($request);
 
-             
+            if (Cache::has('dpviewdata'.$interval.$property_id)) {
+           // dd($interval);
+            $data = Cache::get('dpviewdata'.$interval.$property_id); 
+			
                
-			if (Cache::has('dpviewdata')) {             
-    	     $data = Cache::get('dpviewdata');
+			//if (Cache::has('dpviewdata')) {             
+    	   //  $data = Cache::get('dpviewdata');
              $phpArray = json_decode($data, true);
            //  echo $startDate."-".$phpArray['startDate']."-".$endDate."-".$phpArray['endDate'];
 
@@ -354,11 +369,15 @@ class AnalyticsController extends Controller
             return response()->json(['error' => 'Failed to fetch data'], 500);
         }  	   
 		    //Cache::put('dpviewdata', $data, $seconds = 20000);
-            if (Cache::has('dpviewdata')) {
+           /* if (Cache::has('dpviewdata')) {
                 // Cache has data
                 $data = Cache::get('dpviewdata');
                 // Do something with the data
-            } 
+            } */
+			 if (Cache::has('dpviewdata'.$interval.$property_id)) {
+           // dd($interval);
+            $data = Cache::get('dpviewdata'.$interval.$property_id); 
+			 }
             
 		
                   		
