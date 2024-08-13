@@ -14,11 +14,33 @@
 > Detailed Reports: For users requiring more comprehensive insights, detailed reports are available, offering a deeper analysis of site performance
 
 
-## How to Install
+## Installation Guide
+You can easily install GInsights directly from the Statamic control panel or via Composer.
 
-You can search for this addon in the `Tools > Addons` section of the Statamic control panel and click **install**, or run the following command from your project root:
+Option 1: Install via Statamic Control Panel
+
+1.Navigate to Tools > Addons in your Statamic control panel.
+2.Search for "GInsights."
+3.Click Install.
+
+Option 2: Install via Composer
+
+Run the following command in your project root:
 
 ``` bash
 composer require vijaysoftware/ginsights
 ```
+##Documentation
+
+You can find more about us on our : https://vijaysoftware.com/ginsights-plugin/ginsights-install/
+
+##Support
+
+Support for the plugin is done by email or by posting to our Github about the project.
+
+Email: support@vijaysoftware.com
+
+Github: https://github.com/Vijaysoftware12/ginsights
+
+
 
