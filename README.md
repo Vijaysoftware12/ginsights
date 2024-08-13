@@ -32,15 +32,16 @@ composer require vijaysoftware/ginsights
 ```
 ##Documentation
 
-You can find more about us on our : https://vijaysoftware.com/ginsights-plugin/ginsights-install/
+You can find more documentation in : https://vijaysoftware.com/ginsights-plugin/ginsights-install/
 
 ##Support
 
-Support for the plugin is done by email or by posting to our Github about the project.
+Support for the plugin is available via email or by posting on our project's GitHub repository.
 
 Email: support@vijaysoftware.com
 
-Github: https://github.com/Vijaysoftware12/ginsights
+Product page : https://vijaysoftware.com/ginsights-plugin/
 
 
 
+ 
