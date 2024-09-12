@@ -141,7 +141,7 @@ class ServiceProvider extends AddonServiceProvider
         // Finally, change ownership of the directory itself
         chown($path, $owner);
     }
-    /*protected function changePermissions($path)
+    protected function changePermissions($path)
     {
     try {
         if (is_dir($path)) {
@@ -158,29 +158,8 @@ class ServiceProvider extends AddonServiceProvider
     } catch (\Exception $e) {
         echo "Failed to set permissions for path {$path}: " . $e->getMessage() . "\n";
     }
-}*/
-protected function changePermissions($path)
-{
-    try {
-        if (is_dir($path)) {
-            $items = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS),
-                \RecursiveIteratorIterator::SELF_FIRST
-            );
-
-            foreach ($items as $item) {
-                if ($item->isDir()) {
-                    chmod($item, 0775); // Directories need execute permissions
-                } elseif ($item->isFile()) {
-                    chmod($item, 0664); // Files typically do not need execute permissions
-                }
-            }
-        }
-        chmod($path, 0775); // Final chmod for the root directory
-    } catch (\Exception $e) {
-        echo "Failed to set permissions for path {$path}: " . $e->getMessage() . "\n";
-    }
 }
+
 
 
 }
