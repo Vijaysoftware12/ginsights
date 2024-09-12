@@ -1,4 +1,4 @@
-## Ginsights
+#### Ginsights
 
 
 ![Statamic 5.0+](https://img.shields.io/badge/Statamic-5.0+-FF269E?style=for-the-badge&link=https://statamic.com)
