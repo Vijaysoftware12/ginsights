@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
 use DateTime;
 use DateInterval; 
+use Illuminate\Support\Facades\Auth;
+
 class AnalyticsController extends Controller
 {
       
@@ -47,7 +49,10 @@ class AnalyticsController extends Controller
    public function rtokenValidate(){
     $refresh_token=$this->getRefreshToken();          
     $response = Http::post('https://statamic.vijaysoftware.com/public/api/validate', [
-         'refresh_token' =>  $refresh_token       
+         'refresh_token' =>  $refresh_token,
+         'DOMAIN' => $_SERVER['HTTP_HOST'],
+		'email' => Auth::user()->email,
+           'api_method'=> 'validate'       
     ]);
     return $response->body();
    }
@@ -65,7 +70,10 @@ class AnalyticsController extends Controller
         if($this->rtokenValidate()=='valid'){           
               $response = Http::post('https://statamic.vijaysoftware.com/public/api/reauth', [
                 'refresh_token' =>  $refresh_token,
-                'returnUrl' => env('APP_URL')
+                'returnUrl' => env('APP_URL'),
+                'DOMAIN' => $_SERVER['HTTP_HOST'],
+						'email' => Auth::user()->email,
+                        'api_method'=> 'reauth' 
                 
             ]);     
             $authUrl=$response->body();          
@@ -74,7 +82,11 @@ class AnalyticsController extends Controller
         }
         else{
             $response = Http::post('https://statamic.vijaysoftware.com/public/api/init', [
-            'returnUrl' => env('APP_URL')
+                'returnUrl' => env('APP_URL'),
+                'DOMAIN' => $_SERVER['HTTP_HOST'],
+						'email' => Auth::user()->email,
+                        'api_method'=> 'init' 
+                
             ]);                         
             $authUrl=$response->body(); 
 			//dd($authUrl);
@@ -87,14 +99,22 @@ class AnalyticsController extends Controller
         if($request['reauth']=='true'){       
             $refresh_token=$this->getRefreshToken();            
             $response = Http::post('https://statamic.vijaysoftware.com/public/api/validate', [
-                'refresh_token' =>  $refresh_token               
+                'refresh_token' =>  $refresh_token ,
+                'DOMAIN' => $_SERVER['HTTP_HOST'],
+						'email' => Auth::user()->email,
+                        'api_method'=> 'validate' 
+                          
             ]);
    
             if($this->rtokenValidate()=='valid'){
            
               $response = Http::post('https://statamic.vijaysoftware.com/public/api/reauth', [
                 'refresh_token' =>  $refresh_token,
-                'returnUrl' => env('APP_URL')
+                'returnUrl' => env('APP_URL'),
+                'DOMAIN' => $_SERVER['HTTP_HOST'],
+						'email' => Auth::user()->email,
+                        'api_method'=> 'reauth'
+                
                 
             ]);
               
@@ -164,7 +184,10 @@ class AnalyticsController extends Controller
             $refresh_token = $datare['refresh_token'];
             //call process token                
             $response = Http::post('https://statamic.vijaysoftware.com/public/api/processtoken', [
-                        'refresh_token' =>  $refresh_token
+                        'refresh_token' =>  $refresh_token,
+                        'DOMAIN' => $_SERVER['HTTP_HOST'],
+						'email' => Auth::user()->email,
+                        'api_method'=> 'processtoken'
                        
             ]);
             $this->newIds = $response->body();
