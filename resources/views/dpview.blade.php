@@ -64,6 +64,10 @@
         <div class="gcard_heading mb-2">
             <img src="https://statamic.vijaysoftware.com/garesource/img/vijay-icon-100x100.png" width="30px" alt="analytic icon">
             <span>GInsights Analytics</span>
+			<span class="ml-1 text-sm text-gray-700 mr-2">: </span>
+			<div id="cachedUrlDisplay" class=" text-sm text-gray-700 ml-auto">
+				<!-- Cached URL will be displayed here -->
+			</div>
         </div>
         
 	    <div class="card ginsigts-con" id=""> 
@@ -349,6 +353,13 @@
                 // Display the default date range in the calendar
             // cb(moment().subtract(7, 'days'), moment().subtract(1, 'days'));
             
+			var cachedUrl = localStorage.getItem('selectedUrl'); 
+				// Retrieve the URL from localStorage
+				if (cachedUrl !== null) {
+					console.log('Retrieved URL:', cachedUrl); // Outputs the stored URL
+					$('#cachedUrlDisplay').text(cachedUrl); // Optionally display the URL in a specific element
+				}
+			
             });
 
             $(function(){

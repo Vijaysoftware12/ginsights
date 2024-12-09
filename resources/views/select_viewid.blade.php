@@ -83,7 +83,12 @@
 					measurementid = $(this).find(':selected').attr('mid');	
 					localStorage.setItem('mid_Value', measurementid);
 					
-				
+					// Get the text (url)
+					var selectedUrl = $('#view_id option:selected').text(); 
+					// Store the selected URL in localStorage
+					localStorage.setItem('selectedUrl', selectedUrl); 
+					
+					
 					var	measurementidd= localStorage.getItem('mid_Value');
 					if(selected_Value!="select"){					
 						document.getElementById("gtag_id").value = measurementidd;

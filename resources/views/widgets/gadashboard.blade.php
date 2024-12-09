@@ -1398,6 +1398,10 @@ function formatTime(minutes) {
         <div class="gcard_heading">
             <img src="https://statamic.vijaysoftware.com/garesource/img/vijay-icon-100x100.png" width="30px" alt="analytic icon">
             <span>GInsights Analytics</span>
+			<span class=" text-sm text-gray-700 mr-1">: </span>
+			<div id="cachedUrlDisplay" class=" text-sm text-gray-700 ml-auto">
+			<!-- Cached URL will be displayed here -->
+			</div>
         </div>
         
           
@@ -1554,8 +1558,15 @@ function formatTime(minutes) {
             collapsible: true,
              active: 0 ,
 			 heightStyle: "content"// Open the first section by default
-        });
-
+			});
+			
+			var cachedUrl = localStorage.getItem('selectedUrl'); 
+			// Retrieve the URL from localStorage
+				if (cachedUrl !== null) {
+					console.log('Retrieved URL:', cachedUrl); // Outputs the stored URL
+					$('#cachedUrlDisplay').text(cachedUrl); // Optionally display the URL in a specific element
+				}
+		
 
             $('#fullreport').click(function(){
                // Create and show the loading animation
