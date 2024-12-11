@@ -5,6 +5,7 @@
 		$baseUrl = asset('');
 		//echo $baseUrl;
 		 $user_role = Auth::user()->super;
+    
 ?>
 
 
@@ -18,15 +19,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="https://statamic.vijaysoftware.com/garesource/css/ga_style.css">
 
+<?php use Symfony\Component\Yaml\Yaml;?>
 
 </header>
 <!--<input type="text" name="_token" id="token" value="{{ csrf_token() }}"> -->
 
-
-
 <script>
 
-//alert("111s");
     var propertyid="<?php echo $property_id;?>";
     var refreshtoken="<?php echo $refresh_token;?>";
     var interval=0;
@@ -1392,18 +1391,28 @@ function formatTime(minutes) {
 
 
     </script>
-
- <div class="card p-0">
-    <div class="gcard-con pl-3 border border-light py-2 hidediv" id="ginsights" >
+	<?php
+		$rootPath = base_path();				
+		$filePath = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/webproperty.yaml';	
+        $yamlString = file_get_contents($filePath);
+		if (file_exists($filePath)) {
+			$yamlData = Yaml::parse(file_get_contents($filePath));
+			$selectedUrl = $yamlData['property_url'] ?? '';
+		} 
+	?>
+	<div class="card p-0">
+       <div class="gcard-con pl-3 border border-light py-2 hidediv" id="ginsights" >
         <div class="gcard_heading">
             <img src="https://statamic.vijaysoftware.com/garesource/img/vijay-icon-100x100.png" width="30px" alt="analytic icon">
             <span>GInsights Analytics</span>
-			<span class=" text-sm text-gray-700 mr-1">: </span>
+			
 			<div id="cachedUrlDisplay" class=" text-sm text-gray-700 ml-auto">
-			<!-- Cached URL will be displayed here -->
+			<!-- Cached URL will be displayed here 
+			-->
+			  <?//= htmlspecialchars($selectedUrl); ?>
+			 <?= !empty($selectedUrl) ? ': ' . htmlspecialchars($selectedUrl) : ''; ?>
 			</div>
-        </div>
-        
+        </div>        
           
         <div class="gcard_date">
         
@@ -1560,14 +1569,6 @@ function formatTime(minutes) {
 			 heightStyle: "content"// Open the first section by default
 			});
 			
-			var cachedUrl = localStorage.getItem('selectedUrl'); 
-			// Retrieve the URL from localStorage
-				if (cachedUrl !== null) {
-					console.log('Retrieved URL:', cachedUrl); // Outputs the stored URL
-					$('#cachedUrlDisplay').text(cachedUrl); // Optionally display the URL in a specific element
-				}
-		
-
             $('#fullreport').click(function(){
                // Create and show the loading animation
                   

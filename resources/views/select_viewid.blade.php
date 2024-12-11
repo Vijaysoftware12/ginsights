@@ -29,6 +29,7 @@
 					@csrf
 					<h3 class="mb-2">Select a website to view Google Analytics data</h3>
 					<input id ="selid" name="selectedid"  value="" type="hidden"/>
+					<input id ="selurl" name="selectedurl"  value="" type="hidden"/>
 									
 					<select id="view_id" class="fullwidth" name="view_id" >  
 						<option value="select"  selected>--select--</option>
@@ -84,10 +85,12 @@
 					localStorage.setItem('mid_Value', measurementid);
 					
 					// Get the text (url)
+					
 					var selectedUrl = $('#view_id option:selected').text(); 
 					// Store the selected URL in localStorage
 					localStorage.setItem('selectedUrl', selectedUrl); 
-					
+					// Set the value of the 'selurl' textbox
+					$('#selurl').val(selectedUrl);
 					
 					var	measurementidd= localStorage.getItem('mid_Value');
 					if(selected_Value!="select"){					

@@ -44,7 +44,8 @@
     <script src="<?php echo $baseUrl;?>vendor/ginsights/js/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <?php  
-          use Illuminate\Support\Str;
+        use Illuminate\Support\Str;
+		use Symfony\Component\Yaml\Yaml;
     ?>  
     
 	</header>    
@@ -55,7 +56,14 @@
     <?php 
      $data = json_decode($data, true);      
      if($data != null)
-     {   
+     {  		
+		$rootPath = base_path();				
+		$filePath = $rootPath . '/vendor/vijaysoftware/ginsights/src/content/webproperty.yaml';	
+        $yamlString = file_get_contents($filePath);
+		if (file_exists($filePath)) {
+			$yamlData = Yaml::parse(file_get_contents($filePath));
+			$selectedUrl = $yamlData['property_url'] ?? '';
+		} 
     ?>
     
     
@@ -63,10 +71,10 @@
         <div class="row  flex-auto">
         <div class="gcard_heading mb-2">
             <img src="https://statamic.vijaysoftware.com/garesource/img/vijay-icon-100x100.png" width="30px" alt="analytic icon">
-            <span>GInsights Analytics</span>
-			<span class="ml-1 text-sm text-gray-700 mr-2">: </span>
+            <span>GInsights Analytics</span>			
 			<div id="cachedUrlDisplay" class=" text-sm text-gray-700 ml-auto">
 				<!-- Cached URL will be displayed here -->
+				&nbsp; : <?= htmlspecialchars($selectedUrl); ?>
 			</div>
         </div>
         
@@ -352,14 +360,7 @@
             
                 // Display the default date range in the calendar
             // cb(moment().subtract(7, 'days'), moment().subtract(1, 'days'));
-            
-			var cachedUrl = localStorage.getItem('selectedUrl'); 
-				// Retrieve the URL from localStorage
-				if (cachedUrl !== null) {
-					console.log('Retrieved URL:', cachedUrl); // Outputs the stored URL
-					$('#cachedUrlDisplay').text(cachedUrl); // Optionally display the URL in a specific element
-				}
-			
+            			
             });
 
             $(function(){

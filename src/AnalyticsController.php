@@ -63,7 +63,8 @@ class AnalyticsController extends Controller
         $datare = [
                 'property_id' => ' ',
         ];
-        $yamlString = Yaml::dump($datare);            
+        $yamlString = Yaml::dump($datare);
+		
         File::put($filePath, $yamlString);
 
         $refresh_token=$this->getRefreshToken();
@@ -193,6 +194,7 @@ class AnalyticsController extends Controller
             $this->newIds = $response->body();
             $this->newIds= json_decode($this->newIds, true);
             //dd($this->newIds);
+			 
             if(empty($this->newIds)){ 
                 return view('ginsights::no_viewid'); 
             }
@@ -205,7 +207,8 @@ class AnalyticsController extends Controller
         {            
 			return view('ginsights::settingsview');      
         }   
-       // $property_id=$request['selectedid'];  
+       // $property_id=$request['selectedid'];
+  
         if($request['selectedid']==null){
         $filePath = __DIR__ . '/content/webproperty.yaml';
         $yamlString = file_get_contents($filePath);
@@ -344,13 +347,16 @@ else{
 }	
        
         $selectid = null;
+		$selecturl = null;
 		//View generating after authorizing and selecting viewids and then displaying detailed report 
         if($request['selectedid'])
         {          
             $filePath = __DIR__ . '/content/webproperty.yaml';
             $yamlString = file_get_contents($filePath);
-            $property_yaml['property_id']=$request['selectedid'];
+            $property_yaml['property_id']=$request['selectedid'];	
+			$property_yaml['property_url'] = $request['selectedurl'];			
             $selectid =$request['selectedid'];
+			//	$selecturl =$request['selectedurl'];			
             $yamlstring = Yaml::dump($property_yaml);
             File::put($filePath, $yamlstring);           
             $refresh_token=$this->getStoredRefreshToken();
