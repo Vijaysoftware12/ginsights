@@ -894,7 +894,7 @@
                         dates = dates.split(",");
 						//  var sessions = resultData['graphsessions']['encodedSessions'];
 						var uniqueusers =resultData['uniqueusersCurrent']['encodedUsers'];
-						//console.log('309' + sessions);
+					
                         uniqueusers = uniqueusers.replaceAll(/\"/g,'')
                         var uniqueusers = uniqueusers.substring(1, uniqueusers.length-1);
                         uniqueusers = uniqueusers.split(",");
@@ -991,17 +991,7 @@
 						//All in one graph ends
 					
 		//data for Average duration
-			
-     
-						
-						//var averagesessions =resultData['averageSessionCurrent']['encodedAverage']
-						
-                       // averagesessions = averagesessions.replaceAll(/\"/g,'')
-                       // var averagesessions = averagesessions.substring(1, averagesessions.length-1);
-                       // averagesessions = averagesessions.split(",");
-						//let averagesessions_formatted = averagesessions.map(session => parseFloat(session).toFixed(2));
-						
-                       
+			           
                         
 						var averageMinutes=0;
 						var averageSessions="";						
@@ -1027,7 +1017,7 @@
 					// Parse each element and convert it to the desired format
 					 formattedTimes = averageMinutes.map(formatTime);			
 					//data for Average duration end
-				//console.log(formattedTimes);
+			
 	}
 				// Function to adjust the canvas height dynamically
         function adjustChartHeight() {
@@ -1203,7 +1193,7 @@
 			var ctx2 = document.getElementById("myChart").getContext("2d");
 			var deviceCategories = resultData['deviceCategory']['deviceCategories'] ;
             var sessions = resultData['deviceCategory']['percentages'] ;
-            //console.log(resultData['deviceCategory']);
+           
             window.device = new Chart(ctx2, {
                     type: "doughnut",
                         data: {
@@ -1231,10 +1221,9 @@
                                     const datasets = chart.data.datasets;
                                     for (let i = 0; i < datasets.length; i++) {                                        
                                     const dataset = datasets[i];
-                                    //console.log(dataset );
+                                   
                                     const dataValues = datasets[i].data.map(value => parseFloat(value));
-                                   // console.log(labels);
-                                   // console.log(dataValues );
+                                  
                                    for (let j = 0; j < dataset.data.length; j++) {
                                         labels.push({
                                             text: `${chart.data.labels[j].charAt(0).toUpperCase()}${chart.data.labels[j].slice(1)}` + 
@@ -1244,7 +1233,7 @@
                                         });
                                     }                                   
                                     }
-                                    //console.log(labels);
+                                   
                                     return labels;
                                 }                               
                                 }
@@ -1274,7 +1263,7 @@
 
                 var ctx1 = document.getElementById("newvsreturnchart").getContext("2d");
                 const visitordata = resultData['visitors']['visitors'];
-                //console.log(visitordata);
+              
                 const visitors_val = [];
                 const count = [];
                 const percentages = [];
@@ -1313,10 +1302,9 @@
                                     const datasets = chart.data.datasets;
                                     for (let i = 0; i < datasets.length; i++) {                                        
                                     const dataset = datasets[i];
-                                   // console.log(dataset );
+                                  
                                     const dataValues = datasets[i].data.map(value => parseFloat(value));
-                                   // console.log(labels);
-                                   // console.log(dataValues );
+                                 
                                    for (let j = 0; j < dataset.data.length; j++) {
                                         labels.push({
                                             text: `${chart.data.labels[j].charAt(0).toUpperCase()}${chart.data.labels[j].slice(1)}` + 
@@ -1326,7 +1314,7 @@
                                         });
                                     }                                   
                                     }
-                                    //console.log(labels);
+                                   
                                     return labels;
                                 }                               
                                 }
@@ -1350,8 +1338,7 @@
 			var count_ref = 0;
 
             if (resultData.topreferrals && resultData.topreferrals[0]) {
-				//console.log("Topreferrals");
-				//console.log(resultData.topreferrals[0]);
+				
                 $.each(resultData.topreferrals[0], function(index, entry) {
                     if (count_ref < 10) {
                         var $row = $('<tr></tr>');
@@ -1634,12 +1621,10 @@ function getCountryCode(countryName) {
 }
 			//Top countries End
 			
-			
 			//Most Visited Pages
 			var $tableBody = $('#dataTable3 tbody');
             if (resultData['mostvisitedpages']) {
-				//console.log("Mostvisitedpages");
-				//console.log(resultData['mostvisitedpages']);
+				
                 $.each(resultData['mostvisitedpages'], function(key, visitedpages) {
                     var i = 0;
                     var rowCount = 0;

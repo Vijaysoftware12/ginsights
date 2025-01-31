@@ -48,10 +48,10 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon()
     {
-		if ($this->app->runningInConsole()) {
+		/*if ($this->app->runningInConsole()) {
             $this->setDirectoryOwnership();
-        }
-		
+        }*/
+		$this->loadViewsFrom(__DIR__.'/../resources/views', 'ginsights');
         $this->bootVendorAssets();
 
         Utility::extend(function () {
