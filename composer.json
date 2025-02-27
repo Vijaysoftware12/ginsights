@@ -5,11 +5,11 @@
             "Vijaysoftware\\Ginsights\\": "src/"
         }
     },
-	 
+	"license": "MIT", 
     "extra": {
         "statamic": {
             "name": "GInsights",
-            "description": "Gaddon addon"
+            "description": "Google Analytics addon"
         },
         "laravel": {
             "providers": [
