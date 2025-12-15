@@ -83,7 +83,7 @@
 		  <!-- Newly added -->         
 		     <div class="ginsights-calendar mx-0" id="calendar" >
                 <label  id="dateLabel" class="px-2  "for="datepicker"><h2>Select date:</h2></label>  
-                <form  id="dateForm" action="<?php env('APP_URL')?>" method="post" >
+                <form  id="dateForm" action="<?php rtrim(env('APP_URL'),'/')?>" method="post" >
                     @csrf                
                     <input type="hidden" id="period" name="period" value="custom"/>
                     
@@ -263,7 +263,7 @@
 		  <!-- Newly added -->         
 		     <div class="ginsights-calendar mx-0" id="calendar" >
                 <label  id="dateLabel" class="px-2  "for="datepicker"><h2>Select date:</h2></label>  
-                <form  id="dateForm" action="<?php env('APP_URL')?>" method="post" >
+                <form  id="dateForm" action="<?php rtrim(env('APP_URL'),'/')?>" method="post" >
                     @csrf                
                     <input type="hidden" id="period" name="period" value="custom"/>
                     

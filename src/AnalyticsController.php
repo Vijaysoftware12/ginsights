@@ -71,7 +71,7 @@ class AnalyticsController extends Controller
         if($this->rtokenValidate()=='valid'){           
               $response = Http::post('https://statamic.vijaysoftware.com/public/api/reauth', [
                 'refresh_token' =>  $refresh_token,
-                'returnUrl' => env('APP_URL'),
+                'returnUrl' => rtrim(env('APP_URL'),'/'),
                 'DOMAIN' => $_SERVER['HTTP_HOST'],
 						'email' => Auth::user()->email,
                         'api_method'=> 'reauth' 
@@ -83,7 +83,7 @@ class AnalyticsController extends Controller
         }
         else{
             $response = Http::post('https://statamic.vijaysoftware.com/public/api/init', [
-                'returnUrl' => env('APP_URL'),
+                'returnUrl' => rtrim(env('APP_URL'),'/'),
                 'DOMAIN' => $_SERVER['HTTP_HOST'],
 						'email' => Auth::user()->email,
                         'api_method'=> 'init' 
@@ -111,7 +111,7 @@ class AnalyticsController extends Controller
            
               $response = Http::post('https://statamic.vijaysoftware.com/public/api/reauth', [
                 'refresh_token' =>  $refresh_token,
-                'returnUrl' => env('APP_URL'),
+                'returnUrl' => rtrim(env('APP_URL'),'/'),
                 'DOMAIN' => $_SERVER['HTTP_HOST'],
 						'email' => Auth::user()->email,
                         'api_method'=> 'reauth'

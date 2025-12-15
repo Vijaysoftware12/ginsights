@@ -9,7 +9,7 @@
         'title' => __('Utilities')
     ])
     <span class="breadcrumb">&nbsp;&lt;&nbsp; </span>
-    <a class="breadcrumbspan" href="<?php echo env('APP_URL')?>/cp/utilities/analytics" > GInsights Analytics</a>
+    <a class="breadcrumbspan" href="<?php echo rtrim(env('APP_URL'),'/')?>/cp/utilities/analytics" > GInsights Analytics</a>
     <span class="breadcrumb">&nbsp;&lt;&nbsp;</span>
     <div class="breadcrumb">Settings</div>
 </nav>
@@ -97,7 +97,7 @@
 			<!--<div class="card flex flex-col ">	
 				<h2 class="pb-4">Setup Wizard </h2>
 				<h3 class="mb-10">Use our configuration wizard to set up Google Analytics </h3>				
-				<a href='<?php echo env('APP_URL')?>/cp/utilities/analytics?reauth=true' class="block w-full h-full"><button class="bg-blue-700 text-white font-bold py-2 px-6 rounded w-1/2">Launch Setup Wizard</button></a>
+				<a href='<?php echo rtrim(env('APP_URL'),'/')?>/cp/utilities/analytics?reauth=true' class="block w-full h-full"><button class="bg-blue-700 text-white font-bold py-2 px-6 rounded w-1/2">Launch Setup Wizard</button></a>
 										
 			</div>-->
 		
@@ -118,7 +118,7 @@
     });
 	
 			localStorage.removeItem('selectedValue');
-			window.location.href = '<?php echo env('APP_URL')?>/cp/utilities/analytics?reauth=true';
+			window.location.href = '<?php echo rtrim(env('APP_URL'),'/')?>/cp/utilities/analytics?reauth=true';
 		}
 		</script>
 	</body>

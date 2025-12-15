@@ -15,7 +15,7 @@
 		<div class="row card ">    
 			<div class="p-2 ">
 				<h2 class="text-center">Google Analytics account unavailable.</h2>
-				<a href='<?php echo env('APP_URL')?>/cp/utilities/analytics?reauth=true' class="text-center block w-full h-full"><button class="mt-6 bg-blue-700 text-white font-bold py-2 px-4 rounded ">Click here to reauthorize</button></a>			   
+				<a href='<?php echo rtrim(env('APP_URL'),'/')?>/cp/utilities/analytics?reauth=true' class="text-center block w-full h-full"><button class="mt-6 bg-blue-700 text-white font-bold py-2 px-4 rounded ">Click here to reauthorize</button></a>			   
 			</div> 				
 		</div>
 	</body>

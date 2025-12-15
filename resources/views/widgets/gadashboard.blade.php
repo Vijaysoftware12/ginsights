@@ -1735,7 +1735,7 @@ function formatTime(minutes) {
 		<div  id="unauthorizedView" class="hidediv" >
         <div class="p-4 font-bold content-center">
           <h2>Please Authorize Your Google Account For Analytics Data</h2>
-          <a href='<?php echo env('APP_URL')?>/cp/utilities/analytics?reauth=true' class="btn-primary ml-1 mr-1 mt-2 " title="Connect to Google" id="ConnecttoGoogle">Connect to Google</a>
+          <a href='<?php echo rtrim(env('APP_URL'),'/')?>/cp/utilities/analytics?reauth=true' class="btn-primary ml-1 mr-1 mt-2 " title="Connect to Google" id="ConnecttoGoogle">Connect to Google</a>
         </div>
       </div>
 
