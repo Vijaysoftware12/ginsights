@@ -18,6 +18,21 @@
 <link rel="stylesheet" href="<?php echo $baseUrl;?>vendor/ginsights/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="https://statamic.vijaysoftware.com/garesource/css/ga_style.css">
+<style>
+.row {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.items, .buttons {
+    display: flex;
+    gap: 10px;
+	padding-bottom:10px;
+	padding-top:10px;
+}
+
+</style>
 
 <?php use Symfony\Component\Yaml\Yaml;?>
 
@@ -989,6 +1004,7 @@
 			formattedDates="";
 		}
 		if(graph_type=="partial"){
+		//	console.log("Partial data");
 		//console.log(resultdata);	
 	$("#chartAll").css("height", "500px");
 		//All in one graph	
@@ -1236,7 +1252,26 @@ else{
 		
 		
 	}
+	
+			const chart = window.all;
+
+			
+			var toggles = document.querySelectorAll(".toggle-dataset");
+
+				toggles.forEach(function(toggle) {
+					toggle.addEventListener("change", function () {
+
+						const index = this.dataset.index;
+						const meta = window.all.getDatasetMeta(index);
+
+						meta.hidden = !this.checked;
+
+						window.all.update();
+					});
+				});
+
 	}
+	
 				
 	function clearCanvas() {
     var canvas = document.getElementById("myChartsp");
@@ -1569,6 +1604,8 @@ function formatTime(minutes) {
 			 heightStyle: "content"// Open the first section by default
 			});
 			
+		
+			
             $('#fullreport').click(function(){
                // Create and show the loading animation
                   
@@ -1704,6 +1741,16 @@ function formatTime(minutes) {
 		<div id="accordion">
 		<h3>Overview Report</h3>
         <div class="row p-2 fullwidth"  id="chartAll">
+		
+		<div class="row">  
+		<div class="buttons">
+				
+			<input type="checkbox" class="toggle-dataset  ml-2" data-index="0" checked> Pageviews
+			<input type="checkbox" class="toggle-dataset  ml-2" data-index="1" checked> Sessions
+			<input type="checkbox" class="toggle-dataset  ml-2" data-index="2" checked> Unique Visitors
+		
+		</div>
+		</div>
         <canvas class= "chart-styles db_graph" id="myChartsp" ></canvas>
         </div>
         
