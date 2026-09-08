@@ -19,26 +19,31 @@ use Illuminate\Support\Facades\Auth;
 
 class AnalyticsController extends Controller
 {
-      
-    
+    private $refreshTokenYamlCache = null;
+    private $tokenValidationResult = null;
+
     public function __construct()
     {
-        ini_set('max_execution_time', 40000);
+        ini_set('max_execution_time', 120);
+    }
+
+    private function readRefreshTokenYaml()
+    {
+        if ($this->refreshTokenYamlCache !== null) {
+            return $this->refreshTokenYamlCache;
+        }
+        $filePathre = __DIR__ . '/content/refresh_token.yaml';
+        $yamlString = file_get_contents($filePathre);
+        return $this->refreshTokenYamlCache = Yaml::parse($yamlString);
     }
 
    public function getRefreshToken()
     {
-        $filePathre = __DIR__;
-        $notauthorized = false;
-        $rootPath = base_path();
-        $filePathre=$filePathre.'/content/refresh_token.yaml';
-        $yamlString = file_get_contents($filePathre);
-        // Parse the YAML string to retrieve the data
-        $datare = Yaml::parse($yamlString);
-        // Access the refresh token from the data array             
+        $datare = $this->readRefreshTokenYaml();
+        // Access the refresh token from the data array
 		if(isset($datare["refresh_token"])){
-        
-        // Access the refresh token from the data array             
+
+        // Access the refresh token from the data array
 		$refresh_token = $datare["refresh_token"];
         return($refresh_token);
         }
@@ -47,14 +52,17 @@ class AnalyticsController extends Controller
         }
     }
    public function rtokenValidate(){
-    $refresh_token=$this->getRefreshToken();          
+    if ($this->tokenValidationResult !== null) {
+        return $this->tokenValidationResult;
+    }
+    $refresh_token=$this->getRefreshToken();
     $response = Http::post('https://statamic.vijaysoftware.com/public/api/validate', [
          'refresh_token' =>  $refresh_token,
          'DOMAIN' => $_SERVER['HTTP_HOST'],
 		'email' => Auth::user()->email,
-           'api_method'=> 'validate'       
+           'api_method'=> 'validate'
     ]);
-    return $response->body();
+    return $this->tokenValidationResult = $response->body();
    }
   
     public function reauth(){       
@@ -97,18 +105,9 @@ class AnalyticsController extends Controller
     }
     public function switchUser(Request $request){
 
-        if($request['reauth']=='true'){       
-            $refresh_token=$this->getRefreshToken();            
-            $response = Http::post('https://statamic.vijaysoftware.com/public/api/validate', [
-                'refresh_token' =>  $refresh_token ,
-                'DOMAIN' => $_SERVER['HTTP_HOST'],
-						'email' => Auth::user()->email,
-                        'api_method'=> 'validate' 
-                          
-            ]);
-   
+        if($request['reauth']=='true'){
             if($this->rtokenValidate()=='valid'){
-           
+              $refresh_token=$this->getRefreshToken();
               $response = Http::post('https://statamic.vijaysoftware.com/public/api/reauth', [
                 'refresh_token' =>  $refresh_token,
                 'returnUrl' => rtrim(env('APP_URL'),'/'),
@@ -242,8 +241,8 @@ class AnalyticsController extends Controller
                     
                     // Access the days from the DateInterval object
                     $interval= $difference->days;
-                   
-                    $data= $this->getGAData($property_id,$interval,$startDate,$endDate,true);
+
+                    $data= $this->getData($startDate,$endDate,$interval,true,$property_id);
                     
                     return view('ginsights::dpview')
                     ->with('data',$data)
@@ -322,7 +321,7 @@ class AnalyticsController extends Controller
                     $dprvsStartDate= $prvsStart->format('Y-m-d');
                     $dprvsEndDate= $prvsEnd->format('Y-m-d');
                 return view('ginsights::dpview')
-                ->with('data',$this->getData($startDate,$endDate,'caselastmonth','false'))
+                ->with('data',$this->getData($startDate,$endDate,'caselastmonth','false',$property_id))
                 ->with('startDate', $startDate)
                 ->with('endDate', $endDate)
                 ->with('interval',$interval)
@@ -350,72 +349,28 @@ else{
 		$selecturl = null;
 		//View generating after authorizing and selecting viewids and then displaying detailed report 
         if($request['selectedid'])
-        {          
+        {
             $filePath = __DIR__ . '/content/webproperty.yaml';
-            $yamlString = file_get_contents($filePath);
-            $property_yaml['property_id']=$request['selectedid'];	
-			$property_yaml['property_url'] = $request['selectedurl'];			
+            $property_yaml['property_id']=$request['selectedid'];
+			$property_yaml['property_url'] = $request['selectedurl'];
             $selectid =$request['selectedid'];
-			//	$selecturl =$request['selectedurl'];			
             $yamlstring = Yaml::dump($property_yaml);
-            File::put($filePath, $yamlstring);           
+            File::put($filePath, $yamlstring);
             $refresh_token=$this->getStoredRefreshToken();
 			$this->store($request);
 
-            if (Cache::has('dpviewdata'.$interval.$property_id)) {
-           // dd($interval);
-            $data = Cache::get('dpviewdata'.$interval.$property_id); 
-			
-               
-			//if (Cache::has('dpviewdata')) {             
-    	   //  $data = Cache::get('dpviewdata');
-             $phpArray = json_decode($data, true);
-           //  echo $startDate."-".$phpArray['startDate']."-".$endDate."-".$phpArray['endDate'];
+            try{
+                $data=$this->getData($startDate,$endDate,$interval,'false',$selectid);
+            }catch(RequestException $e)    {
+                Log::error('Request failed: ' . $e->getMessage());
+                return response()->json(['error' => 'Failed to fetch data'], 500);
+            }
 
-             if(($startDate!=$phpArray['startDate'])) {
-                Cache::forget('dpviewdata');
-                $data=$this->getGAData($selectid,$interval,$startDate,$endDate);
-
-             }
-                  
-             return view('ginsights::dpview')
-              ->with('data',$data)
-              ->with('startDate', $startDate)
-              ->with('endDate', $endDate)
-              ->with('interval',$interval);
-			}
-             
-        
-			else{
-              
-       try{
-         
-            $data=$this->getGAData($selectid,$interval,$startDate,$endDate,'false');
-        
-            //$data=$response->body();    
-        }catch(RequestException $e)    {
-            Log::error('Request failed: ' . $e->getMessage());
-            return response()->json(['error' => 'Failed to fetch data'], 500);
-        }  	   
-		    //Cache::put('dpviewdata', $data, $seconds = 20000);
-           /* if (Cache::has('dpviewdata')) {
-                // Cache has data
-                $data = Cache::get('dpviewdata');
-                // Do something with the data
-            } */
-			 if (Cache::has('dpviewdata'.$interval.$property_id)) {
-           // dd($interval);
-            $data = Cache::get('dpviewdata'.$interval.$property_id); 
-			 }
-            
-		
-                  		
             return view('ginsights::dpview')
              ->with('data',$data)
 			 ->with('startDate', $startDate)
              ->with('endDate', $endDate)
              ->with('interval',$interval);
-			}         
         }
         
         else
@@ -466,16 +421,19 @@ else{
     {
        
         $refresh_token=$this->getStoredRefreshToken();
-        $rootPath = base_path();
         $property_id = $selectid;
-        $filePath =
-                 $rootPath ."/vendor/vijaysoftware/ginsights/src/content/webproperty.yaml";
- 
-        $yamlString = file_get_contents($filePath);            
-        $data = Yaml::parse($yamlString);
+        if (empty($property_id)) {
+            $rootPath = base_path();
+            $filePath =
+                     $rootPath ."/vendor/vijaysoftware/ginsights/src/content/webproperty.yaml";
+
+            $yamlString = file_get_contents($filePath);
+            $data = Yaml::parse($yamlString);
             if ($data) {
-                $property_id = $data["property_id"];}
-        
+                $property_id = $data["property_id"];
+            }
+        }
+
       /*  $response = Http::post('https://statamic.vijaysoftware.com/public/api/dpviewnew', [
             'refresh_token' =>  $refresh_token,
             'property_id' => $property_id,
@@ -513,6 +471,8 @@ else{
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -522,44 +482,20 @@ else{
      return $data;
     }
     public function getData ($startDate,$endDate,$interval,$custom,$property_id)
-    //function to check startDate in the cache and
-    //the incoming startDate
+    //fetches GA data for the given range, serving from cache when the
+    //exact same property/interval/date range was already fetched
     {
         $selectid=$property_id;
+        $cacheKey = 'dpviewdata_'.$property_id.'_'.$interval.'_'.$startDate.'_'.$endDate;
 
-      
-         if (Cache::has('dpviewdata'.$interval.$property_id)) {
-           // dd($interval);
-            $data = Cache::get('dpviewdata'.$interval.$property_id); 
-         // dd($data);
-            $phpArray = json_decode($data, true);
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
 
-            
+        $data = $this->getGAData($selectid,$interval,$startDate,$endDate,$custom);
+        Cache::put($cacheKey, $data, $seconds = 20000);
 
-
-            if($startDate!=$phpArray['startDate'])
-            {
-                 $data= $this->getGAData($selectid,$interval,$startDate,$endDate,$custom); 
-                 Cache::put('dpviewdata'.$interval.$property_id, $data, $seconds = 20000);
-            }
-           // ;
-            return $data;
-         }
-         else
-         {
-            
-            $data= $this->getGAData($selectid,$interval,$startDate,$endDate,$custom); 
-            $phpArray = json_decode($data, true);
-           // dd($phpArray['interval']);
-            Cache::put('dpviewdata'.$interval.$property_id, $data, $seconds = 20000);
-          
-            return $data;
-         }
-         
-       
-      
-       
-       
+        return $data;
     }
     /**
      * Store a newly created resource in storage.
@@ -601,14 +537,10 @@ public function store(Request $request)
    
     public function getStoredRefreshToken()
     {
-        $filePath = __DIR__ . '/content/refresh_token.yaml';
-        $yamlString = file_get_contents($filePath);
-      
-        // Parse the YAML string to retrieve the data
-        $data = Yaml::parse($yamlString);
+        $data = $this->readRefreshTokenYaml();
         // Access the refresh token from the data array
         if($data){
-        $refresh_token = $data['refresh_token'];       
+        $refresh_token = $data['refresh_token'];
         return $refresh_token;
         }
 
