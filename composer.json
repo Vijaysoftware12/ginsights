@@ -5,7 +5,7 @@
             "Vijaysoftware\\Ginsights\\": "src/"
         }
     },
-	"license": "MIT", 
+	 
     "extra": {
         "statamic": {
             "name": "GInsights",
